@@ -156,11 +156,11 @@ export default function AboutUsPage() {
             backgroundPosition: 'center',
           }}
         >
-          <div className="absolute inset-0 bg-[#0a1628]/80" />
+          <div className="absolute inset-0 bg-[#0a1628]/60" />
           <div className="max-w-6xl mx-auto relative z-10">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {/* Respect */}
-              <div className="text-center">
+              <div className="bg-[#1a2a4a]/60 backdrop-blur-md rounded-xl border border-[#3a5a8a]/40 p-6 text-center shadow-[0_0_20px_rgba(58,90,138,0.3)]">
                 <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 relative">
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/trust-about-itDjSoKgRWYvnrxVzuDzjOoiRar7xg.png"
@@ -169,14 +169,14 @@ export default function AboutUsPage() {
                     className="object-contain"
                   />
                 </div>
-                <h3 className="text-white font-semibold text-lg mb-2">Respect</h3>
+                <h3 className="text-white font-semibold text-lg mb-3">Respect</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   Set trends for your peers and the industry in general to follow.
                 </p>
               </div>
 
               {/* Exceptional Value */}
-              <div className="text-center">
+              <div className="bg-[#1a2a4a]/60 backdrop-blur-md rounded-xl border border-[#3a5a8a]/40 p-6 text-center shadow-[0_0_20px_rgba(58,90,138,0.3)]">
                 <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 relative">
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/value-about-6i4xV5nMvoJYSFpoaoYv4mp6NdkY8V.png"
@@ -185,14 +185,14 @@ export default function AboutUsPage() {
                     className="object-contain"
                   />
                 </div>
-                <h3 className="text-white font-semibold text-lg mb-2">Exceptional value</h3>
+                <h3 className="text-white font-semibold text-lg mb-3">Exceptional value</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   {"Understand and exceed customer's expectations all the time."}
                 </p>
               </div>
 
               {/* Authenticity */}
-              <div className="text-center">
+              <div className="bg-[#1a2a4a]/60 backdrop-blur-md rounded-xl border border-[#3a5a8a]/40 p-6 text-center shadow-[0_0_20px_rgba(58,90,138,0.3)]">
                 <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 relative">
                   <Image
                     src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/group-about-GrJ2wyjxBkSpCAyFor3cHY2ECf4XaE.png"
@@ -201,24 +201,23 @@ export default function AboutUsPage() {
                     className="object-contain"
                   />
                 </div>
-                <h3 className="text-white font-semibold text-lg mb-2">Authenticity</h3>
+                <h3 className="text-white font-semibold text-lg mb-3">Authenticity</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   Be sincere, honest, and open in dealings to ensure trustworthiness.
                 </p>
               </div>
 
               {/* Leadership */}
-              <div className="text-center">
-                <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 flex items-center justify-center">
-                  <svg className="w-12 h-12 md:w-16 md:h-16 text-[#f5b800]" viewBox="0 0 64 64" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="32" cy="16" r="8" />
-                    <path d="M20 40 L32 28 L44 40" />
-                    <path d="M32 28 L32 52" />
-                    <circle cx="20" cy="48" r="6" />
-                    <circle cx="44" cy="48" r="6" />
-                  </svg>
+              <div className="bg-[#1a2a4a]/60 backdrop-blur-md rounded-xl border border-[#3a5a8a]/40 p-6 text-center shadow-[0_0_20px_rgba(58,90,138,0.3)]">
+                <div className="w-16 h-16 md:w-20 md:h-20 mx-auto mb-4 relative">
+                  <Image
+                    src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/leadership-development-about-yIcfXNuzrp9xJttnQWubWoILvJiWd5.png"
+                    alt="Leadership"
+                    fill
+                    className="object-contain"
+                  />
                 </div>
-                <h3 className="text-white font-semibold text-lg mb-2">Leadership</h3>
+                <h3 className="text-white font-semibold text-lg mb-3">Leadership</h3>
                 <p className="text-gray-300 text-sm leading-relaxed">
                   Lead by example, drive innovation, and create positive change across teams.
                 </p>
