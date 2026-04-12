@@ -175,7 +175,7 @@ export function Header() {
               </div>
 
               {/* Industries */}
-              <Link href="#" className="text-gray-700 hover:text-[#00d4ff] font-medium">
+              <Link href="/industries" className="text-gray-700 hover:text-[#00d4ff] font-medium">
                 Industries
               </Link>
 
@@ -295,7 +295,7 @@ export function Header() {
 
               {/* Industries */}
               <Link
-                href="#"
+                href="/industries"
                 className="block py-3 text-gray-700 font-medium border-b border-gray-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
