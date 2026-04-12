@@ -3,7 +3,7 @@ import { Mail, MapPin } from "lucide-react"
 
 const footerLinks = {
   company: [
-    { name: "Employee Referrals", href: "#" },
+    { name: "Employee Referral", href: "/company/talent-referrals" },
     { name: "Careers", href: "#" },
     { name: "Contact", href: "#" },
   ],
