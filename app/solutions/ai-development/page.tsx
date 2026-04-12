@@ -8,42 +8,42 @@ const aiServices = [
   {
     title: "Enterprise AI Solutions",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/enterprise-ai.jpg",
+    image: "/services/images/enterprise-ai-solutions.jpg",
   },
   {
     title: "AI App development",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/ai-app.jpg",
+    image: "/services/images/enterprise-ai-solutions.jpg",
   },
   {
     title: "AI proof of concept (PoC)",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/ai-poc.jpg",
+    image: "/services/images/ai-model-training-World.jpg",
   },
   {
     title: "AI model training",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/ai-training.jpg",
+    image: "/services/images/ai-model-training-World.jpg",
   },
   {
     title: "Post-launch support",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/post-launch.jpg",
+    image: "/services/images/enterprise-ai-solutions.jpg",
   },
   {
     title: "Edge AI setup",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/edge-ai.jpg",
+    image: "/services/images/enterprise-ai-solutions.jpg",
   },
   {
     title: "AI Accelerators",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/ai-accelerators.jpg",
+    image: "/services/images/ai-model-training-World.jpg",
   },
   {
     title: "MLOps",
     description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/ai-services/mlops.jpg",
+    image: "/services/images/ai-model-training-World.jpg",
   },
 ]
 
@@ -107,7 +107,7 @@ export default function AIDevelopmentPage() {
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      
+
       {/* Hero Section */}
       <section className="relative min-h-[400px] md:min-h-[500px] flex items-center">
         <div className="absolute inset-0">
@@ -148,10 +148,12 @@ export default function AIDevelopmentPage() {
             {aiServices.map((service) => (
               <div key={service.title} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="h-40 bg-gradient-to-br from-gray-700 to-gray-900 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center">
-                      <Box className="w-8 h-8 text-white/70" />
-                    </div>
+                  <div className="h-40 relative">
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="w-full h-full object-cover rounded-t-lg"
+                    />
                   </div>
                 </div>
                 <div className="p-5">
