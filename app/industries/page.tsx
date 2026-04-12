@@ -54,24 +54,23 @@ export default function IndustriesPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      
+
       <main className="flex-1">
         {/* Hero Section with Background */}
-        <section 
-          className="relative py-16 md:py-24 px-4 md:px-8"
+        <section
+          className="relative px-4 md:px-8 flex items-center min-h-[180px] md:min-h-[260px]"
           style={{
             backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/background-image-%20top-01%20-7hyPuLnm3jG3akkqH8VOkUntQxzoRI.png')`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         >
-          <div className="max-w-6xl mx-auto flex items-center justify-center min-h-[120px]">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center">
+          <div className="max-w-6xl mx-auto w-full flex justify-center md:justify-start">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center md:text-left md:ml-20 lg:ml-32">
               Industries
             </h1>
           </div>
         </section>
-
         {/* Mission Statement */}
         <section className="py-12 md:py-16 px-4 md:px-8">
           <div className="max-w-4xl mx-auto text-center">
@@ -88,7 +87,7 @@ export default function IndustriesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               {industries.slice(0, 3).map((industry, index) => (
                 <div key={index} className="text-center">
-                  <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-4">
+                  <div className="relative w-full aspect-[4/3] overflow-hidden mb-4">
                     <Image
                       src={industry.image}
                       alt={industry.title}
