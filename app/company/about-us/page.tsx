@@ -229,50 +229,21 @@ export default function AboutUsPage() {
         {/* Our Key Clients Section */}
         <section className="py-16 md:py-20 px-4 md:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              <div>
+            <div className="flex flex-col lg:flex-row gap-8 items-center">
+              <div className="lg:w-1/3">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Key Clients</h2>
                 <p className="text-gray-600 leading-relaxed">
                   We deliver exceptional technology solutions for world-class businesses in every business industry from dynamic startups and SMBs to Fortune 500 companies.
                 </p>
               </div>
-              <div className="lg:col-span-2">
-                <div className="grid grid-cols-3 md:grid-cols-4 gap-6 md:gap-8 items-center">
-                  {/* Client logos placeholders */}
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-900">TRUGLOBAL</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-green-700">paloalto</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-600">neo<span className="text-orange-500">SYSTEMS</span></span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-xs font-bold text-green-800">TRIUMVIRATE</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-800">PSRTEK</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-red-600">ABC</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-700">CAMBIA</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-gray-800">FIS</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-orange-600">illumina</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-red-700">Johnson&Johnson</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-900">HCLTech</span>
-                  </div>
-                </div>
+              <div className="lg:w-2/3 relative">
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-m2dmo0y19JLsLDP7mkEm7KNdWc6lxd.png"
+                  alt="Our Key Clients - TruGlobal, Palo Alto, Neev Systems, Triumvirate, PSRTEK, ABC Supply, Cambia, FIS, Illumina, Johnson & Johnson, HCLTech"
+                  width={700}
+                  height={400}
+                  className="object-contain w-full h-auto"
+                />
               </div>
             </div>
           </div>
@@ -281,44 +252,21 @@ export default function AboutUsPage() {
         {/* Partnerships Section */}
         <section className="py-16 md:py-20 px-4 md:px-8 bg-gray-50">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-              <div>
+            <div className="flex flex-col lg:flex-row gap-8 items-center">
+              <div className="lg:w-1/3">
                 <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Partnerships</h2>
                 <p className="text-gray-600 leading-relaxed">
                   Several valuable partnerships were forged along this journey, and our research has been published on different websites.
                 </p>
               </div>
-              <div className="lg:col-span-2">
-                <div className="grid grid-cols-3 md:grid-cols-3 gap-6 md:gap-8 items-center">
-                  {/* Partner logos placeholders */}
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-800">KFORCE</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-900">ALKU</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-700">randstad</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-purple-700">ALTIMETRIK</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-600">Capgemini</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-teal-600">n2S</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-gray-900">Deloitte.</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-sm font-bold text-blue-800">QUADRANT</span>
-                  </div>
-                  <div className="flex items-center justify-center h-12">
-                    <span className="text-xs font-bold text-blue-700">L&T Technology</span>
-                  </div>
-                </div>
+              <div className="lg:w-2/3 relative">
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-02-FrHUQcQLsZ0ZPsjmV4BRJpuFUwyZSS.png"
+                  alt="Partnerships - Kforce, ALKU, Randstad, Altimetrik, Capgemini, N2S, Deloitte, Quadrant, L&T Technology Services"
+                  width={700}
+                  height={400}
+                  className="object-contain w-full h-auto"
+                />
               </div>
             </div>
           </div>
