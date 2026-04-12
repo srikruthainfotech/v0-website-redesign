@@ -78,8 +78,8 @@ export function Header() {
                 alt="Immense Brains"
                 width={160}
                 height={32}
-                className="h-7 sm:h-8"
-                style={{ width: 'auto', height: 'auto', maxHeight: '2rem' }}
+                style={{ width: 'auto', height: 'auto' }}
+                className="max-h-7 sm:max-h-8"
                 priority
               />
             </Link>
