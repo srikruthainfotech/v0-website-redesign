@@ -34,6 +34,7 @@ const solutionsMenu = {
 const companyMenu = [
   { name: "About Us", href: "/company/about-us" },
   { name: "Our Team", href: "#" },
+  { name: "Talent Referrals", href: "/company/talent-referrals" },
   { name: "Careers", href: "#" },
   { name: "Contact", href: "#" },
 ]
@@ -57,7 +58,7 @@ export function Header() {
             </a>
           </div>
           <div className="hidden sm:flex items-center gap-6">
-            <Link href="#" className="hover:text-[#00d4ff]">
+            <Link href="/company/talent-referrals" className="hover:text-[#00d4ff]">
               Talent Referrals
             </Link>
             <Link href="#" className="hover:text-[#00d4ff]">
@@ -342,7 +343,7 @@ export function Header() {
               {/* Mobile-only links from top bar */}
               <div className="pt-4 space-y-2 sm:hidden">
                 <Link
-                  href="#"
+                  href="/company/talent-referrals"
                   className="block py-2 text-sm text-[#00d4ff] font-medium"
                   onClick={() => setMobileMenuOpen(false)}
                 >
