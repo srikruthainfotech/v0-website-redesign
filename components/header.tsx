@@ -32,7 +32,7 @@ const solutionsMenu = {
 }
 
 const companyMenu = [
-  { name: "About Us", href: "#" },
+  { name: "About Us", href: "/company/about-us" },
   { name: "Our Team", href: "#" },
   { name: "Careers", href: "#" },
   { name: "Contact", href: "#" },
@@ -74,12 +74,12 @@ export function Header() {
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
               <Image
-                src="/logo.png"
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/immense-brains-logo-01-M78OjHE7FsmPJIblZLuT4qqU6GMLZm.png"
                 alt="Immense Brains"
-                width={160}
-                height={32}
+                width={200}
+                height={40}
                 style={{ width: 'auto', height: 'auto' }}
-                className="max-h-7 sm:max-h-8"
+                className="max-h-8 sm:max-h-10"
                 priority
               />
             </Link>
