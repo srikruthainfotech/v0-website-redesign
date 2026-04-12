@@ -12,16 +12,6 @@ export function TalentReferralsHero() {
           className="object-cover object-center"
           priority
         />
-        {/* Logo overlay at top-left */}
-        <div className="absolute top-4 left-4 md:top-6 md:left-8 z-10">
-          <Image
-            src="/images/immense-brains-logo-01.png"
-            alt="Immense Brains"
-            width={180}
-            height={36}
-            className="h-8 md:h-10 w-auto"
-          />
-        </div>
         {/* Centered heading */}
         <div className="absolute inset-0 flex items-center justify-start px-4 md:px-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white">
