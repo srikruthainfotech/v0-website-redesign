@@ -8,6 +8,12 @@ import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
 
 const officeLocations = [
   {
+    title: "Mailing Address",
+    subtitle: "(For Correspondence Only)",
+    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919, USA"],
+    icon: MapPin,
+  },
+  {
     title: "USA Headquarters",
     address: ["2860 South Circle Dr, Suite 237", "Colorado Springs, CO 80906, USA"],
     icon: Building2,
@@ -16,13 +22,7 @@ const officeLocations = [
     title: "India Office",
     address: ["Flat 104, Sai Green Meadows", "Nallagandla", "Telangana 500046"],
     icon: Building2,
-  },
-  {
-    title: "Mailing Address",
-    subtitle: "(For Correspondence Only)",
-    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919, USA"],
-    icon: MapPin,
-  },
+  }
 ]
 
 export default function ContactPage() {
@@ -167,15 +167,14 @@ export default function ContactPage() {
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 h-8 text-green-600" />
+                  <Send className="w-8 hover:bg-[#1a7fe0]" />
                 </div>
-                <h3 className="text-xl font-semibold text-green-800 mb-2">Message Sent!</h3>
-                <p className="text-green-700">
+                <p className="hover:bg-[#1a7fe0]">
                   Thank you for reaching out. We&apos;ll get back to you soon.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 text-[#00d4ff] hover:underline font-medium"
+                  className="mt-6 hover:bg-[#1a7fe0] hover:underline font-medium"
                 >
                   Send another message
                 </button>
