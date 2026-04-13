@@ -41,16 +41,32 @@ export function Header() {
 
   return (
     <header className="w-full">
-      {/* Top bar */}
-      <div className="bg-[#0a1628] text-white py-2 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-center text-sm">
-          <div className="flex items-center gap-2">
-            <Mail className="w-4 h-4" />
-            <a href="mailto:info@immensebrains.com" className="hover:text-[#00d4ff] text-xs sm:text-sm truncate">
-              info@immensebrains.com
-            </a>
+      {/* Top bar with email and logo aligned horizontally */}
+      <div className="bg-[#0a1628] text-white py-3 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          {/* Left side: Email and Logo aligned horizontally */}
+          <div className="flex items-center gap-4 sm:gap-6">
+            <div className="flex items-center gap-2">
+              <Mail className="w-4 h-4 flex-shrink-0" />
+              <a href="mailto:info@immensebrains.com" className="hover:text-[#00d4ff] text-xs sm:text-sm whitespace-nowrap">
+                info@immensebrains.com
+              </a>
+            </div>
+            <div className="h-6 w-px bg-white/30 hidden sm:block" />
+            <Link href="/" className="flex-shrink-0">
+              <Image
+                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/immense-brains-logo-01-M78OjHE7FsmPJIblZLuT4qqU6GMLZm.png"
+                alt="Immense Brains"
+                width={200}
+                height={40}
+                style={{ width: 'auto', height: 'auto' }}
+                className="max-h-8 sm:max-h-10 brightness-0 invert"
+                priority
+              />
+            </Link>
           </div>
-          <div className="hidden sm:flex items-center gap-6">
+          {/* Right side: Navigation links */}
+          <div className="hidden sm:flex items-center gap-6 text-sm">
             <Link href="/company/talent-referrals" className="hover:text-[#00d4ff]">
               Talent Referrals
             </Link>
@@ -63,34 +79,8 @@ export function Header() {
 
       {/* Main navigation */}
       <nav className="bg-white border-b border-gray-100 relative">
-        <div className="max-w-7xl mx-auto pl-1 pr-4">
-          <div className="flex justify-between items-center h-16">
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-              <Image
-                src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/immense-brains-logo-01-M78OjHE7FsmPJIblZLuT4qqU6GMLZm.png"
-                alt="Immense Brains"
-                width={200}
-                height={40}
-                style={{ width: 'auto', height: 'auto' }}
-                className="max-h-8 sm:max-h-10"
-                priority
-              />
-            </Link>
-
-            {/* Mobile menu button */}
-            <button
-              className="md:hidden p-2 -mr-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-gray-700" />
-              ) : (
-                <Menu className="w-6 h-6 text-gray-700" />
-              )}
-            </button>
-
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-between items-center h-14">
             {/* Desktop navigation */}
             <div className="hidden md:flex items-center gap-8">
               {/* Solutions dropdown */}
@@ -205,7 +195,18 @@ export function Header() {
               </Link>
             </div>
 
-
+            {/* Mobile menu button */}
+            <button
+              className="md:hidden p-2"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <X className="w-6 h-6 text-gray-700" />
+              ) : (
+                <Menu className="w-6 h-6 text-gray-700" />
+              )}
+            </button>
           </div>
         </div>
 
