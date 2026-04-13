@@ -73,7 +73,7 @@ export default function AboutUsPage() {
           }}
         >
           <div className="max-w-7xl mx-auto px-4 md:px-8 w-full h-full flex items-center">
-            <div className="w-full md:w-1/2 flex items-center pl-22 md:pl-30">
+            <div className="w-full md:w-1/2 flex items-center pl-4 md:pl-30">
               <h1 className="text-3xl md:text-5xl font-bold text-white">
                 About Us
               </h1>
