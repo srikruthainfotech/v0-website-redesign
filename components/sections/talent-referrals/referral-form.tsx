@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 
 export function ReferralForm() {
   const [formData, setFormData] = useState({
@@ -12,6 +12,7 @@ export function ReferralForm() {
     candidateLocation: "",
     resume: null as File | null,
   })
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -25,9 +26,26 @@ export function ReferralForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
+
     console.log("Form submitted:", formData)
-    alert("Thank you for your referral! We will review the submission and get back to you.")
+
+    alert("Thank you for your referral! Our team will review it and get back to you shortly.")
+
+    // ✅ Reset state
+    setFormData({
+      yourName: "",
+      yourEmail: "",
+      candidateName: "",
+      candidateEmail: "",
+      positionOfInterest: "",
+      candidateLocation: "",
+      resume: null,
+    })
+
+    // ✅ IMPORTANT: Reset file input UI
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
   }
 
   return (
@@ -113,6 +131,7 @@ export function ReferralForm() {
           <div className="mb-6">
             <h3 className="text-[#0a1628] font-medium mb-4">Upload Resume</h3>
             <input
+              ref={fileInputRef}
               type="file"
               name="resume"
               onChange={handleFileChange}
