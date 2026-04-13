@@ -2,77 +2,69 @@ import Link from "next/link"
 import { Mail, MapPin } from "lucide-react"
 
 const footerLinks = {
-  company: [
-    { name: "Employee Referral", href: "/company/talent-referrals" },
-    { name: "Careers", href: "#" },
-    { name: "Contact", href: "#" },
-  ],
-  services: [
+  topSolutions: [
+    { name: "AI Development", href: "#" },
     { name: "Custom App Development", href: "#" },
-    { name: "Digital Transformation", href: "#" },
-    { name: "Oracle Fusion Development", href: "#" },
-    { name: "CRM Services", href: "#" },
-    { name: "Cloud Infrastructure", href: "#" },
+    { name: "Progressive Web App Development", href: "#" },
+    { name: "UI/UX Design", href: "#" },
+    { name: "Machine Learning", href: "#" },
+    { name: "QA Testing & Automation", href: "#" },
   ],
-  solutions: [
+  enterprise: [
+    { name: "Backup Solutions", href: "#" },
+    { name: "Oracle Cloud Applications", href: "#" },
+    { name: "Cybersecurity", href: "#" },
+    { name: "Digital Transformation", href: "#" },
+  ],
+  staffing: [
     { name: "Staff Augmentation", href: "#" },
     { name: "Dedicated Teams", href: "#" },
     { name: "Software Outsourcing", href: "#" },
-    { name: "UI/UX Design Solutions", href: "#" },
-    { name: "Backup Solutions", href: "#" },
-    { name: "Cybersecurity", href: "#" },
   ],
 }
 
 export function Footer() {
   return (
     <footer className="bg-[#0a1628] text-white">
-      <div className="max-w-7xl mx-auto px-4 md:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* Company */}
+      <div className="max-w-6xl mx-auto px-6 md:px-8 py-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-16 gap-y-10">
+
           <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
+            <h3 className="text-white font-semibold mb-5 text-sm tracking-wide">
+              Top Solutions
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.topSolutions.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-[#00d4ff] text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-400 hover:text-[#00d4ff] text-sm">
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Our Services */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Our Services</h3>
-            <ul className="space-y-2">
-              {footerLinks.services.map((link) => (
+            <h3 className="text-white font-semibold mb-5 text-sm tracking-wide">
+              Enterprise Focused
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.enterprise.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-[#00d4ff] text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-400 hover:text-[#00d4ff] text-sm">
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
           </div>
-
-          {/* Our Solutions */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Our Solutions</h3>
-            <ul className="space-y-2">
-              {footerLinks.solutions.map((link) => (
+            <h3 className="text-white font-semibold mb-5 text-sm tracking-wide">
+              Staffing Solutions
+            </h3>
+            <ul className="space-y-3">
+              {footerLinks.staffing.map((link) => (
                 <li key={link.name}>
-                  <Link
-                    href={link.href}
-                    className="text-gray-400 hover:text-[#00d4ff] text-sm"
-                  >
+                  <Link href={link.href} className="text-gray-400 hover:text-[#00d4ff] text-sm">
                     {link.name}
                   </Link>
                 </li>
@@ -83,9 +75,12 @@ export function Footer() {
           {/* Get In Touch */}
           <div>
             <h3 className="text-white font-semibold mb-4">Get In touch.</h3>
-            <button className="bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4">
-              Contact
-            </button>
+            <Link
+              href="/contact"
+              className="inline-block bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4"
+            >
+              Contact Us
+            </Link>
             <div className="space-y-3">
               <div className="flex items-start gap-2">
                 <Mail className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -99,9 +94,11 @@ export function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <p className="text-gray-400 text-sm">
-                  2860 South Circle Dr, Suite 237,
+                  6760 Corporate Dr, Suite 100
                   <br />
-                  Colorado Springs, CO, 80906.
+                  PMB #111
+                  <br />
+                  Colorado Springs, CO 80919, USA
                 </p>
               </div>
             </div>
