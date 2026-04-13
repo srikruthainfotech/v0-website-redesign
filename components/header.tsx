@@ -70,7 +70,7 @@ export function Header() {
 
       {/* Main navigation */}
       <nav className="bg-white border-b border-gray-100 relative">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-7xl mx-auto pl-2 pr-4 pl-0 md:pl-2">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
