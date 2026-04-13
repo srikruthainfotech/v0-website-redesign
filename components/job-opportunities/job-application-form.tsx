@@ -44,11 +44,11 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
   return (
     <form onSubmit={handleSubmit} className="space-y-3">
       <h3 className="text-base font-semibold text-gray-900 mb-3">Apply For This Job</h3>
-      
+
       {/* Name Field */}
       <div className="flex items-center">
-        <label className="w-28 text-sm text-red-600 flex-shrink-0">
-          Name<span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+          Name <span className="text-red-500">*</span>
         </label>
         <input
           type="text"
@@ -63,8 +63,8 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
 
       {/* Email Field */}
       <div className="flex items-center">
-        <label className="w-28 text-sm text-red-600 flex-shrink-0">
-          Email<span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+          Email <span className="text-red-500">*</span>
         </label>
         <input
           type="email"
@@ -79,8 +79,8 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
 
       {/* Phone Field */}
       <div className="flex items-center">
-        <label className="w-28 text-sm text-red-600 flex-shrink-0">
-          Phone<span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+          Phone <span className="text-red-500">*</span>
         </label>
         <div className="flex-1 flex items-center border border-gray-300 rounded-sm">
           <span className="px-2 py-1.5 bg-gray-50 border-r border-gray-300 text-sm text-gray-600 flex items-center gap-1">
@@ -101,22 +101,22 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
 
       {/* Cover Letter Field */}
       <div className="flex items-start">
-        <label className="w-28 text-sm text-red-600 flex-shrink-0 pt-1.5">
-          Cover Letter<span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+          Phone <span className="text-red-500">*</span>
         </label>
         <textarea
           name="coverLetter"
           value={formData.coverLetter}
           onChange={handleInputChange}
-          rows={4}
+          rows={3}
           className="flex-1 px-3 py-1.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-blue-500 resize-y"
         />
       </div>
 
       {/* Attach Resume Field */}
       <div className="flex items-center">
-        <label className="w-28 text-sm text-red-600 flex-shrink-0">
-          Attach Resume<span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
+          Attach Resume <span className="text-red-500">*</span>
         </label>
         <div className="flex-1 flex items-center gap-2">
           <span className="text-sm text-blue-600 flex-1 truncate">
@@ -145,14 +145,14 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-1.5 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-sm"
+            className="px-3 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-sm"
           >
             Close
           </button>
         )}
         <button
           type="submit"
-          className="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white text-sm rounded-sm"
+          className="px-3 py-1 text-xs bg-green-500 hover:bg-green-600 text-white text-sm rounded-sm"
         >
           Submit
         </button>
