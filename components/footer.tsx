@@ -5,7 +5,7 @@ const footerLinks = {
   company: [
     { name: "Employee Referral", href: "/company/talent-referrals" },
     { name: "Careers", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Contact", href: "/contact" },
   ],
   services: [
     { name: "Custom App Development", href: "#" },
@@ -83,9 +83,12 @@ export function Footer() {
           {/* Get In Touch */}
           <div>
             <h3 className="text-white font-semibold mb-4">Get In touch.</h3>
-            <button className="bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4">
-              Contact
-            </button>
+            <Link 
+              href="/contact"
+              className="inline-block bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4"
+            >
+              Contact Us
+            </Link>
             <div className="space-y-3">
               <div className="flex items-start gap-2">
                 <Mail className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
@@ -99,9 +102,11 @@ export function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <p className="text-gray-400 text-sm">
-                  2860 South Circle Dr, Suite 237,
+                  6760 Corporate Dr, Suite 100
                   <br />
-                  Colorado Springs, CO, 80906.
+                  PMB #111
+                  <br />
+                  Colorado Springs, CO 80919, USA
                 </p>
               </div>
             </div>
