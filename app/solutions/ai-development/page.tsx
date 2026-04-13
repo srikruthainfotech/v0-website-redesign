@@ -175,12 +175,6 @@ export default function AIDevelopmentPage() {
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
             Looking for end-to-end AI product development? Contact us today to turn your vision into reality. Our expert team will ensure a seamless process from concept to deployment, delivering innovative solutions tailored to your needs.
           </p>
-          <Link
-            href="#"
-            className="inline-block bg-[#00c853] hover:bg-[#00b248] text-white px-6 py-3 rounded-md font-medium transition-colors"
-          >
-            Request Free Consultation
-          </Link>
         </div>
       </section>
 
