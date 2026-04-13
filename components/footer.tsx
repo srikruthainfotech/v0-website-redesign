@@ -77,7 +77,7 @@ export function Footer() {
             <h3 className="text-white font-semibold mb-4">Get In touch.</h3>
             <Link
               href="/contact"
-              className="inline-block bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4"
+              className="inline-block bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium transition-colors mb-4"
             >
               Contact Us
             </Link>
