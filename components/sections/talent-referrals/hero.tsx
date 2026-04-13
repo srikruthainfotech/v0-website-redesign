@@ -13,8 +13,8 @@ export function TalentReferralsHero() {
           priority
         />
         {/* Centered heading */}
-        <div className="absolute inset-0 flex items-center justify-start px-4 md:px-32">
-          <h1 className="text-2.5xl md:text-3xl lg:text-4xl font-bold text-white">
+        <div className="absolute inset-0 flex items-center justify-start px-4 md:px-44">
+          <h1 className="text-2.75xl md:text-3xl lg:text-4xl font-bold text-white">
             Talent Referrals
           </h1>
         </div>
