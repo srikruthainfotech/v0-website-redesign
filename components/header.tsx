@@ -10,14 +10,11 @@ const solutionsMenu = {
     { name: "AI Development", href: "/solutions/ai-development" },
     { name: "Custom App Development", href: "#" },
     { name: "Progressive Web App Development", href: "#" },
-    { name: "UI/UX Design", href: "#" },
-    { name: "Machine Learning", href: "#" },
     { name: "QA Testing & Automation", href: "#" },
   ],
   enterpriseFocused: [
     { name: "Backup Solutions", href: "#" },
     { name: "Oracle Cloud Applications", href: "#" },
-    { name: "Cybersecurity", href: "#" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffingSolutions: [

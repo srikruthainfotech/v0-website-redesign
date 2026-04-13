@@ -8,21 +8,21 @@ import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
 
 const officeLocations = [
   {
-    title: "Mailing Address",
-    subtitle: "(For Correspondence Only)",
-    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919, USA"],
-    icon: MapPin,
-  },
-  {
     title: "USA Headquarters",
     address: ["2860 South Circle Dr, Suite 237", "Colorado Springs, CO 80906, USA"],
     icon: Building2,
   },
   {
     title: "India Office",
-    address: ["Flat 104, Sai Green Meadows", "Nallagandla", "Telangana 500046"],
+    address: ["Flat 104, Sai Green Meadows", "Nallagandla", "Telangana 500046", "India"],
     icon: Building2,
-  }
+  },
+  {
+    title: "Mailing Address",
+    subtitle: "(For Correspondence Only)",
+    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919, USA"],
+    icon: MapPin,
+  },
 ]
 
 export default function ContactPage() {
@@ -266,7 +266,7 @@ export default function ContactPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 bg-[#00d4ff] hover:bg-[#00b8e0] text-white font-semibold px-8 py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 bg-[#0066ff] hover:bg-[#0052cc] text-white font-medium px-8 py-3 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? (
                       <>
