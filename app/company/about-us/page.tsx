@@ -61,10 +61,10 @@ export default function AboutUsPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Header />
-      
+
       <main className="flex-grow">
         {/* Hero Section with Background Image */}
-        <section 
+        <section
           className="relative min-h-[200px] md:min-h-[280px] flex items-center"
           style={{
             backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/background-image-%20top-01%20-7hyPuLnm3jG3akkqH8VOkUntQxzoRI.png')`,
@@ -72,8 +72,12 @@ export default function AboutUsPage() {
             backgroundPosition: 'center',
           }}
         >
-          <div className="max-w-7xl mx-auto px-4 md:px-8 w-full">
-            <h1 className="text-3xl md:text-5xl font-bold text-white">About Us</h1>
+          <div className="max-w-7xl mx-auto px-4 md:px-8 w-full h-full flex items-center">
+            <div className="w-full md:w-1/2 flex items-center pl-22 md:pl-30">
+              <h1 className="text-3xl md:text-5xl font-bold text-white">
+                About Us
+              </h1>
+            </div>
           </div>
         </section>
 
@@ -148,7 +152,7 @@ export default function AboutUsPage() {
         </section>
 
         {/* Core Values Section */}
-        <section 
+        <section
           className="py-16 md:py-24 px-4 md:px-8 relative"
           style={{
             backgroundImage: `url('https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AI-industry-background-image-bx3xHVjTKs2sVDtwjqkhlt9dylFuK9.jpg')`,
