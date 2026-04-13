@@ -9,8 +9,6 @@ const solutionsMenu = {
   topSolutions: [
     { name: "AI Development", href: "/solutions/ai-development" },
     { name: "Custom App Development", href: "#" },
-    { name: "ERP Development", href: "#" },
-    { name: "LMS Development", href: "#" },
     { name: "Progressive Web App Development", href: "#" },
     { name: "UI/UX Design", href: "#" },
     { name: "Machine Learning", href: "#" },
@@ -18,10 +16,8 @@ const solutionsMenu = {
   ],
   enterpriseFocused: [
     { name: "Backup Solutions", href: "#" },
-    { name: "Big Data", href: "#" },
     { name: "Oracle Cloud Applications", href: "#" },
     { name: "Cybersecurity", href: "#" },
-    { name: "NetSol", href: "#" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffingSolutions: [
