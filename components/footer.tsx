@@ -83,7 +83,7 @@ export function Footer() {
           {/* Get In Touch */}
           <div>
             <h3 className="text-white font-semibold mb-4">Get In touch.</h3>
-            <button className="bg-[#00c853] hover:bg-[#00b248] text-white px-4 py-2 rounded text-sm font-medium mb-4">
+            <button className="bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-4 py-2 rounded-md text-sm font-medium transition-colors mb-4">
               Contact
             </button>
             <div className="space-y-3">

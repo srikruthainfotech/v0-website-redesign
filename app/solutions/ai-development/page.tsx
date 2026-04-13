@@ -146,13 +146,13 @@ export default function AIDevelopmentPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {aiServices.map((service) => (
-              <div key={service.title} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div key={service.title} className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
                 <div className="h-40 bg-gradient-to-br from-gray-700 to-gray-900 relative">
                   <div className="h-40 relative">
                     <img
                       src={service.image}
                       alt={service.title}
-                      className="w-full h-full object-cover rounded-t-lg"
+                      className="w-full h-full object-cover"
                     />
                   </div>
                 </div>
@@ -167,7 +167,7 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-[#1a237e]">
+      <section className="py-20 md:py-24 bg-[#1a237e] flex items-center justify-center text-center">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Kickstart Your Custom AI Solution Faster
@@ -175,12 +175,6 @@ export default function AIDevelopmentPage() {
           <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
             Looking for end-to-end AI product development? Contact us today to turn your vision into reality. Our expert team will ensure a seamless process from concept to deployment, delivering innovative solutions tailored to your needs.
           </p>
-          <Link
-            href="#"
-            className="inline-block bg-[#00c853] hover:bg-[#00b248] text-white px-6 py-3 rounded-md font-medium transition-colors"
-          >
-            Request Free Consultation
-          </Link>
         </div>
       </section>
 
