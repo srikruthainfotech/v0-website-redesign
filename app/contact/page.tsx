@@ -155,37 +155,36 @@ export default function ContactPage() {
         </section>
 
         {/* Contact Form Section */}
-        <section className="py-16 md:py-20 px-4 md:px-8">
-          <div className="max-w-3xl mx-auto">
+        <section className="bg-white py-16 md:py-20 px-4 md:px-8">
+          <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Get In Touch With Us</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] mb-2">Get In Touch With Us</h2>
               <p className="text-gray-600">
                 Fill out the form below and our team will get back to you within 24 hours.
               </p>
             </div>
 
             {submitted ? (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
+              <div className="bg-[#f5f7fa] border border-gray-200 rounded-md p-8 text-center shadow-sm">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 hover:bg-[#1a7fe0]" />
+                  <Send className="w-8 text-green-600" />
                 </div>
-                <p className="hover:bg-[#1a7fe0]">
+                <p className="text-[#0a1628] font-medium">
                   Thank you for reaching out. We&apos;ll get back to you soon.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 hover:bg-[#1a7fe0] hover:underline font-medium"
+                  className="mt-6 text-[#0a1628] hover:underline font-medium"
                 >
                   Send another message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                      Your Name <span className="text-red-500">*</span>
-                    </label>
+              <form onSubmit={handleSubmit} className="bg-[#f5f7fa] border border-gray-200 rounded-md p-6 md:p-8 shadow-sm">
+                {/* Personal Information */}
+                <div className="mb-6">
+                  <h3 className="text-[#0a1628] font-medium mb-4">Personal Information</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
                     <input
                       type="text"
                       id="name"
@@ -194,13 +193,8 @@ export default function ContactPage() {
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Enter Your Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                      Email Address <span className="text-red-500">*</span>
-                    </label>
                     <input
                       type="email"
                       id="email"
@@ -209,16 +203,15 @@ export default function ContactPage() {
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="Enter Your Email ID"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
-                      Company Name
-                    </label>
+                {/* Inquiry Details */}
+                <div className="mb-6">
+                  <h3 className="text-[#0a1628] font-medium mb-4">Inquiry Details</h3>
+                  <div className="grid md:grid-cols-2 gap-4">
                     <input
                       type="text"
                       id="company"
@@ -226,13 +219,8 @@ export default function ContactPage() {
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Enter Your Company Name"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent outline-none transition-all"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
                     />
-                  </div>
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                      Subject <span className="text-red-500">*</span>
-                    </label>
                     <input
                       type="text"
                       id="subject"
@@ -240,16 +228,15 @@ export default function ContactPage() {
                       required
                       value={formData.subject}
                       onChange={handleChange}
-                      placeholder="Subject"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent outline-none transition-all"
+                      placeholder="Enter Subject"
+                      className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Your Message <span className="text-red-500">*</span>
-                  </label>
+                {/* Message */}
+                <div className="mb-6">
+                  <h3 className="text-[#0a1628] font-medium mb-4">Your Message</h3>
                   <textarea
                     id="message"
                     name="message"
@@ -258,32 +245,18 @@ export default function ContactPage() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Enter Your Message"
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent outline-none transition-all resize-none"
+                    className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                   />
                 </div>
 
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 bg-[#0066ff] hover:bg-[#0052cc] text-white font-medium px-8 py-3 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isSubmitting ? (
-                      <>
-                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                        </svg>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="w-5 h-5" />
-                        Send Message
-                      </>
-                    )}
-                  </button>
-                </div>
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#1f2a37] hover:bg-[#111827] text-white font-medium py-2.5 px-6 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </button>
               </form>
             )}
           </div>
