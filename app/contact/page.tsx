@@ -166,15 +166,15 @@ export default function ContactPage() {
 
             {submitted ? (
               <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 hover:bg-[#1a7fe0]" />
+                <div className="w-16 h-16 bg-[#1e90ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Send className="w-8 text-[#1e90ff]" />
                 </div>
-                <p className="hover:bg-[#1a7fe0]">
+                <p className="text-gray-800">
                   Thank you for reaching out. We&apos;ll get back to you soon.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 hover:bg-[#1a7fe0] hover:underline font-medium"
+                  className="mt-6 text-[#1e90ff] hover:underline font-medium"
                 >
                   Send another message
                 </button>
