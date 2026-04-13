@@ -65,8 +65,8 @@ export default function IndustriesPage() {
             backgroundPosition: 'center',
           }}
         >
-          <div className="max-w-6xl mx-auto w-full flex justify-center md:justify-start">
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center md:text-left md:ml-20 lg:ml-32">
+          <div className="max-w-6xl mx-auto w-full flex justify-start">
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-left md:ml-20 lg:ml-32">
               Industries
             </h1>
           </div>
