@@ -41,18 +41,17 @@ export function Header() {
 
   return (
     <header className="w-full">
-      {/* Top bar with email and logo aligned horizontally */}
-      <div className="bg-[#0a1628] text-white py-3 px-4 md:px-8">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
-          {/* Left side: Email and Logo aligned horizontally */}
-          <div className="flex items-center gap-4 sm:gap-6">
+      {/* Top bar with email and logo stacked vertically */}
+      <div className="bg-[#0a1628] text-white py-4 px-4 md:px-8">
+        <div className="max-w-7xl mx-auto flex justify-between items-start">
+          {/* Left side: Email and Logo stacked vertically */}
+          <div className="flex flex-col items-start gap-3">
             <div className="flex items-center gap-2">
               <Mail className="w-4 h-4 flex-shrink-0" />
               <a href="mailto:info@immensebrains.com" className="hover:text-[#00d4ff] text-xs sm:text-sm whitespace-nowrap">
                 info@immensebrains.com
               </a>
             </div>
-            <div className="h-6 w-px bg-white/30 hidden sm:block" />
             <Link href="/" className="flex-shrink-0">
               <Image
                 src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/immense-brains-logo-01-M78OjHE7FsmPJIblZLuT4qqU6GMLZm.png"
