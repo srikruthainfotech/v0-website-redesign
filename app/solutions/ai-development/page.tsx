@@ -167,7 +167,7 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-12 md:py-16 bg-[#1a237e]">
+      <section className="py-20 md:py-24 bg-[#1a237e] flex items-center justify-center text-center">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Kickstart Your Custom AI Solution Faster
