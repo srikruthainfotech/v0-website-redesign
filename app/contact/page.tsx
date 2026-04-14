@@ -165,26 +165,29 @@ export default function ContactPage() {
             </div>
 
             {submitted ? (
-              <div className="bg-green-50 border border-green-200 rounded-xl p-8 text-center">
-
+              <div className="bg-[#0a1628] rounded-xl p-10 text-center">
                 {/* Icon */}
-                <div className="w-16 h-16 bg-[#1e90ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 text-[#1e90ff]" />
+                <div className="w-16 h-16 bg-[#00d4ff]/20 rounded-full flex items-center justify-center mx-auto mb-5">
+                  <Send className="w-8 h-8 text-[#00d4ff]" />
                 </div>
 
+                {/* Title */}
+                <h3 className="text-white text-xl font-semibold mb-2">
+                  Message Sent Successfully!
+                </h3>
+
                 {/* Message */}
-                <p className="text-gray-800 font-medium">
+                <p className="text-gray-400 mb-8">
                   Thank you for reaching out. We&apos;ll get back to you soon.
                 </p>
 
                 {/* Action */}
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 inline-flex items-center gap-2 bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-5 py-2 rounded-md text-sm font-medium transition"
+                  className="inline-flex items-center gap-2 bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium transition-colors"
                 >
                   Send another message
                 </button>
-
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
