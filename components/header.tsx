@@ -13,7 +13,6 @@ const solutionsMenu = {
     { name: "QA Testing & Automation", href: "#" },
   ],
   enterpriseFocused: [
-    { name: "Backup Solutions", href: "#" },
     { name: "Oracle Cloud Applications", href: "#" },
     { name: "Digital Transformation", href: "#" },
   ],

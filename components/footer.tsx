@@ -11,9 +11,7 @@ const footerLinks = {
     { name: "QA Testing & Automation", href: "#" },
   ],
   enterprise: [
-    { name: "Backup Solutions", href: "#" },
     { name: "Oracle Cloud Applications", href: "#" },
-    { name: "Cybersecurity", href: "#" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffing: [
