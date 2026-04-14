@@ -188,7 +188,7 @@ export default function AIDevelopmentPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 bg-[#00d4ff] hover:bg-[#00b8e0] text-[#0a1628] font-semibold px-6 py-3 rounded-md transition-colors"
+            className="inline-flex items-center gap-2 bg-[#0066ff] hover:bg-[#0052cc] text-white font-semibold px-6 py-3 rounded-md transition-colors"
           >
             Explore Now
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
@@ -197,10 +197,10 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-10 md:py-12 bg-gradient-to-br from-[#0a1628] to-[#1a2d4a]">
+      <section className="py-10 md:py-12 bg-[#f0f7ff]">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           {/* Description */}
-          <p className="text-gray-200 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
+          <p className="text-gray-700 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
             As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
             We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
             From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
@@ -208,8 +208,8 @@ export default function AIDevelopmentPage() {
           </p>
 
           {/* Address */}
-          <div className="mt-6 flex items-start gap-3 text-gray-300 text-base md:text-lg">
-            <span className="text-[#00d4ff] text-xl leading-none">●</span>
+          <div className="mt-6 flex items-start gap-3 text-gray-600 text-base md:text-lg">
+            <span className="text-[#0066ff] text-xl leading-none">●</span>
             <span className="leading-relaxed">
               2860 South Circle Dr, Suite 237<br />
               Colorado Springs, CO 80906<br />
