@@ -6,14 +6,11 @@ const footerLinks = {
     { name: "AI Development", href: "#" },
     { name: "Custom App Development", href: "#" },
     { name: "Progressive Web App Development", href: "#" },
-    { name: "UI/UX Design", href: "#" },
-    { name: "Machine Learning", href: "#" },
     { name: "QA Testing & Automation", href: "#" },
   ],
   enterprise: [
     { name: "Backup Solutions", href: "#" },
     { name: "Oracle Cloud Applications", href: "#" },
-    { name: "Cybersecurity", href: "#" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffing: [
