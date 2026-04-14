@@ -169,9 +169,6 @@ export default function ContactPage() {
                 <div className="w-20 h-20 bg-[#00d4ff]/20 rounded-full flex items-center justify-center mx-auto mb-6">
                   <Send className="w-10 h-10 text-[#00d4ff]" />
                 </div>
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  Message Sent Successfully!
-                </h3>
                 <p className="text-gray-300 mb-8 max-w-md mx-auto">
                   Thank you for reaching out. Our team will review your message and get back to you within 24 hours.
                 </p>
