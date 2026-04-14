@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef } from "react"
+import PhoneInput from "react-phone-input-2"
+import "react-phone-input-2/lib/style.css"
 
 interface JobApplicationFormProps {
   onClose?: () => void
@@ -22,6 +24,10 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handlePhoneChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, phone: value }))
+  }
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -35,15 +41,14 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission
     console.log("Form submitted:", formData, fileName)
     alert("Application submitted successfully!")
     if (onClose) onClose()
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-3">
-      <h3 className="text-base font-semibold text-gray-900 mb-3">Apply For This Job</h3>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h3 className="text-base font-semibold text-gray-900 mb-4">Apply For This Job</h3>
 
       {/* Name Field */}
       <div className="flex items-center">
@@ -55,9 +60,9 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder="irm-admin"
+          placeholder="Enter your full name"
           required
-          className="flex-1 px-3 py-1.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-blue-500"
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
@@ -71,45 +76,50 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
           name="email"
           value={formData.email}
           onChange={handleInputChange}
-          placeholder="sorra.ramesh100@gmail.com"
+          placeholder="Enter your email address"
           required
-          className="flex-1 px-3 py-1.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-blue-500"
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
 
-      {/* Phone Field */}
+      {/* Phone Field with react-phone-input-2 */}
       <div className="flex items-center">
         <label className="w-28 text-sm text-gray-700 flex-shrink-0">
           Phone <span className="text-red-500">*</span>
         </label>
-        <div className="flex-1 flex items-center border border-gray-300 rounded-sm">
-          <span className="px-2 py-1.5 bg-gray-50 border-r border-gray-300 text-sm text-gray-600 flex items-center gap-1">
-            <span className="inline-block w-5 h-3 bg-gradient-to-b from-orange-500 via-white to-green-600 rounded-sm"></span>
-            +91
-          </span>
-          <input
-            type="tel"
-            name="phone"
+        <div className="flex-1 phone-input-wrapper">
+          <PhoneInput
+            country="in"
             value={formData.phone}
-            onChange={handleInputChange}
-            placeholder="0123456789"
-            required
-            className="flex-1 px-3 py-1.5 text-sm focus:outline-none"
+            onChange={handlePhoneChange}
+            enableSearch={true}
+            searchPlaceholder="Search country..."
+            inputProps={{
+              name: "phone",
+              required: true,
+              placeholder: "Enter phone number",
+            }}
+            containerClass="phone-container"
+            inputClass="phone-input"
+            buttonClass="phone-button"
+            dropdownClass="phone-dropdown"
+            searchClass="phone-search"
           />
         </div>
       </div>
 
       {/* Cover Letter Field */}
       <div className="flex items-start">
-        <label className="w-28 text-sm text-gray-700 flex-shrink-0">
-          Phone <span className="text-red-500">*</span>
+        <label className="w-28 text-sm text-gray-700 flex-shrink-0 pt-2">
+          Cover Letter
         </label>
         <textarea
           name="coverLetter"
           value={formData.coverLetter}
           onChange={handleInputChange}
-          rows={3}
-          className="flex-1 px-3 py-1.5 border border-gray-300 rounded-sm text-sm focus:outline-none focus:border-blue-500 resize-y"
+          placeholder="Tell us why you're a great fit for this role..."
+          rows={4}
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-y"
         />
       </div>
 
@@ -118,8 +128,8 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
         <label className="w-28 text-sm text-gray-700 flex-shrink-0">
           Attach Resume <span className="text-red-500">*</span>
         </label>
-        <div className="flex-1 flex items-center gap-2">
-          <span className="text-sm text-blue-600 flex-1 truncate">
+        <div className="flex-1 flex items-center gap-3 px-3 py-2 border border-gray-300 rounded bg-white">
+          <span className={`text-sm flex-1 truncate ${fileName ? "text-gray-700" : "text-gray-400"}`}>
             {fileName || "No file chosen"}
           </span>
           <input
@@ -128,11 +138,12 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
             accept=".pdf,.doc,.docx"
             onChange={handleFileChange}
             className="hidden"
+            required
           />
           <button
             type="button"
             onClick={handleBrowseClick}
-            className="px-3 py-1 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs rounded-sm"
+            className="px-4 py-1.5 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs font-medium rounded transition-colors"
           >
             Browse
           </button>
@@ -140,23 +151,100 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
       </div>
 
       {/* Buttons */}
-      <div className="flex justify-end gap-2 pt-2">
+      <div className="flex justify-end gap-3 pt-3">
         {showCloseButton && onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="px-3 py-1 text-xs bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-sm"
+            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded transition-colors"
           >
             Close
           </button>
         )}
         <button
           type="submit"
-          className="px-3 py-1 text-xs bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm rounded-sm"
+          className="px-6 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded transition-colors"
         >
-          Submit
+          Submit Application
         </button>
       </div>
+
+      {/* Custom styles for react-phone-input-2 */}
+      <style jsx global>{`
+        .phone-input-wrapper .react-tel-input {
+          width: 100%;
+        }
+        
+        .phone-input-wrapper .react-tel-input .form-control {
+          width: 100%;
+          height: 38px;
+          padding-left: 48px;
+          border: 1px solid #d1d5db;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+        
+        .phone-input-wrapper .react-tel-input .form-control:focus {
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 1px #3b82f6;
+          outline: none;
+        }
+        
+        .phone-input-wrapper .react-tel-input .flag-dropdown {
+          border: 1px solid #d1d5db;
+          border-right: none;
+          border-radius: 4px 0 0 4px;
+          background-color: #f9fafb;
+        }
+        
+        .phone-input-wrapper .react-tel-input .flag-dropdown:hover,
+        .phone-input-wrapper .react-tel-input .flag-dropdown.open {
+          background-color: #f3f4f6;
+        }
+        
+        .phone-input-wrapper .react-tel-input .selected-flag {
+          padding: 0 8px 0 10px;
+          width: 46px;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list {
+          width: 280px;
+          max-height: 250px;
+          border-radius: 4px;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+          margin-top: 2px;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .search {
+          padding: 10px;
+          background-color: #fff;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .search-box {
+          width: 100%;
+          padding: 8px 10px;
+          border: 1px solid #d1d5db;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .search-box:focus {
+          border-color: #3b82f6;
+          outline: none;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .country {
+          padding: 8px 10px;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .country:hover {
+          background-color: #f3f4f6;
+        }
+        
+        .phone-input-wrapper .react-tel-input .country-list .country.highlight {
+          background-color: #eff6ff;
+        }
+      `}</style>
     </form>
   )
 }
