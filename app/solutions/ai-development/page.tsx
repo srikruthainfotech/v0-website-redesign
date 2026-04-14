@@ -191,7 +191,7 @@ export default function AIDevelopmentPage() {
       <section className="py-16 md:py-24 bg-[#d9f99d]">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           {/* Description */}
-          <p className="text-gray-800 text-lg md:text-xl leading-relaxed md:leading-8 text-center">
+          <p className="text-gray-800 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
             As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
             We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
             From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
@@ -199,10 +199,11 @@ export default function AIDevelopmentPage() {
           </p>
 
           {/* Address */}
-          <div className="mt-10 flex items-center justify-center gap-3 text-gray-700 text-base md:text-lg">
+          <div className="mt-10 flex items-start gap-3 text-gray-700 text-base md:text-lg">
             <span className="text-gray-800 text-xl leading-none">●</span>
             <span className="leading-relaxed">
-              3880 South Circle Dr, Suite 237, Colorado Springs, CO, 80906
+              3880 South Circle Dr, Suite 237,<br />
+              Colorado Springs, CO, 80906
             </span>
           </div>
         </div>
