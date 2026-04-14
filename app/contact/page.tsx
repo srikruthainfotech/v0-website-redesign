@@ -174,7 +174,7 @@ export default function ContactPage() {
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 text-[#0a1628] hover:underline font-medium"
+                  className="mt-6 bg-[#0066ff] hover:bg-[#0052cc] text-white font-medium py-2.5 px-6 rounded-md transition-colors"
                 >
                   Send another message
                 </button>
