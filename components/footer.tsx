@@ -106,7 +106,7 @@ export function Footer() {
               <p className="text-gray-400 text-sm mb-2">Follow us.</p>
               <div className="flex gap-2">
                 <a
-                  href="https://www.linkedin.com/company/immensebrains"
+                  href="https://www.linkedin.com/company/immensebrains/posts"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-[#00d4ff] transition-colors"
