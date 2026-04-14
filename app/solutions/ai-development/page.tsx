@@ -194,7 +194,7 @@ export default function AIDevelopmentPage() {
             As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses. We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact. From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver measurable value and long-term success.
           </p>
           <div className="mt-8 flex items-start gap-2 text-gray-700 text-sm">
-            <span className="text-green-700">●</span>
+            <span className="hover:bg-[#0052cc]">●</span>
             <span>3880 South Circle Dr, Suite 237,<br />Colorado Springs, CO, 80906</span>
           </div>
         </div>
