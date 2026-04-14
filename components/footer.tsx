@@ -4,7 +4,7 @@ import { Mail, MapPin } from "lucide-react"
 const footerLinks = {
   topSolutions: [
     { name: "AI Development", href: "#" },
-    { name: "Custom App Development", href: "#" },
+    { name: "Custom App Development", href: "/solutions/custom-app-development" },
     { name: "Progressive Web App Development", href: "#" },
     { name: "UI/UX Design", href: "#" },
     { name: "Machine Learning", href: "#" },
