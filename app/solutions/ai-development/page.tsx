@@ -167,8 +167,17 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-24 bg-[#1a237e] flex items-center justify-center text-center">
-        <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
+      <section className="relative py-20 md:py-24 flex items-center justify-center text-center">
+        <div className="absolute inset-0">
+          <Image
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AI-industry-background-image-pN67iOrPeQHd0oEDt3UsI1I0lIo7Sc.jpg"
+            alt="AI Industry Background"
+            fill
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/60" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Kickstart Your Custom AI Solution Faster
           </h2>
