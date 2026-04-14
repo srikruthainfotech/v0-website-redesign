@@ -206,16 +206,6 @@ export default function AIDevelopmentPage() {
             From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
             measurable value and long-term success.
           </p>
-
-          {/* Address */}
-          <div className="mt-6 flex items-start gap-3 text-gray-700 text-base md:text-lg">
-            <span className="text-[#0a1628] text-xl leading-none mt-1">●</span>
-            <span className="leading-relaxed">
-              2860 South Circle Dr, Suite 237<br />
-              Colorado Springs, CO 80906<br />
-              United States
-            </span>
-          </div>
         </div>
       </section>
       {/* AI Capabilities Section */}
