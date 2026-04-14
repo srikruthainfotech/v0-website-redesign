@@ -188,18 +188,29 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-12 md:py-16 bg-[#d9f99d]">
+      {/* Company Description */}
+      <section className="py-14 md:py-20 bg-[#d9f99d]">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <p className="text-gray-800 leading-relaxed text-center md:text-left">
-            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses. We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact. From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver measurable value and long-term success.
+
+          {/* Description */}
+          <p className="text-gray-800 text-base md:text-lg leading-relaxed md:leading-loose text-center md:text-left">
+            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
+            We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
+            From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
+            measurable value and long-term success.
           </p>
-          <div className="mt-8 flex items-start gap-2 text-gray-700 text-sm">
-            <span className="hover:bg-[#0052cc]">●</span>
-            <span>3880 South Circle Dr, Suite 237,<br />Colorado Springs, CO, 80906</span>
+
+          {/* Address */}
+          <div className="mt-8 flex items-start gap-3 text-gray-700 text-sm md:text-base">
+            <span className="text-gray-800 text-lg leading-none">●</span>
+            <span className="leading-relaxed">
+              3880 South Circle Dr, Suite 237,<br />
+              Colorado Springs, CO, 80906
+            </span>
           </div>
+
         </div>
       </section>
-
       {/* AI Capabilities Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
