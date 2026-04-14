@@ -147,14 +147,15 @@ export default function AIDevelopmentPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {aiServices.map((service) => (
               <div key={service.title} className="bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-40 bg-gradient-to-br from-gray-700 to-gray-900 relative">
-                  <div className="h-40 relative">
-                    <img
-                      src={service.image}
-                      alt={service.title}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+                <div className="h-48 relative">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    quality={90}
+                  />
                 </div>
                 <div className="p-5">
                   <h3 className="font-semibold text-gray-900 mb-2">{service.title}</h3>
