@@ -39,7 +39,7 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
 
       {/* Confirmation Dialog */}
       {showConfirmDialog && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+        <div className="fixed inset-0 z-[60] flex items-start justify-center pt-20">
           <div className="fixed inset-0 bg-black/30" onClick={handleCancelClose} />
           <div className="relative bg-white rounded-lg shadow-xl p-6 max-w-sm mx-4 z-[61]">
             <h4 className="text-lg font-semibold text-gray-900 mb-2">Confirmation</h4>
