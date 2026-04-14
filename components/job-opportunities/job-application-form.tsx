@@ -6,10 +6,11 @@ import "react-phone-input-2/lib/style.css"
 
 interface JobApplicationFormProps {
   onClose?: () => void
+  onCloseAttempt?: () => void
   showCloseButton?: boolean
 }
 
-export function JobApplicationForm({ onClose, showCloseButton = false }: JobApplicationFormProps) {
+export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = false }: JobApplicationFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -43,6 +44,17 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
     e.preventDefault()
     console.log("Form submitted:", formData, fileName)
     alert("Application submitted successfully!")
+    // Clear form fields after successful submission
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      coverLetter: "",
+    })
+    setFileName(null)
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""
+    }
     if (onClose) onClose()
   }
 
@@ -152,10 +164,10 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
 
       {/* Buttons */}
       <div className="flex justify-end gap-3 pt-3">
-        {showCloseButton && onClose && (
+        {showCloseButton && (onCloseAttempt || onClose) && (
           <button
             type="button"
-            onClick={onClose}
+            onClick={onCloseAttempt || onClose}
             className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded transition-colors"
           >
             Close
