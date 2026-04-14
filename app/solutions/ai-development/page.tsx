@@ -190,7 +190,7 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-16 md:py-24 bg-[#e0f2fe]">
+      <section className="py-16 md:py-24 bg-[#faf8f5]">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           {/* Description */}
           <p className="text-gray-800 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
