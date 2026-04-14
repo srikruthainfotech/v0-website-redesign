@@ -191,14 +191,14 @@ export default function AIDevelopmentPage() {
             className="inline-flex items-center gap-2 bg-[#0066ff] hover:bg-[#0052cc] text-white font-semibold px-6 py-3 rounded-md transition-colors"
           >
             Explore Now
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
           </Link>
         </div>
       </section>
 
       {/* Company Description */}
-      <section className="py-6 md:py-8 bg-[#faf8f5]">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
+      <section className="py-6 md:py-8 bg-[#f4f8fc]">
+        <div className="max-w-4xl ml-4 md:ml-32 mr-auto px-4">
           {/* Description */}
           <p className="text-gray-700 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
             As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
@@ -209,7 +209,7 @@ export default function AIDevelopmentPage() {
 
           {/* Address */}
           <div className="mt-6 flex items-start gap-3 text-gray-700 text-base md:text-lg">
-            <span className="text-[#0a1628] text-lg leading-6 mr-1">●</span>
+            <span className="text-[#0a1628] text-xl leading-none mt-1">●</span>
             <span className="leading-relaxed">
               2860 South Circle Dr, Suite 237<br />
               Colorado Springs, CO 80906<br />
