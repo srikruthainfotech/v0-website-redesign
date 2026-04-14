@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function ExperienceSection() {
   return (
@@ -15,10 +16,10 @@ export function ExperienceSection() {
         <p className="text-gray-400 mt-6 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
           Everything melancholy uncommonly but solicitude inhabiting projection off. Connection stimulated estimating excellence an to impression. lasted by coming properly marked so should. brandy letters it amongst herself dearest an windows by. Wooded ladies she basket season.
         </p>
-        <button className="mt-8 bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
-          Explore More
+        <Link href="/contact" className="mt-8 bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
+          Explore Now
           <ArrowRight className="w-4 h-4" />
-        </button>
+        </Link>
       </div>
     </section>
   )
