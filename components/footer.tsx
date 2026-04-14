@@ -94,11 +94,9 @@ export function Footer() {
               <div className="flex items-start gap-2">
                 <MapPin className="w-4 h-4 text-gray-400 mt-0.5 flex-shrink-0" />
                 <p className="text-gray-400 text-sm">
-                  6760 Corporate Dr, Suite 100
+                  2860 South Circle Dr, Suite 237
                   <br />
-                  PMB #111
-                  <br />
-                  Colorado Springs, CO 80919, USA
+                  Colorado Springs, CO 80906, USA
                 </p>
               </div>
             </div>
