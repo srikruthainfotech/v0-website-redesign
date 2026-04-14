@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import { ArrowRight } from "lucide-react"
 
 const services = [
@@ -92,10 +93,10 @@ export function ServicesSection() {
         </div>
 
         <div className="text-center mt-10">
-          <button className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
-            Explore here
+          <Link href="/contact" className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
+            Explore Now
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>
