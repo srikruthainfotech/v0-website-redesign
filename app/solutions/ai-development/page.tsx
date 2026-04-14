@@ -7,43 +7,43 @@ import { ChevronDown, FileText, Scan, Tags, Activity, Box, Shapes } from "lucide
 const aiServices = [
   {
     title: "Enterprise AI Solutions",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/enterprise-ai-solutions.jpg",
+    description: "Design and deploy enterprise-grade AI systems with scalable architectures, enabling advanced analytics, process automation, and intelligent decision-making across business workflows.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ai-enterprise-solutions-1PXHfyIiB8QBFhnyZ0pnjU2hXbRQLo.jpg",
   },
   {
     title: "AI App development",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/enterprise-ai-solutions.jpg",
+    description: "Develop AI-powered applications integrating machine learning models, APIs, and data pipelines to deliver intelligent, responsive, and production-ready solutions.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ai-app-development-nglBSqXIeCZ3Xl4ByIT2hwc59yGyHo.jpg",
   },
   {
     title: "AI proof of concept (PoC)",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/ai-model-training-World.jpg",
+    description: "Build rapid AI prototypes to validate model feasibility, data readiness, and performance benchmarks before full-scale implementation.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ai-proof-concept-beNlOEa5PToIFEQKFrTFQxAkbff9Iz.jpg",
   },
   {
     title: "AI model training",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/ai-model-training-World.jpg",
+    description: "Train and optimize machine learning and deep learning models using structured and unstructured data, ensuring high accuracy, generalization, and performance.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ai-model-training-02-CKj9DmAqacPtaAaZOChQ1FrYzucjHw.webp",
   },
   {
     title: "Post-launch support",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/enterprise-ai-solutions.jpg",
+    description: "Provide continuous monitoring, model retraining, performance tuning, and system maintenance to ensure reliability and long-term scalability.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/post-launch-support-i1D3WVzp3STVcYYROXCjzpKo9L12Nl.jpg",
   },
   {
     title: "Edge AI setup",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/enterprise-ai-solutions.jpg",
+    description: "Deploy AI models on edge devices for low-latency inference, real-time processing, and efficient on-device computation.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/edge-ai-02-DAMn4HYmvaekftVU8szWyGz1Kh7Ilh.jpg",
   },
   {
     title: "AI Accelerators",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/ai-model-training-World.jpg",
+    description: "Leverage pre-built AI frameworks, reusable components, and optimized pipelines to accelerate development cycles and reduce engineering overhead.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ai.accelarates-02-k1UC6vKsYzJGTIl38EHiUXAflZHSEf.jpg",
   },
   {
     title: "MLOps",
-    description: "Our business is people. We discover, develop, and transform the leaders of today and tomorrow through our diverse and experienced network of advisors.",
-    image: "/services/images/ai-model-training-World.jpg",
+    description: "Implement end-to-end MLOps pipelines for model versioning, CI/CD, deployment automation, monitoring, and lifecycle management.",
+    image: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/mlops-02-kAsB9ESm33PrSIWkcCA0RQS69Wfqhf.webp",
   },
 ]
 
@@ -188,18 +188,26 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-12 md:py-16 bg-[#d9f99d]">
-        <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <p className="text-gray-800 leading-relaxed text-center md:text-left">
-            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses. We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact. From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver measurable value and long-term success.
+      <section className="py-16 md:py-24 bg-[#d9f99d]">
+        <div className="max-w-5xl mx-auto px-6 md:px-12">
+          {/* Description */}
+          <p className="text-gray-800 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
+            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
+            We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
+            From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
+            measurable value and long-term success.
           </p>
-          <div className="mt-8 flex items-start gap-2 text-gray-700 text-sm">
-            <span className="text-green-700">●</span>
-            <span>3880 South Circle Dr, Suite 237,<br />Colorado Springs, CO, 80906</span>
+
+          {/* Address */}
+          <div className="mt-10 flex items-start gap-3 text-gray-700 text-base md:text-lg">
+            <span className="text-gray-800 text-xl leading-none">●</span>
+            <span className="leading-relaxed">
+              3880 South Circle Dr, Suite 237,<br />
+              Colorado Springs, CO, 80906
+            </span>
           </div>
         </div>
       </section>
-
       {/* AI Capabilities Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">

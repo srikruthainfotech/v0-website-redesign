@@ -62,7 +62,7 @@ export function Header() {
 
       {/* Main navigation */}
       <nav className="bg-white border-b border-gray-100 relative">
-        <div className="max-w-7xl mx-auto pl-1 pr-4">
+        <div className="max-w-7xl mx-auto pl-0 pr-4">
           <div className="flex justify-between items-center h-16">
             {/* Logo */}
             <Link href="/" className="flex-shrink-0">
