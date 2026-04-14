@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { X, Briefcase, MapPin, Calendar } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { JobApplicationForm } from "./job-application-form"
@@ -11,24 +12,66 @@ interface QuickApplyModalProps {
 }
 
 export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) {
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+
   if (!isOpen) return null
+
+  const handleCloseAttempt = () => {
+    setShowConfirmDialog(true)
+  }
+
+  const handleConfirmClose = () => {
+    setShowConfirmDialog(false)
+    onClose()
+  }
+
+  const handleCancelClose = () => {
+    setShowConfirmDialog(false)
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto py-10">
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/50"
-        onClick={onClose}
+        onClick={handleCloseAttempt}
       />
+
+      {/* Confirmation Dialog */}
+      {showConfirmDialog && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center">
+          <div className="fixed inset-0 bg-black/30" onClick={handleCancelClose} />
+          <div className="relative bg-white rounded-lg shadow-xl p-6 max-w-sm mx-4 z-[61]">
+            <h4 className="text-lg font-semibold text-gray-900 mb-2">Confirmation</h4>
+            <p className="text-sm text-red-600 mb-6">
+              Are you sure you want to close? All the unsaved data will be lost.
+            </p>
+            <div className="flex justify-center gap-3">
+              <button
+                onClick={handleConfirmClose}
+                className="px-6 py-2 bg-[#8B4513] hover:bg-[#6b3410] text-white text-sm font-medium rounded-full transition-colors"
+              >
+                OK
+              </button>
+              <button
+                onClick={handleCancelClose}
+                className="px-6 py-2 bg-[#DEB887] hover:bg-[#c9a476] text-gray-800 text-sm font-medium rounded-full transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal */}
       <div className="relative bg-white w-full max-w-6xl mx-4 rounded-sm shadow-xl max-h-[90vh] overflow-y-auto">
         {/* Close button */}
         <button
-          onClick={onClose}
-          className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 z-10"
+          onClick={handleCloseAttempt}
+          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 hover:bg-gray-200 hover:text-gray-700 z-10 transition-colors"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </button>
 
         {/* Content */}
@@ -66,7 +109,7 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
 
           {/* Application Form */}
           <div className="border-t border-gray-200 pt-4">
-            <JobApplicationForm onClose={onClose} showCloseButton={true} />
+            <JobApplicationForm onClose={onClose} onCloseAttempt={handleCloseAttempt} showCloseButton={true} />
           </div>
         </div>
       </div>

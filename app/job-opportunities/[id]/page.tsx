@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation"
-import { Briefcase, MapPin, Calendar } from "lucide-react"
+import Link from "next/link"
+import { Briefcase, MapPin, Calendar, X } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobApplicationForm } from "@/components/job-opportunities/job-application-form"
@@ -30,9 +31,17 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
       {/* Main Content */}
       <main className="flex-1 py-8">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="bg-gray-50 rounded-sm p-5">
+          <div className="bg-gray-50 rounded-sm p-5 relative">
+            {/* Close button */}
+            <Link
+              href="/job-opportunities"
+              className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full bg-gray-200 text-gray-500 hover:bg-gray-300 hover:text-gray-700 z-10 transition-colors"
+            >
+              <X className="w-4 h-4" />
+            </Link>
+
             {/* Job Title */}
-            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4 pr-10">
               Post ID: {job.postId}. {job.title}
             </h2>
 
