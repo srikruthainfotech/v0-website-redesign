@@ -198,9 +198,9 @@ export function Header() {
                 )}
               </div>
 
-              {/* Job Opportunities */}
+              {/* Careers */}
               <Link href="/job-opportunities" className="text-gray-700 hover:text-[#00d4ff] font-medium">
-                Job Opportunities
+                Careers
               </Link>
             </div>
 
@@ -323,13 +323,13 @@ export function Header() {
                 )}
               </div>
 
-              {/* Job Opportunities */}
+              {/* Careers */}
               <Link
                 href="/job-opportunities"
                 className="block py-3 text-gray-700 font-medium border-b border-gray-100"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Job Opportunities
+                Careers
               </Link>
 
               {/* Mobile-only links from top bar */}
