@@ -49,13 +49,13 @@ export function JobCard({ job }: JobCardProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={() => setIsModalOpen(true)}
-            className="px-5 py-2 bg-[#1e90ff] hover:bg-[#1a7fe0] text-white text-sm font-medium rounded-md transition-colors"
+            className="px-5 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded-md transition-colors"
           >
             Quick Apply
           </button>
           <Link
             href={`/job-opportunities/${job.id}`}
-            className="px-5 py-2 bg-[#1e90ff] hover:bg-[#1a7fe0] text-white text-sm font-medium rounded-md transition-colors"
+            className="px-5 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded-md transition-colors"
           >
             Read More
           </Link>

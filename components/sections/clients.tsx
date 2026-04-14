@@ -54,7 +54,7 @@ export function ClientsSection() {
           </div>
         </div>
 
-        <button className="bg-[#00d4ff] hover:bg-[#00b8e6] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
+        <button className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
           Become A Partner
           <ArrowRight className="w-4 h-4" />
         </button>
