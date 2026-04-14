@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ChevronDown, FileText, Scan, Tags, Activity, Box, Shapes } from "lucide-react"
+import { ChevronDown, FileText, Scan, Tags, Activity, Box, Shapes, ArrowRight } from "lucide-react"
 
 const aiServices = [
   {
@@ -188,35 +188,15 @@ export default function AIDevelopmentPage() {
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center justify-center bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-8 py-3 rounded-lg font-medium transition-colors"
+            className="inline-flex items-center gap-2 bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-8 py-3 rounded-lg font-medium transition-colors"
           >
             Explore Now
+            <ArrowRight className="w-5 h-5" />
           </Link>
         </div>
       </section>
 
-      {/* Company Description */}
-      <section className="py-16 md:py-24 bg-[#faf8f5]">
-        <div className="max-w-5xl mx-auto px-6 md:px-12">
-          {/* Description */}
-          <p className="text-gray-800 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
-            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
-            We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
-            From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
-            measurable value and long-term success.
-          </p>
 
-          {/* Address */}
-          <div className="mt-10 flex items-start gap-3 text-gray-700 text-base md:text-lg">
-            <span className="text-gray-800 text-xl leading-none">●</span>
-            <span className="leading-relaxed">
-              2860 South Circle Dr, Suite 237<br />
-              Colorado Springs, CO 80906<br />
-              United States
-            </span>
-          </div>
-        </div>
-      </section>
       {/* AI Capabilities Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
