@@ -27,7 +27,7 @@ const companyMenu = [
   { name: "About Us", href: "/company/about-us" },
   { name: "Our Team", href: "#" },
   { name: "Talent Referrals", href: "/company/talent-referrals" },
-  { name: "Careers", href: "/job-opportunities" },
+  { name: "Careers", href: "#" },
   { name: "Contact", href: "/contact" },
 ]
 
