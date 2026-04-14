@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { CheckCircle2, ClipboardList, Lightbulb, Code2, TestTube2, Rocket, Layers, ShieldCheck, Palette, Plug, Monitor, Zap, ChevronDown } from "lucide-react"
+import { CheckCircle2, ClipboardList, Lightbulb, Code2, TestTube2, Rocket, Layers, ShieldCheck, Palette, Plug, Monitor, Zap } from "lucide-react"
 
 export const metadata = {
   title: "Custom App Development | Immense Brains",
@@ -101,24 +101,7 @@ const keyFeatures = [
   },
 ]
 
-const faqs = [
-  {
-    question: "How long does it take to build a custom application?",
-    answer: "The timeline depends on the complexity and requirements of the project. Typically, it can range from a few weeks to several months.",
-  },
-  {
-    question: "Do you provide post-launch support?",
-    answer: "Yes, we offer ongoing maintenance, updates, and support to ensure your application runs smoothly.",
-  },
-  {
-    question: "Can you upgrade existing applications?",
-    answer: "Yes, we can enhance, modernize, and scale your existing applications based on your business needs.",
-  },
-  {
-    question: "What technologies do you use?",
-    answer: "We use modern technologies such as React, Next.js, Node.js, Python, cloud platforms, and more based on project requirements.",
-  },
-]
+
 
 export default function CustomAppDevelopmentPage() {
   return (
@@ -154,12 +137,6 @@ export default function CustomAppDevelopmentPage() {
                 className="inline-flex items-center justify-center bg-[#1e90ff] hover:bg-[#1a7fe0] text-white px-8 py-3 rounded-lg font-medium transition-colors"
               >
                 Get Started
-              </Link>
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-3 rounded-lg font-medium transition-colors"
-              >
-                Contact Us
               </Link>
             </div>
           </div>
@@ -301,31 +278,6 @@ export default function CustomAppDevelopmentPage() {
                 <h3 className="font-semibold text-gray-900 mb-2 text-lg">{feature.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-3xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Frequently Asked Questions
-          </h2>
-          <div className="space-y-4">
-            {faqs.map((faq, index) => (
-              <details
-                key={index}
-                className="group bg-gray-50 rounded-lg overflow-hidden"
-              >
-                <summary className="flex items-center justify-between cursor-pointer p-5 font-medium text-gray-900 hover:bg-gray-100 transition-colors">
-                  <span>{faq.question}</span>
-                  <ChevronDown className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" />
-                </summary>
-                <div className="px-5 pb-5 text-gray-600 leading-relaxed">
-                  {faq.answer}
-                </div>
-              </details>
             ))}
           </div>
         </div>
