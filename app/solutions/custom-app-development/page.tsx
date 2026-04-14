@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { CheckCircle2, ClipboardList, Lightbulb, Code2, TestTube2, Rocket } from "lucide-react"
+import { CheckCircle2, ClipboardList, Lightbulb, Code2, TestTube2, Rocket, Layers, ShieldCheck, Palette, Plug, Monitor, Zap, ChevronDown } from "lucide-react"
 
 export const metadata = {
   title: "Custom App Development | Immense Brains",
@@ -66,6 +66,58 @@ const whyChooseUs = [
   "On-time project delivery",
   "End-to-end support",
   "Client-focused approach",
+]
+
+const keyFeatures = [
+  {
+    icon: Layers,
+    title: "Scalable Architecture",
+    description: "Designed to handle growth with flexible and scalable system design.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "High Security Standards",
+    description: "Built with strong security practices to protect data and applications.",
+  },
+  {
+    icon: Palette,
+    title: "User-Friendly Design",
+    description: "Intuitive and modern UI/UX for better user engagement.",
+  },
+  {
+    icon: Plug,
+    title: "API Integration",
+    description: "Seamless integration with third-party services and systems.",
+  },
+  {
+    icon: Monitor,
+    title: "Cross-Platform Compatibility",
+    description: "Applications that work smoothly across devices and platforms.",
+  },
+  {
+    icon: Zap,
+    title: "High Performance",
+    description: "Optimized for speed, reliability, and efficiency.",
+  },
+]
+
+const faqs = [
+  {
+    question: "How long does it take to build a custom application?",
+    answer: "The timeline depends on the complexity and requirements of the project. Typically, it can range from a few weeks to several months.",
+  },
+  {
+    question: "Do you provide post-launch support?",
+    answer: "Yes, we offer ongoing maintenance, updates, and support to ensure your application runs smoothly.",
+  },
+  {
+    question: "Can you upgrade existing applications?",
+    answer: "Yes, we can enhance, modernize, and scale your existing applications based on your business needs.",
+  },
+  {
+    question: "What technologies do you use?",
+    answer: "We use modern technologies such as React, Next.js, Node.js, Python, cloud platforms, and more based on project requirements.",
+  },
 ]
 
 export default function CustomAppDevelopmentPage() {
@@ -231,11 +283,59 @@ export default function CustomAppDevelopmentPage() {
         </div>
       </section>
 
+      {/* Key Features Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Key Features of Our Applications
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {keyFeatures.map((feature) => (
+              <div
+                key={feature.title}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <feature.icon className="w-7 h-7 text-[#1e90ff]" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{feature.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-3xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <details
+                key={index}
+                className="group bg-gray-50 rounded-lg overflow-hidden"
+              >
+                <summary className="flex items-center justify-between cursor-pointer p-5 font-medium text-gray-900 hover:bg-gray-100 transition-colors">
+                  <span>{faq.question}</span>
+                  <ChevronDown className="w-5 h-5 text-gray-500 group-open:rotate-180 transition-transform duration-200" />
+                </summary>
+                <div className="px-5 pb-5 text-gray-600 leading-relaxed">
+                  {faq.answer}
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Call to Action Section */}
       <section className="relative py-20 md:py-28">
         <div className="absolute inset-0">
           <Image
-            src="/images/cta-bg.jpg"
+            src="/images/cta-build-app-bg.jpg"
             alt="Call to Action Background"
             fill
             className="object-cover"
