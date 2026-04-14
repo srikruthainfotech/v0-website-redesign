@@ -230,44 +230,30 @@ export default function AboutUsPage() {
           </div>
         </section>
 
-        {/* Our Key Clients Section */}
+        {/* Our Key Clients & Partnerships Section */}
         <section className="py-16 md:py-20 px-4 md:px-8">
           <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
-              <div className="lg:w-1/3">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Key Clients</h2>
-                <p className="text-gray-600 leading-relaxed">
-                  We deliver exceptional technology solutions for world-class businesses in every business industry from dynamic startups and SMBs to Fortune 500 companies.
-                </p>
-              </div>
-              <div className="lg:w-2/3 relative">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Key Clients & Partnerships</h2>
+              <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                We deliver exceptional technology solutions for world-class businesses in every industry, from dynamic startups and SMBs to Fortune 500 companies. Several valuable partnerships were forged along this journey, and our research has been published on different websites.
+              </p>
+            </div>
+            <div className="flex flex-col gap-8">
+              <div className="relative">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-m2dmo0y19JLsLDP7mkEm7KNdWc6lxd.png"
                   alt="Our Key Clients - TruGlobal, Palo Alto, Neev Systems, Triumvirate, PSRTEK, ABC Supply, Cambia, FIS, Illumina, Johnson & Johnson, HCLTech"
-                  width={700}
+                  width={900}
                   height={400}
                   className="object-contain w-full h-auto"
                 />
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Partnerships Section */}
-        <section className="py-16 md:py-20 px-4 md:px-8 bg-gray-50">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex flex-col lg:flex-row gap-8 items-center">
-              <div className="lg:w-1/3">
-                <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Partnerships</h2>
-                <p className="text-gray-600 leading-relaxed">
-                  Several valuable partnerships were forged along this journey, and our research has been published on different websites.
-                </p>
-              </div>
-              <div className="lg:w-2/3 relative">
+              <div className="relative">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-02-FrHUQcQLsZ0ZPsjmV4BRJpuFUwyZSS.png"
                   alt="Partnerships - Kforce, ALKU, Randstad, Altimetrik, Capgemini, N2S, Deloitte, Quadrant, L&T Technology Services"
-                  width={700}
+                  width={900}
                   height={400}
                   className="object-contain w-full h-auto"
                 />
