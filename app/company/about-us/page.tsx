@@ -234,7 +234,7 @@ export default function AboutUsPage() {
         <section className="py-16 md:py-20 px-4 md:px-8">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Key Clients & Partnerships</h2>
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Our Key Clients & Strategic Partners</h2>
               <p className="text-gray-600 leading-relaxed max-w-3xl mx-auto">
                 We deliver exceptional technology solutions for world-class businesses in every industry, from dynamic startups and SMBs to Fortune 500 companies. Several valuable partnerships were forged along this journey, and our research has been published on different websites.
               </p>
