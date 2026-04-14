@@ -78,7 +78,7 @@ export function JobSearchFilter({ onSearch }: JobSearchFilterProps) {
         {/* Search Button */}
         <button
           onClick={handleSearch}
-          className="px-8 py-2.5 bg-green-500 hover:bg-green-600 text-white rounded-sm flex items-center justify-center gap-2 transition-colors"
+          className="px-8 py-2.5 bg-[#0066ff] hover:bg-[#0052cc] text-white rounded-sm flex items-center justify-center gap-2 transition-colors"
         >
           <Search className="w-4 h-4" />
         </button>

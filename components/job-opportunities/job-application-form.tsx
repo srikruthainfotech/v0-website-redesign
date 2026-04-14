@@ -132,7 +132,7 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
           <button
             type="button"
             onClick={handleBrowseClick}
-            className="px-3 py-1 bg-green-500 hover:bg-green-600 text-white text-xs rounded-sm"
+            className="px-3 py-1 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs rounded-sm"
           >
             Browse
           </button>
@@ -152,7 +152,7 @@ export function JobApplicationForm({ onClose, showCloseButton = false }: JobAppl
         )}
         <button
           type="submit"
-          className="px-3 py-1 text-xs bg-green-500 hover:bg-green-600 text-white text-sm rounded-sm"
+          className="px-3 py-1 text-xs bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm rounded-sm"
         >
           Submit
         </button>
