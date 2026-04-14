@@ -85,7 +85,7 @@ export default function CareersPage() {
       >
         <div className="absolute inset-0">
           <div className="max-w-7xl mx-auto px-4 md:px-8 w-full h-full flex items-center">
-            <div className="w-full md:w-1/2 flex items-center pl-6 md:pl-23">
+            <div className="w-full md:w-1/2 flex items-center justify-center">
               <h1 className="text-3xl md:text-4xl font-bold text-white">
                 Careers
               </h1>
