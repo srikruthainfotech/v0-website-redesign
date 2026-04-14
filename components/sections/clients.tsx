@@ -19,7 +19,7 @@ export function ClientsSection() {
         </h2>
 
         {/* Marquee Container */}
-        <div className="relative overflow-hidden mb-10">
+        <div className="relative overflow-hidden mb-10 mx-auto w-[75%]">
           <div className="flex animate-marquee">
             {[...clients, ...clients, ...clients].map((client, index) => (
               <div key={index} className="flex-shrink-0 mx-8 sm:mx-12 md:mx-16">
