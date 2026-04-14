@@ -197,7 +197,7 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-6 md:py-8 bg-[#f0f7ff]">
+      <section className="py-6 md:py-8 bg-[#faf8f5]">
         <div className="max-w-5xl mx-auto px-6 md:px-12">
           {/* Description */}
           <p className="text-gray-700 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
@@ -208,8 +208,8 @@ export default function AIDevelopmentPage() {
           </p>
 
           {/* Address */}
-          <div className="mt-6 flex items-start gap-3 text-gray-600 text-base md:text-lg">
-            <span className="text-[#0066ff] text-xl leading-none">●</span>
+          <div className="mt-6 flex items-start gap-3 text-gray-700 text-base md:text-lg">
+            <span className="text-[#0a1628] text-lg leading-6 mr-1">●</span>
             <span className="leading-relaxed">
               2860 South Circle Dr, Suite 237<br />
               Colorado Springs, CO 80906<br />
