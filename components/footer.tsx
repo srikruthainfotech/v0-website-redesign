@@ -124,16 +124,8 @@ export function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4">
-          <div className="flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-            <p>Copyright @ 2025 Immense Brains.</p>
-            <div className="flex gap-6 mt-2 md:mt-0">
-              <Link href="#" className="hover:text-[#00d4ff]">
-                Privacy Policy
-              </Link>
-              <Link href="#" className="hover:text-[#00d4ff]">
-                Terms & Conditions
-              </Link>
-            </div>
+          <div className="flex flex-col md:flex-row justify-center items-center text-sm text-gray-400">
+            <p>Copyright @ 2026 Immense Brains.</p>
           </div>
         </div>
       </div>
