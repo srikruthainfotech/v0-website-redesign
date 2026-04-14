@@ -167,8 +167,17 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 md:py-24 bg-[#1a237e] flex items-center justify-center text-center">
-        <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
+      <section className="relative py-20 md:py-24 flex items-center justify-center text-center overflow-hidden">
+        <div className="absolute inset-0">
+          <Image
+            src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/AI-industry-background-image-wKUcEyQaes5mMmfVUYEMZpnHGQhahr.jpg"
+            alt="AI Industry Background"
+            fill
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-[#0a1628]/70" />
+        </div>
+        <div className="relative z-10 max-w-4xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
             Kickstart Your Custom AI Solution Faster
           </h2>
@@ -179,13 +188,13 @@ export default function AIDevelopmentPage() {
       </section>
 
       {/* Company Description */}
-      <section className="py-12 md:py-16 bg-[#0a1628]">
+      <section className="py-12 md:py-16 bg-[#d9f99d]">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <p className="text-gray-300 leading-relaxed text-center md:text-left">
+          <p className="text-gray-800 leading-relaxed text-center md:text-left">
             As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses. We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact. From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver measurable value and long-term success.
           </p>
-          <div className="mt-8 flex items-start gap-2 text-gray-400 text-sm">
-            <span className="text-[#00d4ff]">●</span>
+          <div className="mt-8 flex items-start gap-2 text-gray-700 text-sm">
+            <span className="text-green-700">●</span>
             <span>3880 South Circle Dr, Suite 237,<br />Colorado Springs, CO, 80906</span>
           </div>
         </div>

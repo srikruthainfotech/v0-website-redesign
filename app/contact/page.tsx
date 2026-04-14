@@ -165,18 +165,18 @@ export default function ContactPage() {
             </div>
 
             {submitted ? (
-              <div className="bg-[#f5f7fa] border border-gray-200 rounded-md p-8 text-center shadow-sm">
-                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Send className="w-8 text-green-600" />
+              <div className="bg-[#0a1628] rounded-xl p-10 text-center shadow-lg">
+                <div className="w-20 h-20 bg-[#00d4ff]/20 rounded-full flex items-center justify-center mx-auto mb-6">
+                  <Send className="w-10 h-10 text-[#00d4ff]" />
                 </div>
-                <p className="text-[#0a1628] font-medium">
-                  Thank you for reaching out. We&apos;ll get back to you soon.
+                <p className="text-gray-300 mb-8 max-w-md mx-auto">
+                  Thank you for reaching out. Our team will review your message and get back to you within 24 hours.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="mt-6 text-[#0a1628] hover:underline font-medium"
+                  className="bg-[#0066ff] hover:bg-[#0052cc] text-white font-medium py-2.5 px-8 rounded-md transition-colors"
                 >
-                  Send another message
+                  Send Another Message
                 </button>
               </div>
             ) : (
