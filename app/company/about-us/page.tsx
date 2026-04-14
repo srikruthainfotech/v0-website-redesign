@@ -239,22 +239,22 @@ export default function AboutUsPage() {
                 We deliver exceptional technology solutions for world-class businesses in every industry, from dynamic startups and SMBs to Fortune 500 companies. Several valuable partnerships were forged along this journey, and our research has been published on different websites.
               </p>
             </div>
-            <div className="flex flex-col gap-8">
-              <div className="relative">
+            <div className="flex flex-col items-center gap-6">
+              <div className="w-full max-w-3xl">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-m2dmo0y19JLsLDP7mkEm7KNdWc6lxd.png"
                   alt="Our Key Clients - TruGlobal, Palo Alto, Neev Systems, Triumvirate, PSRTEK, ABC Supply, Cambia, FIS, Illumina, Johnson & Johnson, HCLTech"
-                  width={900}
-                  height={400}
+                  width={700}
+                  height={300}
                   className="object-contain w-full h-auto"
                 />
               </div>
-              <div className="relative">
+              <div className="w-full max-w-3xl">
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/partners-about-02-FrHUQcQLsZ0ZPsjmV4BRJpuFUwyZSS.png"
                   alt="Partnerships - Kforce, ALKU, Randstad, Altimetrik, Capgemini, N2S, Deloitte, Quadrant, L&T Technology Services"
-                  width={900}
-                  height={400}
+                  width={700}
+                  height={300}
                   className="object-contain w-full h-auto"
                 />
               </div>
