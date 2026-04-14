@@ -109,7 +109,7 @@ export default function IndustriesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
               {industries.slice(3, 6).map((industry, index) => (
                 <div key={index} className="text-center">
-                  <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-4">
+                  <div className="relative w-full aspect-[4/3] overflow-hidden mb-4">
                     <Image
                       src={industry.image}
                       alt={industry.title}
@@ -131,7 +131,7 @@ export default function IndustriesPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {industries.slice(6, 9).map((industry, index) => (
                 <div key={index} className="text-center">
-                  <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden mb-4">
+                  <div className="relative w-full aspect-[4/3] overflow-hidden mb-4">
                     <Image
                       src={industry.image}
                       alt={industry.title}
