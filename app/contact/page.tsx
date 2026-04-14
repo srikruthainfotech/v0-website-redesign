@@ -9,13 +9,13 @@ import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
 const officeLocations = [
   {
     title: "USA Headquarters",
-    address: ["2860 South Circle Dr, Suite 237", "Colorado Springs, CO 80906, USA"],
+    address: ["2860 South Circle Dr, Suite 237", "Colorado Springs, CO 80906", "United States"],
     icon: Building2,
   },
   {
     title: "Mailing Address",
     subtitle: "(For Correspondence Only)",
-    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919, USA"],
+    address: ["6760 Corporate Dr, Suite 100", "PMB #111", "Colorado Springs, CO 80919", "United States"],
     icon: MapPin,
   },
   {
