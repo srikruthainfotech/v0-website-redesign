@@ -1,4 +1,5 @@
 import { ArrowRight } from "lucide-react"
+import Link from "next/link"
 
 export function CareersSection() {
   return (
@@ -14,10 +15,13 @@ export function CareersSection() {
           <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-8">
             Our teams are leading change on every front. From deploying the most advanced and complex technologies for the world&apos;s most iconic companies, to building a greener, more inclusive and healthier world for our communities.
           </p>
-          <button className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
+          <Link 
+            href="/job-opportunities" 
+            className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors"
+          >
             Come join us
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>
