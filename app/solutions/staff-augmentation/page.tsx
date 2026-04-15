@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Headphones, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle, Layers, DollarSign, Zap } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Headphones, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle2, Layers, DollarSign, Zap } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -33,12 +33,12 @@ const whatWeOffer = [
 ]
 
 const whyChoosePoints = [
-  "Access to a wide pool of skilled professionals",
-  "Faster hiring and onboarding process",
-  "Flexible scaling based on project requirements",
-  "Cost-effective compared to traditional hiring",
-  "Seamless integration with your existing team",
-  "Improved productivity and faster delivery",
+  "Quickly scale your team based on project requirements",
+  "Reduce hiring and operational costs effectively",
+  "Maintain full control over your team and workflows",
+  "Bridge skill gaps with experienced professionals",
+  "Ensure seamless integration with your existing team",
+  "Accelerate delivery with ready-to-deploy talent",
 ]
 
 const processSteps = [
@@ -206,17 +206,14 @@ export default function StaffAugmentationPage() {
       {/* Why Choose Staff Augmentation Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Why Choose Staff Augmentation
           </h2>
-          <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto">
-            Staff augmentation provides agility and cost efficiency while maintaining full control over your projects. It helps bridge skill gaps, reduce overhead, and ensure consistent delivery.
-          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {whyChoosePoints.map((point) => (
-              <div key={point} className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-[#0066ff] flex-shrink-0" />
-                <span className="text-gray-700">{point}</span>
+              <div key={point} className="flex items-center gap-3 bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{point}</span>
               </div>
             ))}
           </div>

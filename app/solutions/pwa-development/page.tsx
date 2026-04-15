@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Compass, Code, CheckCircle, Smartphone, Wifi, Bell, Monitor, Shield, Zap, Globe, Palette, Settings, Headphones, Database } from "lucide-react"
+import { ClipboardList, Compass, Code, CheckCircle, Smartphone, Zap, Palette, Headphones, Database, CheckCircle2, WifiOff, Bell, MonitorSmartphone } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -33,36 +33,12 @@ const whatWeOffer = [
 ]
 
 const whyChoose = [
-  {
-    title: "Improved Performance",
-    description: "Fast loading speeds and smooth interactions enhance user experience.",
-    image: "/images/why-1.jpg",
-  },
-  {
-    title: "Cost Efficiency",
-    description: "Single application reduces development and maintenance costs.",
-    image: "/images/why-2.jpg",
-  },
-  {
-    title: "No App Store Dependency",
-    description: "Users can access apps directly from the browser without downloads.",
-    image: "/images/why-3.jpg",
-  },
-  {
-    title: "Wider Reach",
-    description: "Reach users across all devices with a single solution.",
-    image: "/images/why-4.jpg",
-  },
-  {
-    title: "Enhanced Engagement",
-    description: "Increase retention with push notifications and offline access.",
-    image: "/images/why-5.jpg",
-  },
-  {
-    title: "Easy Maintenance",
-    description: "Update your application instantly without requiring user action.",
-    image: "/images/why-6.jpg",
-  },
+  "Improved performance with fast loading and smooth interactions",
+  "Cost-efficient development with a single web-based solution",
+  "No app store dependency — access directly via browser",
+  "Wider reach across mobile, tablet, and desktop devices",
+  "Enhanced user engagement with push notifications",
+  "Easy maintenance with instant updates and no downloads required",
 ]
 
 const processSteps = [
@@ -96,22 +72,22 @@ const keyBenefits = [
   {
     title: "Faster Performance",
     description: "Deliver lightning-fast experiences with optimized loading and caching.",
-    image: "/images/benefit-1.jpg",
+    icon: Zap,
   },
   {
     title: "Offline Access",
     description: "Ensure uninterrupted usage even in low or no network conditions.",
-    image: "/images/benefit-2.jpg",
+    icon: WifiOff,
   },
   {
     title: "Increased Engagement",
-    description: "Boost user interaction with app-like features and notifications.",
-    image: "/images/benefit-3.jpg",
+    description: "Boost user interaction with push notifications and app-like features.",
+    icon: Bell,
   },
   {
     title: "Cross-Platform Reach",
-    description: "Reach users on any device with a single web application.",
-    image: "/images/benefit-4.jpg",
+    description: "Reach users across all devices with a single application.",
+    icon: MonitorSmartphone,
   },
 ]
 
@@ -222,62 +198,6 @@ export default function PWADevelopmentPage() {
         </div>
       </section>
 
-      {/* Why Choose PWA Development Section */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
-            Why Choose PWA Development
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Key Benefits Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Key Benefits
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {keyBenefits.map((benefit) => (
-              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={benefit.image}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Our Process Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
@@ -297,6 +217,46 @@ export default function PWADevelopmentPage() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose PWA Development Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Why Choose PWA Development
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {whyChoose.map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3 bg-white p-4 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Key Benefits
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyBenefits.map((benefit) => (
+              <div key={benefit.title} className="bg-gray-50 rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
+                <div className="w-12 h-12 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="w-6 h-6 text-[#1e90ff]" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>

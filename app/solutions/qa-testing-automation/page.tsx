@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Target, Cog, BarChart3, TestTube2, Zap, Shield, Clock, TrendingUp, Users, RefreshCw, CheckCircle2 } from "lucide-react"
+import { ClipboardList, Target, Cog, BarChart3, TestTube2, Zap, Shield, Users, RefreshCw, CheckCircle2, ShieldCheck, DollarSign, Smile } from "lucide-react"
 
 export const metadata = {
   title: "QA Testing & Automation | Immense Brains",
@@ -43,58 +43,34 @@ const offerings = [
 ]
 
 const whyChoose = [
-  {
-    title: "Improved Product Quality",
-    description: "Identify defects early and deliver stable, high-quality applications.",
-    image: "/images/why-1.jpg",
-  },
-  {
-    title: "Faster Time-to-Market",
-    description: "Accelerate releases with efficient testing and automation.",
-    image: "/images/why-2.jpg",
-  },
-  {
-    title: "Reduced Risk",
-    description: "Minimize failures and ensure consistent performance.",
-    image: "/images/why-3.jpg",
-  },
-  {
-    title: "Scalable Testing",
-    description: "Adapt testing processes as your application grows.",
-    image: "/images/why-4.jpg",
-  },
-  {
-    title: "Automation Efficiency",
-    description: "Automate repetitive tasks to improve speed and accuracy.",
-    image: "/images/why-5.jpg",
-  },
-  {
-    title: "Continuous Improvement",
-    description: "Enhance testing strategies with ongoing optimization.",
-    image: "/images/why-6.jpg",
-  },
+  "Improved product quality by identifying defects early",
+  "Faster time-to-market with efficient testing and automation",
+  "Reduced risk with stable and reliable application performance",
+  "Scalable testing processes as your application grows",
+  "Automation efficiency to improve speed and accuracy",
+  "Continuous improvement through ongoing testing optimization",
 ]
 
 const keyBenefits = [
   {
     title: "Faster Releases",
     description: "Accelerate development cycles with automated and continuous testing.",
-    image: "/images/benefit-1.jpg",
+    icon: Zap,
   },
   {
     title: "Enhanced Quality",
     description: "Deliver bug-free and high-performing applications across platforms.",
-    image: "/images/benefit-2.jpg",
+    icon: ShieldCheck,
   },
   {
     title: "Cost Efficiency",
     description: "Reduce long-term costs by identifying and fixing issues early.",
-    image: "/images/benefit-3.jpg",
+    icon: DollarSign,
   },
   {
     title: "Better User Experience",
     description: "Ensure seamless performance and reliability for end users.",
-    image: "/images/benefit-4.jpg",
+    icon: Smile,
   },
 ]
 
@@ -228,28 +204,18 @@ export default function QATestingAutomationPage() {
 
       {/* Why Choose QA Testing & Automation Section */}
       <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Why Choose QA Testing & Automation
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {whyChoose.map((item) => (
               <div
-                key={item.title}
-                className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+                key={item}
+                className="flex items-center gap-3 bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition-colors"
               >
-                <div className="h-40 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{item}</span>
               </div>
             ))}
           </div>
@@ -266,20 +232,13 @@ export default function QATestingAutomationPage() {
             {keyBenefits.map((benefit) => (
               <div
                 key={benefit.title}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center"
               >
-                <div className="h-40 relative">
-                  <Image
-                    src={benefit.image}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                  />
+                <div className="w-12 h-12 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="w-6 h-6 text-[#1e90ff]" />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>
