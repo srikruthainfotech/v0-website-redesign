@@ -8,7 +8,7 @@ const footerLinks = {
     { name: "Progressive Web App Development", href: "/solutions/pwa-development" },
     { name: "UI/UX Design", href: "#" },
     { name: "Machine Learning", href: "#" },
-    { name: "QA Testing & Automation", href: "#" },
+    { name: "QA Testing & Automation", href: "/solutions/qa-testing-automation" },
   ],
   enterprise: [
     { name: "Oracle Cloud Applications", href: "#" },
