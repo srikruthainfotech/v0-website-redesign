@@ -11,7 +11,7 @@ const footerLinks = {
     { name: "QA Testing & Automation", href: "/solutions/qa-testing-automation" },
   ],
   enterprise: [
-    { name: "Oracle Cloud Applications", href: "#" },
+    { name: "Oracle Cloud Applications", href: "/solutions/oracle-cloud-applications" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffing: [
