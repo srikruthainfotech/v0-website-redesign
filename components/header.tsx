@@ -18,7 +18,7 @@ const solutionsMenu = {
   ],
   staffingSolutions: [
     { name: "Staff Augmentation", href: "/solutions/staff-augmentation" },
-    { name: "Dedicated Teams", href: "#" },
+    { name: "Dedicated Teams", href: "/solutions/dedicated-teams" },
     { name: "Software Outsourcing", href: "#" },
   ],
 }
