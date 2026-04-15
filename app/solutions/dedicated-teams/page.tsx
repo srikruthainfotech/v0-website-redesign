@@ -135,13 +135,13 @@ export default function DedicatedTeamsPage() {
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-            Dedicated Teams
+            Build high-performing, fully aligned teams focused on your long-term success.
           </h2>
           <p className="text-lg text-gray-700 leading-relaxed mb-6">
-            Build a reliable team of skilled professionals dedicated exclusively to your project. Our Dedicated Teams model ensures seamless collaboration, full control, and consistent delivery to help you achieve long-term business success.
+            Our Dedicated Teams model offers you a fully committed team that works exclusively on your projects, functioning as an extension of your organization. We assemble cross-functional teams tailored to your business needs, ensuring deep collaboration, transparency, and accountability.
           </p>
           <p className="text-base text-gray-600 leading-relaxed">
-            Dedicated Teams is a strategic engagement model where a team of experts works exclusively on your project. This model provides flexibility, control, and long-term stability, making it ideal for ongoing development needs. Our team integrates seamlessly with your business processes to ensure efficient collaboration and high-quality results.
+            This approach is ideal for organizations seeking long-term partnerships and continuous product development.
           </p>
         </div>
       </section>
