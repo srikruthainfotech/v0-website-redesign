@@ -227,28 +227,20 @@ export default function StaffAugmentationPage() {
         </div>
       </section>
 
-      {/* Why Choose Staff Augmentation Section */}
+      {/* Our Services Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
-            Why Choose Staff Augmentation
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Our Services
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-48 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
+            {ourServices.map((service) => (
+              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
                 </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>
@@ -280,8 +272,36 @@ export default function StaffAugmentationPage() {
         </div>
       </section>
 
-      {/* Key Benefits Section */}
+      {/* Why Choose Staff Augmentation Section */}
       <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Why Choose Staff Augmentation
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {whyChoose.map((item) => (
+              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="h-48 relative">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="p-5">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
             Key Benefits
@@ -302,26 +322,6 @@ export default function StaffAugmentationPage() {
                   <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Our Services Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Our Services
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ourServices.map((service) => (
-              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
-                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>

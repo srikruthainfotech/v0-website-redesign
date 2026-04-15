@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Rocket } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Rocket, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -89,6 +89,62 @@ const processSteps = [
     description: "Continuous development, monitoring, and improvement.",
     icon: Rocket,
     image: "/images/dedicated/process-4.png",
+  },
+]
+
+const ourServices = [
+  {
+    title: "Dedicated Development Teams",
+    description: "Build a fully dedicated team aligned with your project and business goals.",
+    image: "/images/dedicated/service-1.jpg",
+  },
+  {
+    title: "Full-Stack Development",
+    description: "Develop scalable front-end and back-end solutions using modern technologies.",
+    image: "/images/dedicated/service-2.jpg",
+  },
+  {
+    title: "Agile Project Management",
+    description: "Ensure efficient delivery with agile methodologies and continuous iterations.",
+    image: "/images/dedicated/service-3.jpg",
+  },
+  {
+    title: "UI/UX Design",
+    description: "Create intuitive and user-friendly designs for better user engagement.",
+    image: "/images/dedicated/service-4.jpg",
+  },
+  {
+    title: "Quality Assurance & Testing",
+    description: "Deliver reliable and high-performance applications with thorough testing.",
+    image: "/images/dedicated/service-5.jpg",
+  },
+  {
+    title: "Ongoing Support & Maintenance",
+    description: "Provide continuous monitoring, updates, and improvements post-deployment.",
+    image: "/images/dedicated/service-6.jpg",
+  },
+]
+
+const keyBenefits = [
+  {
+    title: "Full Control",
+    description: "Manage your dedicated team directly and align them with your project goals while maintaining complete visibility into workflows and performance.",
+    image: "/images/dedicated/benefit-1.jpg",
+  },
+  {
+    title: "Scalability",
+    description: "Easily scale your team up or down based on evolving project requirements without disrupting progress.",
+    image: "/images/dedicated/benefit-2.jpg",
+  },
+  {
+    title: "Dedicated Focus",
+    description: "A team fully committed to your project ensures consistent delivery, improved quality, and better efficiency.",
+    image: "/images/dedicated/benefit-3.jpg",
+  },
+  {
+    title: "Cost Efficiency",
+    description: "Reduce hiring, infrastructure, and operational costs while maintaining high performance and productivity.",
+    image: "/images/dedicated/benefit-4.jpg",
   },
 ]
 
@@ -232,6 +288,62 @@ export default function DedicatedTeamsPage() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Services Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Our Services
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ourServices.map((service) => (
+              <div key={service.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="h-48 relative">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Key Benefits
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyBenefits.map((benefit) => (
+              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="h-48 relative">
+                  <Image
+                    src={benefit.image}
+                    alt={benefit.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
+                </div>
               </div>
             ))}
           </div>
