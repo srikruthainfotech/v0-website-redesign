@@ -15,7 +15,7 @@ const solutionsMenu = {
     { name: "QA Testing & Automation", href: "/solutions/qa-testing-automation" },
   ],
   enterpriseFocused: [
-    { name: "Oracle Cloud Applications", href: "#" },
+    { name: "Oracle Cloud Applications", href: "/solutions/oracle-cloud-applications" },
     { name: "Digital Transformation", href: "#" },
   ],
   staffingSolutions: [
