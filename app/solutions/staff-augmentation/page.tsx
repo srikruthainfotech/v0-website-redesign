@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Headphones, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Headphones, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle, Layers, DollarSign, Zap } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -32,37 +32,13 @@ const whatWeOffer = [
   },
 ]
 
-const whyChoose = [
-  {
-    title: "Access to Skilled Professionals",
-    description: "Get immediate access to vetted experts across multiple technologies.",
-    image: "/images/why-1.jpg",
-  },
-  {
-    title: "Faster Hiring Process",
-    description: "Reduce time-to-hire from months to days with our ready talent pool.",
-    image: "/images/why-2.jpg",
-  },
-  {
-    title: "Flexible Scaling",
-    description: "Easily scale your team up or down based on project demands.",
-    image: "/images/why-3.jpg",
-  },
-  {
-    title: "Cost Efficiency",
-    description: "Reduce overhead costs associated with full-time hiring.",
-    image: "/images/why-4.jpg",
-  },
-  {
-    title: "Seamless Team Integration",
-    description: "Our professionals integrate smoothly with your existing workflows.",
-    image: "/images/why-5.jpg",
-  },
-  {
-    title: "Improved Productivity",
-    description: "Boost output with experienced talent ready to contribute from day one.",
-    image: "/images/why-6.jpg",
-  },
+const whyChoosePoints = [
+  "Access to a wide pool of skilled professionals",
+  "Faster hiring and onboarding process",
+  "Flexible scaling based on project requirements",
+  "Cost-effective compared to traditional hiring",
+  "Seamless integration with your existing team",
+  "Improved productivity and faster delivery",
 ]
 
 const processSteps = [
@@ -95,23 +71,23 @@ const processSteps = [
 const keyBenefits = [
   {
     title: "Flexibility",
-    description: "Easily scale your workforce based on project demands without long-term commitments.",
-    image: "/images/benefit-1.jpg",
+    description: "Easily scale your workforce up or down based on project demands",
+    icon: Layers,
   },
   {
     title: "Cost Efficiency",
-    description: "Reduce hiring, training, and operational costs while optimizing your budget.",
-    image: "/images/benefit-2.jpg",
+    description: "Reduce hiring, training, and operational costs",
+    icon: DollarSign,
   },
   {
     title: "Skilled Talent",
-    description: "Access experienced professionals across multiple technologies and domains.",
-    image: "/images/benefit-3.jpg",
+    description: "Access experienced professionals across multiple technologies",
+    icon: Users,
   },
   {
     title: "Faster Delivery",
-    description: "Accelerate project timelines with ready-to-deploy resources.",
-    image: "/images/benefit-4.jpg",
+    description: "Accelerate project timelines with ready-to-deploy talent",
+    icon: Zap,
   },
 ]
 
@@ -229,26 +205,18 @@ export default function StaffAugmentationPage() {
 
       {/* Why Choose Staff Augmentation Section */}
       <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
             Why Choose Staff Augmentation
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
+          <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto">
+            Staff augmentation provides agility and cost efficiency while maintaining full control over your projects. It helps bridge skill gaps, reduce overhead, and ensure consistent delivery.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {whyChoosePoints.map((point, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-[#0066ff] flex-shrink-0" />
+                <span className="text-gray-700">{point}</span>
               </div>
             ))}
           </div>
@@ -302,27 +270,18 @@ export default function StaffAugmentationPage() {
 
       {/* Key Benefits Section */}
       <section className="py-16 md:py-20 bg-gray-50">
-
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
             Key Benefits
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
-              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={benefit.image}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
+              <div key={benefit.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <benefit.icon className="w-7 h-7 text-[#1e90ff]" />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>
