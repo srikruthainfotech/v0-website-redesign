@@ -4,7 +4,6 @@ const services = [
   "Contingent Staffing",
   "Project Staffing",
   "Master Vendor",
-  "BPO - Projects and Programs",
   "Direct Hire",
   "Payroll and Transition Services",
 ]
