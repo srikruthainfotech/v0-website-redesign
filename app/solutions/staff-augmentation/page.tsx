@@ -65,29 +65,6 @@ const whyChoose = [
   },
 ]
 
-const keyBenefits = [
-  {
-    title: "Flexibility",
-    description: "Easily scale your workforce based on project demands.",
-    image: "/images/benefit-1.jpg",
-  },
-  {
-    title: "Cost Efficiency",
-    description: "Reduce hiring and operational costs.",
-    image: "/images/benefit-2.jpg",
-  },
-  {
-    title: "Skilled Talent",
-    description: "Access experienced professionals across technologies.",
-    image: "/images/benefit-3.jpg",
-  },
-  {
-    title: "Faster Delivery",
-    description: "Accelerate timelines with ready-to-deploy talent.",
-    image: "/images/benefit-4.jpg",
-  },
-]
-
 const processSteps = [
   {
     title: "Requirement Analysis",
@@ -222,36 +199,8 @@ export default function StaffAugmentationPage() {
         </div>
       </section>
 
-      {/* Key Benefits Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
-            Key Benefits
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {keyBenefits.map((item) => (
-              <div key={item.title} className="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-44 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Our Process Section */}
-      <section className="py-16 md:py-20 bg-white">
+      <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Our Process
