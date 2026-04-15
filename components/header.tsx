@@ -12,7 +12,7 @@ const solutionsMenu = {
     { name: "Progressive Web App Development", href: "/solutions/pwa-development" },
     { name: "UI/UX Design", href: "#" },
     { name: "Machine Learning", href: "#" },
-    { name: "QA Testing & Automation", href: "#" },
+    { name: "QA Testing & Automation", href: "/solutions/qa-testing-automation" },
   ],
   enterpriseFocused: [
     { name: "Oracle Cloud Applications", href: "#" },
@@ -27,7 +27,6 @@ const solutionsMenu = {
 
 const companyMenu = [
   { name: "About Us", href: "/company/about-us" },
-  { name: "Our Team", href: "#" },
   { name: "Talent Referrals", href: "/company/talent-referrals" },
   { name: "Contact", href: "/contact" },
 ]
