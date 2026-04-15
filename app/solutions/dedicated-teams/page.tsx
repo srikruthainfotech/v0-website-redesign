@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Rocket, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle, Layers, DollarSign, Target } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Rocket, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle2, Layers, DollarSign, Target } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -33,12 +33,12 @@ const whatWeOffer = [
 ]
 
 const whyChoosePoints = [
-  "Full control over your dedicated team and workflows",
-  "Seamless communication and complete transparency",
-  "Long-term collaboration and consistency",
-  "Scalable team structure based on your needs",
-  "Increased productivity with dedicated focus",
-  "Better accountability with defined roles and tracking",
+  "Maintain full control over your dedicated team and workflows",
+  "Ensure seamless communication and complete transparency",
+  "Build long-term collaboration with consistent team alignment",
+  "Scale your team structure based on evolving business needs",
+  "Increase productivity with focused and dedicated resources",
+  "Improve accountability with clearly defined roles and tracking",
 ]
 
 const processSteps = [
@@ -220,17 +220,14 @@ export default function DedicatedTeamsPage() {
       {/* Why Choose Dedicated Teams Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Why Choose Dedicated Teams
           </h2>
-          <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto">
-            Dedicated teams provide consistency, deeper domain understanding, and higher efficiency over time. This model ensures better control, faster innovation, and strong alignment with your business goals.
-          </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {whyChoosePoints.map((point) => (
-              <div key={point} className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
-                <span className="text-gray-700">{point}</span>
+              <div key={point} className="flex items-center gap-3 bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition-colors">
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{point}</span>
               </div>
             ))}
           </div>
