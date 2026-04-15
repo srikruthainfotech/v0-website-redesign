@@ -249,7 +249,7 @@ export default function DedicatedTeamsPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div className="h-48 relative">
                   <Image
                     src={item.image}
@@ -260,7 +260,7 @@ export default function DedicatedTeamsPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
                 </div>
               </div>
@@ -269,36 +269,11 @@ export default function DedicatedTeamsPage() {
         </div>
       </section>
 
-      {/* Our Process Section */}
+      {/* Services We Offer Section */}
       <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-6xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
-            Our Process
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {processSteps.map((step, index) => (
-              <div key={step.title} className="text-center">
-                <div className="relative mb-4">
-                  <div className="w-20 h-20 mx-auto bg-[#e6faff] rounded-full flex items-center justify-center">
-                    <step.icon className="w-10 h-10 text-[#00d4ff]" />
-                  </div>
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white font-bold text-sm">
-                    {index + 1}
-                  </div>
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Our Services Section */}
-      <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Our Services
+            Services We Offer
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {ourServices.map((service) => (
@@ -316,6 +291,31 @@ export default function DedicatedTeamsPage() {
                   <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Process Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-6xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Our Process
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {processSteps.map((step, index) => (
+              <div key={step.title} className="text-center">
+                <div className="relative mb-4">
+                  <div className="w-20 h-20 mx-auto bg-[#e6faff] rounded-full flex items-center justify-center">
+                    <step.icon className="w-10 h-10 text-[#00d4ff]" />
+                  </div>
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-[#0066ff] rounded-full flex items-center justify-center text-white font-bold text-sm">
+                    {index + 1}
+                  </div>
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
               </div>
             ))}
           </div>
