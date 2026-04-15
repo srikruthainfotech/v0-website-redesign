@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Lightbulb, Code2, Headphones } from "lucide-react"
+import { ClipboardList, Lightbulb, Code2, Headphones, Globe, Smartphone, Cloud, ClipboardCheck, Settings } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -89,6 +89,57 @@ const processSteps = [
     description: "Ensure smooth deployment and ongoing maintenance.",
     icon: Headphones,
     image: "/images/process-4.png",
+  },
+]
+
+const servicesWeOffer = [
+  {
+    title: "Web Application Development",
+    description: "Build scalable and high-performance web applications tailored to your business needs.",
+    icon: Globe,
+  },
+  {
+    title: "Mobile App Development",
+    description: "Develop user-friendly mobile applications for iOS and Android platforms.",
+    icon: Smartphone,
+  },
+  {
+    title: "Cloud Solutions",
+    description: "Design and deploy secure, scalable cloud-based infrastructure and applications.",
+    icon: Cloud,
+  },
+  {
+    title: "QA & Testing",
+    description: "Ensure software quality with comprehensive testing and performance validation.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Maintenance & Support",
+    description: "Provide ongoing support, updates, and performance monitoring.",
+    icon: Settings,
+  },
+]
+
+const keyBenefits = [
+  {
+    title: "Cost Savings",
+    description: "Reduce infrastructure, hiring, and operational expenses while optimizing your budget.",
+    image: "/images/outsourcing/benefit-1.jpg",
+  },
+  {
+    title: "Global Talent Access",
+    description: "Access skilled professionals from diverse technologies and domains.",
+    image: "/images/outsourcing/benefit-2.jpg",
+  },
+  {
+    title: "High Quality Output",
+    description: "Deliver reliable, secure, and high-performance software solutions.",
+    image: "/images/outsourcing/benefit-3.jpg",
+  },
+  {
+    title: "Scalability",
+    description: "Easily scale resources based on your project requirements.",
+    image: "/images/outsourcing/benefit-4.jpg",
   },
 ]
 
@@ -179,7 +230,7 @@ export default function SoftwareOutsourcingPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
                 <div className="h-48 relative">
                   <Image
                     src={item.image}
@@ -190,7 +241,7 @@ export default function SoftwareOutsourcingPage() {
                   />
                 </div>
                 <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{item.title}</h3>
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
                 </div>
               </div>
@@ -199,8 +250,28 @@ export default function SoftwareOutsourcingPage() {
         </div>
       </section>
 
-      {/* Our Process Section */}
+      {/* Services We Offer Section */}
       <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Services We Offer
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {servicesWeOffer.map((service) => (
+              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Process Section */}
+      <section className="py-16 md:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Our Process
@@ -218,6 +289,34 @@ export default function SoftwareOutsourcingPage() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Key Benefits
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyBenefits.map((benefit) => (
+              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+                <div className="h-48 relative">
+                  <Image
+                    src={benefit.image}
+                    alt={benefit.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
+                </div>
               </div>
             ))}
           </div>
