@@ -12,7 +12,7 @@ const footerLinks = {
   ],
   enterprise: [
     { name: "Oracle Cloud Applications", href: "/solutions/oracle-cloud-applications" },
-    { name: "Digital Transformation", href: "#" },
+    { name: "Digital Transformation", href: "/solutions/digital-transformation" },
   ],
   staffing: [
     { name: "Staff Augmentation", href: "/solutions/staff-augmentation" },

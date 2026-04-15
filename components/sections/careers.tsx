@@ -17,27 +17,13 @@ export function CareersSection() {
             <p className="text-gray-400 text-sm md:text-base leading-relaxed mb-8 max-w-lg">
               Our teams are leading change on every front. From deploying the most advanced and complex technologies for the world&apos;s most iconic companies, to building a greener, more inclusive and healthier world for our communities.
             </p>
-            <Link 
-              href="/job-opportunities" 
+            <Link
+              href="/job-opportunities"
               className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors"
             >
               Come join us
               <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
-          
-          {/* Image - Hidden on mobile, visible on lg screens */}
-          <div className="hidden lg:flex justify-end">
-            <div className="relative w-full max-w-md aspect-square">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#0066ff]/20 to-[#00d4ff]/20 rounded-2xl" />
-              <div className="absolute inset-4 border border-[#0066ff]/30 rounded-xl" />
-              <div className="absolute inset-8 bg-gradient-to-br from-[#0066ff]/10 to-transparent rounded-lg flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-6xl font-bold text-[#0066ff]/40">Join</div>
-                  <div className="text-2xl text-[#00d4ff]/60 mt-2">Our Team</div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>
