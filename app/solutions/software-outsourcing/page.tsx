@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Lightbulb, Code2, Headphones, Globe, Smartphone, Cloud, ClipboardCheck, Settings } from "lucide-react"
+import { ClipboardList, Lightbulb, Code2, Headphones, Globe, Smartphone, Cloud, ClipboardCheck, Settings, CheckCircle2, DollarSign, Users, Shield, Layers } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -33,36 +33,12 @@ const whatWeOffer = [
 ]
 
 const whyChoose = [
-  {
-    title: "Access to Global Talent",
-    description: "Work with skilled experts across technologies and domains.",
-    image: "/images/why-1.jpg",
-  },
-  {
-    title: "Reduced Costs",
-    description: "Minimize infrastructure, hiring, and operational expenses.",
-    image: "/images/why-2.jpg",
-  },
-  {
-    title: "Focus on Core Business",
-    description: "Concentrate on strategic priorities while we handle development.",
-    image: "/images/why-3.jpg",
-  },
-  {
-    title: "Faster Time-to-Market",
-    description: "Accelerate delivery with experienced development teams.",
-    image: "/images/why-4.jpg",
-  },
-  {
-    title: "Scalable Engagement",
-    description: "Adjust resources based on project requirements.",
-    image: "/images/why-5.jpg",
-  },
-  {
-    title: "Latest Technologies",
-    description: "Leverage modern tools and frameworks for better solutions.",
-    image: "/images/why-6.jpg",
-  },
+  "Access to global talent with diverse technical expertise",
+  "Reduced development and operational costs",
+  "Focus on core business priorities and strategic goals",
+  "Faster time-to-market with experienced teams",
+  "Scalable engagement based on project requirements",
+  "Access to modern technologies and best practices",
 ]
 
 const processSteps = [
@@ -124,22 +100,22 @@ const keyBenefits = [
   {
     title: "Cost Savings",
     description: "Reduce infrastructure, hiring, and operational expenses while optimizing your budget.",
-    image: "/images/outsourcing/benefit-1.jpg",
+    icon: DollarSign,
   },
   {
     title: "Global Talent Access",
-    description: "Access skilled professionals from diverse technologies and domains.",
-    image: "/images/outsourcing/benefit-2.jpg",
+    description: "Access skilled professionals across technologies and domains worldwide.",
+    icon: Users,
   },
   {
     title: "High Quality Output",
-    description: "Deliver reliable, secure, and high-performance software solutions.",
-    image: "/images/outsourcing/benefit-3.jpg",
+    description: "Deliver secure, reliable, and high-performance software solutions.",
+    icon: Shield,
   },
   {
     title: "Scalability",
     description: "Easily scale resources based on your project requirements.",
-    image: "/images/outsourcing/benefit-4.jpg",
+    icon: Layers,
   },
 ]
 
@@ -224,26 +200,18 @@ export default function SoftwareOutsourcingPage() {
 
       {/* Why Choose Software Outsourcing Section */}
       <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
             Why Choose Software Outsourcing
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
+              <div
+                key={item}
+                className="flex items-center gap-3 bg-gray-100 p-4 rounded-lg hover:bg-gray-200 transition-colors"
+              >
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{item}</span>
               </div>
             ))}
           </div>
@@ -303,20 +271,12 @@ export default function SoftwareOutsourcingPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
-              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={benefit.image}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
+              <div key={benefit.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center">
+                <div className="w-12 h-12 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="w-6 h-6 text-[#1e90ff]" />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>
