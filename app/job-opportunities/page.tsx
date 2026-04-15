@@ -85,7 +85,7 @@ export default function CareersPage() {
       >
         <div className="absolute inset-0">
           <div className="max-w-7xl mx-auto px-4 md:px-8 w-full h-full flex items-center">
-            <div className="w-full md:w-1/2 flex items-center justify-center">
+            <div className="w-full md:w-1/2 flex items-center justify-start md:justify-center pl-4 md:pl-0">
               <h1 className="text-3xl md:text-4xl font-bold text-white">
                 Careers
               </h1>
@@ -102,10 +102,10 @@ export default function CareersPage() {
               Join Our Growing Team
             </h2>
             <p className="text-gray-600 leading-relaxed">
-              At Immense Brains, we connect exceptional talent with leading organizations worldwide. 
-              As a premier staffing solutions company, we offer unique opportunities to work on 
-              cutting-edge projects across diverse industries. Whether you&apos;re seeking full-time 
-              positions, contract roles, or remote work, we have opportunities that match your skills 
+              At Immense Brains, we connect exceptional talent with leading organizations worldwide.
+              As a premier staffing solutions company, we offer unique opportunities to work on
+              cutting-edge projects across diverse industries. Whether you&apos;re seeking full-time
+              positions, contract roles, or remote work, we have opportunities that match your skills
               and career aspirations.
             </p>
           </div>
@@ -120,8 +120,8 @@ export default function CareersPage() {
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {benefits.map((benefit, index) => (
-              <div 
-                key={index} 
+              <div
+                key={index}
                 className="bg-white border border-gray-100 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center mb-4">
@@ -145,7 +145,7 @@ export default function CareersPage() {
           <h2 className="text-2xl md:text-3xl font-bold text-[#0a1628] text-center mb-8">
             Current Openings
           </h2>
-          
+
           {/* Search Filter */}
           <div className="mb-6">
             <JobSearchFilter onSearch={handleSearch} />
