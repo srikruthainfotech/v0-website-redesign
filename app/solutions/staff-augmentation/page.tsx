@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Headphones } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Headphones, Layers, DollarSign, Award, Zap, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -89,6 +89,66 @@ const processSteps = [
     description: "Ongoing support and performance monitoring to ensure project success.",
     icon: Headphones,
     image: "/images/process-4.png",
+  },
+]
+
+const keyBenefits = [
+  {
+    title: "Flexibility",
+    description: "Easily scale your workforce based on project demands without long-term commitments.",
+    image: "/images/benefit-1.jpg",
+    icon: Layers,
+  },
+  {
+    title: "Cost Efficiency",
+    description: "Reduce hiring, training, and operational costs while optimizing your budget.",
+    image: "/images/benefit-2.jpg",
+    icon: DollarSign,
+  },
+  {
+    title: "Skilled Talent",
+    description: "Access experienced professionals across multiple technologies and domains.",
+    image: "/images/benefit-3.jpg",
+    icon: Award,
+  },
+  {
+    title: "Faster Delivery",
+    description: "Accelerate project timelines with ready-to-deploy resources.",
+    image: "/images/benefit-4.jpg",
+    icon: Zap,
+  },
+]
+
+const ourServices = [
+  {
+    title: "Web Development",
+    description: "Build scalable and high-performance web applications tailored to your business needs.",
+    icon: Globe,
+  },
+  {
+    title: "Mobile App Development",
+    description: "Develop user-friendly mobile applications for iOS and Android platforms.",
+    icon: Smartphone,
+  },
+  {
+    title: "Cloud Solutions",
+    description: "Design and deploy secure, scalable cloud-based infrastructure and applications.",
+    icon: Cloud,
+  },
+  {
+    title: "UI/UX Design",
+    description: "Create intuitive and engaging user experiences that enhance customer satisfaction.",
+    icon: Palette,
+  },
+  {
+    title: "QA & Testing",
+    description: "Ensure software quality with comprehensive testing and performance validation.",
+    icon: ClipboardCheck,
+  },
+  {
+    title: "Maintenance & Support",
+    description: "Provide ongoing support, updates, and performance monitoring.",
+    icon: Settings,
   },
 ]
 
@@ -218,6 +278,60 @@ export default function StaffAugmentationPage() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{step.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{step.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Key Benefits Section */}
+      <section className="py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Key Benefits
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyBenefits.map((benefit) => (
+              <div key={benefit.title} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+                <div className="h-48 relative">
+                  <Image
+                    src={benefit.image}
+                    alt={benefit.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute bottom-4 left-4">
+                    <div className="w-12 h-12 bg-[#0066ff] rounded-full flex items-center justify-center mb-2">
+                      <benefit.icon className="w-6 h-6 text-white" />
+                    </div>
+                  </div>
+                </div>
+                <div className="p-5">
+                  <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Our Services Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Our Services
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ourServices.map((service) => (
+              <div key={service.title} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow group">
+                <div className="w-14 h-14 bg-[#e6faff] rounded-lg flex items-center justify-center mb-4 group-hover:bg-[#0066ff] transition-colors">
+                  <service.icon className="w-7 h-7 text-[#00d4ff] group-hover:text-white transition-colors" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2">{service.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>
