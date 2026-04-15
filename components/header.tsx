@@ -27,7 +27,6 @@ const solutionsMenu = {
 
 const companyMenu = [
   { name: "About Us", href: "/company/about-us" },
-  { name: "Our Team", href: "#" },
   { name: "Talent Referrals", href: "/company/talent-referrals" },
   { name: "Contact", href: "/contact" },
 ]
