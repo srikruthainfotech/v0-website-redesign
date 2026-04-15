@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Headphones, Layers, DollarSign, Award, Zap, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Headphones, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -97,25 +97,21 @@ const keyBenefits = [
     title: "Flexibility",
     description: "Easily scale your workforce based on project demands without long-term commitments.",
     image: "/images/benefit-1.jpg",
-    icon: Layers,
   },
   {
     title: "Cost Efficiency",
     description: "Reduce hiring, training, and operational costs while optimizing your budget.",
     image: "/images/benefit-2.jpg",
-    icon: DollarSign,
   },
   {
     title: "Skilled Talent",
     description: "Access experienced professionals across multiple technologies and domains.",
     image: "/images/benefit-3.jpg",
-    icon: Award,
   },
   {
     title: "Faster Delivery",
     description: "Accelerate project timelines with ready-to-deploy resources.",
     image: "/images/benefit-4.jpg",
-    icon: Zap,
   },
 ]
 
@@ -287,29 +283,23 @@ export default function StaffAugmentationPage() {
       {/* Key Benefits Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
             Key Benefits
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
-              <div key={benefit.title} className="bg-gray-50 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
+              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
                 <div className="h-48 relative">
                   <Image
                     src={benefit.image}
                     alt={benefit.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-4 left-4">
-                    <div className="w-12 h-12 bg-[#0066ff] rounded-full flex items-center justify-center mb-2">
-                      <benefit.icon className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
                 </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <div className="p-6">
+                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
                   <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
                 </div>
               </div>
@@ -321,16 +311,16 @@ export default function StaffAugmentationPage() {
       {/* Our Services Section */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
             Our Services
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {ourServices.map((service) => (
-              <div key={service.title} className="bg-white rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow group">
-                <div className="w-14 h-14 bg-[#e6faff] rounded-lg flex items-center justify-center mb-4 group-hover:bg-[#0066ff] transition-colors">
-                  <service.icon className="w-7 h-7 text-[#00d4ff] group-hover:text-white transition-colors" />
+              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{service.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
               </div>
             ))}
