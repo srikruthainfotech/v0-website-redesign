@@ -196,18 +196,7 @@ export default function AIDevelopmentPage() {
         </div>
       </section>
 
-      {/* Company Description */}
-      <section className="py-6 md:py-8 bg-[#f4f8fc]">
-        <div className="max-w-4xl ml-4 md:ml-32 mr-auto px-4">
-          {/* Description */}
-          <p className="text-gray-700 text-lg md:text-xl leading-relaxed md:leading-8 text-left">
-            As an artificial intelligence software company, we believe in AI&apos;s limitless potential to transform businesses.
-            We explore a wide range of AI use cases that showcase how intelligent technologies can drive meaningful impact.
-            From enhancing operational efficiency to unlocking new growth opportunities, our solutions are designed to deliver
-            measurable value and long-term success.
-          </p>
-        </div>
-      </section>
+
       {/* AI Capabilities Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
