@@ -17,7 +17,7 @@ const footerLinks = {
   staffing: [
     { name: "Staff Augmentation", href: "/solutions/staff-augmentation" },
     { name: "Dedicated Teams", href: "/solutions/dedicated-teams" },
-    { name: "Software Outsourcing", href: "#" },
+    { name: "Software Outsourcing", href: "/solutions/software-outsourcing" },
   ],
 }
 
