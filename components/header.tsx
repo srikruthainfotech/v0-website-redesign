@@ -9,7 +9,7 @@ const solutionsMenu = {
   topSolutions: [
     { name: "AI Development", href: "/solutions/ai-development" },
     { name: "Custom App Development", href: "/solutions/custom-app-development" },
-    { name: "Progressive Web App Development", href: "#" },
+    { name: "Progressive Web App Development", href: "/solutions/pwa-development" },
     { name: "UI/UX Design", href: "#" },
     { name: "Machine Learning", href: "#" },
     { name: "QA Testing & Automation", href: "#" },
