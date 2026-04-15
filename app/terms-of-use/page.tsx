@@ -3,12 +3,19 @@ import { Footer } from "@/components/footer"
 
 export default function TermsOfUsePage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <main className="min-h-screen">
       <Header />
-      <main className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-6 md:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">Terms of Use</h1>
-          <div className="space-y-6 text-gray-300 leading-relaxed">
+      <section className="py-16 md:py-24 px-4 md:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <p className="text-[#00d4ff] text-sm font-medium uppercase tracking-wider mb-2">
+              Legal
+            </p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+              Terms of Use
+            </h1>
+          </div>
+          <div className="space-y-6 text-gray-600 leading-relaxed">
             <p>
               By accessing and using this website, you agree to comply with and be bound by the following terms and conditions. These terms govern your use of our website, services, and any content provided herein.
             </p>
@@ -23,8 +30,8 @@ export default function TermsOfUsePage() {
             </p>
           </div>
         </div>
-      </main>
+      </section>
       <Footer />
-    </div>
+    </main>
   )
 }

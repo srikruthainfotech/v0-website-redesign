@@ -3,12 +3,19 @@ import { Footer } from "@/components/footer"
 
 export default function CopyrightPolicyPage() {
   return (
-    <div className="min-h-screen bg-[#0a1628]">
+    <main className="min-h-screen">
       <Header />
-      <main className="pt-24 pb-16">
-        <div className="max-w-4xl mx-auto px-6 md:px-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-8">Copyright Policy</h1>
-          <div className="space-y-6 text-gray-300 leading-relaxed">
+      <section className="py-16 md:py-24 px-4 md:px-8 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-8">
+            <p className="text-[#00d4ff] text-sm font-medium uppercase tracking-wider mb-2">
+              Legal
+            </p>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900">
+              Copyright Policy
+            </h1>
+          </div>
+          <div className="space-y-6 text-gray-600 leading-relaxed">
             <p>
               All content on this website, including text, graphics, logos, images, and software, is the property of the company or its content providers and is protected by applicable copyright and intellectual property laws.
             </p>
@@ -23,8 +30,8 @@ export default function CopyrightPolicyPage() {
             </p>
           </div>
         </div>
-      </main>
+      </section>
       <Footer />
-    </div>
+    </main>
   )
 }
