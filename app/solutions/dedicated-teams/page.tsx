@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { ClipboardList, Users, UserCheck, Rocket, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings } from "lucide-react"
+import { ClipboardList, Users, UserCheck, Rocket, Globe, Smartphone, Cloud, Palette, ClipboardCheck, Settings, CheckCircle, Layers, DollarSign, Target } from "lucide-react"
 
 const whatWeOffer = [
   {
@@ -32,37 +32,13 @@ const whatWeOffer = [
   },
 ]
 
-const whyChoose = [
-  {
-    title: "Full Control",
-    description: "Maintain complete control over your team and workflows.",
-    image: "/images/dedicated/why-1.jpg",
-  },
-  {
-    title: "Seamless Communication",
-    description: "Transparent and efficient collaboration with your dedicated team.",
-    image: "/images/dedicated/why-2.jpg",
-  },
-  {
-    title: "Long-Term Consistency",
-    description: "Build strong domain knowledge and stable development processes.",
-    image: "/images/dedicated/why-3.jpg",
-  },
-  {
-    title: "Scalable Teams",
-    description: "Adjust team size based on project needs without delays.",
-    image: "/images/dedicated/why-4.jpg",
-  },
-  {
-    title: "Increased Productivity",
-    description: "Dedicated focus ensures faster delivery and better results.",
-    image: "/images/dedicated/why-5.jpg",
-  },
-  {
-    title: "Better Accountability",
-    description: "Clearly defined roles and performance tracking improve outcomes.",
-    image: "/images/dedicated/why-6.jpg",
-  },
+const whyChoosePoints = [
+  "Full control over your dedicated team and workflows",
+  "Seamless communication and complete transparency",
+  "Long-term collaboration and consistency",
+  "Scalable team structure based on your needs",
+  "Increased productivity with dedicated focus",
+  "Better accountability with defined roles and tracking",
 ]
 
 const processSteps = [
@@ -128,23 +104,23 @@ const ourServices = [
 const keyBenefits = [
   {
     title: "Full Control",
-    description: "Manage your dedicated team directly and align them with your project goals while maintaining complete visibility into workflows and performance.",
-    image: "/images/dedicated/benefit-1.jpg",
+    description: "Manage your team directly and maintain full visibility into workflows and performance",
+    icon: Settings,
   },
   {
     title: "Scalability",
-    description: "Easily scale your team up or down based on evolving project requirements without disrupting progress.",
-    image: "/images/dedicated/benefit-2.jpg",
+    description: "Easily expand or reduce your team based on project needs",
+    icon: Layers,
   },
   {
     title: "Dedicated Focus",
-    description: "A team fully committed to your project ensures consistent delivery, improved quality, and better efficiency.",
-    image: "/images/dedicated/benefit-3.jpg",
+    description: "A fully committed team ensures consistent delivery and better quality",
+    icon: Target,
   },
   {
     title: "Cost Efficiency",
-    description: "Reduce hiring, infrastructure, and operational costs while maintaining high performance and productivity.",
-    image: "/images/dedicated/benefit-4.jpg",
+    description: "Reduce hiring and operational costs while maintaining high performance",
+    icon: DollarSign,
   },
 ]
 
@@ -243,26 +219,18 @@ export default function DedicatedTeamsPage() {
 
       {/* Why Choose Dedicated Teams Section */}
       <section className="py-16 md:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4 text-center">
             Why Choose Dedicated Teams
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {whyChoose.map((item) => (
-              <div key={item.title} className="bg-gray-50 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                </div>
-                <div className="p-5">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{item.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{item.description}</p>
-                </div>
+          <p className="text-gray-600 text-center mb-10 max-w-2xl mx-auto">
+            Dedicated teams provide consistency, deeper domain understanding, and higher efficiency over time. This model ensures better control, faster innovation, and strong alignment with your business goals.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {whyChoosePoints.map((point) => (
+              <div key={point} className="flex items-center gap-3">
+                <CheckCircle className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-700">{point}</span>
               </div>
             ))}
           </div>
@@ -330,20 +298,12 @@ export default function DedicatedTeamsPage() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
-              <div key={benefit.title} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                <div className="h-48 relative">
-                  <Image
-                    src={benefit.image}
-                    alt={benefit.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  />
+              <div key={benefit.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <benefit.icon className="w-7 h-7 text-[#1e90ff]" />
                 </div>
-                <div className="p-6">
-                  <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
-                  <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>
