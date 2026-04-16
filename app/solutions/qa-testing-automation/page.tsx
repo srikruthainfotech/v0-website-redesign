@@ -222,23 +222,22 @@ export default function QATestingAutomationPage() {
         </div>
       </section>
 
-      {/* Key Benefits Section */}
+      {/* Services We Offer Section */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Key Benefits
+            Services We Offer
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {keyBenefits.map((benefit) => (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
+            {services.map((service) => (
               <div
-                key={benefit.title}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center"
+                key={service.title}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center text-center"
               >
-                <div className="w-12 h-12 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mx-auto mb-4">
-                  <benefit.icon className="w-6 h-6 text-[#1e90ff]" />
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
+                <h3 className="font-medium text-gray-900 text-sm">{service.title}</h3>
               </div>
             ))}
           </div>
@@ -271,22 +270,23 @@ export default function QATestingAutomationPage() {
         </div>
       </section>
 
-      {/* Services We Offer Section */}
+      {/* Key Benefits Section */}
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Services We Offer
+            Key Benefits
           </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6">
-            {services.map((service) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {keyBenefits.map((benefit) => (
               <div
-                key={service.title}
-                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 flex flex-col items-center text-center"
+                key={benefit.title}
+                className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300 text-center"
               >
-                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
-                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
+                <div className="w-12 h-12 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mx-auto mb-4">
+                  <benefit.icon className="w-6 h-6 text-[#1e90ff]" />
                 </div>
-                <h3 className="font-medium text-gray-900 text-sm">{service.title}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
               </div>
             ))}
           </div>
