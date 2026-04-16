@@ -198,6 +198,46 @@ export default function PWADevelopmentPage() {
         </div>
       </section>
 
+      {/* Why Choose PWA Development Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-4xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
+            Why Choose PWA Development
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {whyChoose.map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3 bg-white p-4 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
+                <span className="text-gray-800 font-medium">{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services We Offer Section */}
+      <section className="py-16 md:py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
+            Services We Offer
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {ourServices.map((service) => (
+              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
+                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
+                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
+                </div>
+                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
+                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Our Process Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-6xl mx-auto px-4 md:px-8">
@@ -223,31 +263,11 @@ export default function PWADevelopmentPage() {
         </div>
       </section>
 
-      {/* Why Choose PWA Development Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-10 text-center">
-            Why Choose PWA Development
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {whyChoose.map((item) => (
-              <div
-                key={item}
-                className="flex items-center gap-3 bg-white p-4 rounded-lg hover:bg-gray-100 transition-colors"
-              >
-                <CheckCircle2 className="w-5 h-5 text-[#1e90ff] flex-shrink-0" />
-                <span className="text-gray-800 font-medium">{item}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Key Benefits Section */}
       <section className="py-16 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Key Benefits
+            Key Benefits of PWA Development
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
@@ -257,26 +277,6 @@ export default function PWADevelopmentPage() {
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{benefit.title}</h3>
                 <p className="text-sm text-gray-600 leading-relaxed">{benefit.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Services We Offer Section */}
-      <section className="py-16 md:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Services We Offer
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {ourServices.map((service) => (
-              <div key={service.title} className="bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-shadow duration-300">
-                <div className="w-14 h-14 bg-[#1e90ff]/10 rounded-lg flex items-center justify-center mb-4">
-                  <service.icon className="w-7 h-7 text-[#1e90ff]" />
-                </div>
-                <h3 className="font-semibold text-gray-900 mb-2 text-lg">{service.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{service.description}</p>
               </div>
             ))}
           </div>
