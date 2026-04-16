@@ -274,7 +274,7 @@ export default function QATestingAutomationPage() {
       <section className="py-16 md:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-12 text-center">
-            Key Benefits
+            Key Benefits of QA Testing & Automation
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {keyBenefits.map((benefit) => (
