@@ -12,34 +12,34 @@ export function ClientsSection() {
 
   // Row 2 - Arrow Left: FIS, Paloalto, Illumina, Truglobal
   const clientsRow2 = [
-    { name: "FIS", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FIS_image-05.png-eJgPn8ikIv4uK6WR3p1CfVxM5HX6dF.jpeg" },
-    { name: "Palo Alto", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panloaltgo-image-06-ftxq9GMMzXINd5vLd14XX4IhZ4SvQb.svg" },
-    { name: "Illumina", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/illumina-logo-image-07-8VQlDu84HQTmrSQxr7qK4qUaUJ9UrE.jpg" },
-    { name: "Truglobal", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/truglobal-o8.png-3haxn4WKnUbzIsUjgXm6IArEllxJQB.jpeg" },
+    { name: "FIS", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FIS_image-05.png-eJgPn8ikIv4uK6WR3p1CfVxM5HX6dF.jpeg", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "Palo Alto", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panloaltgo-image-06-ftxq9GMMzXINd5vLd14XX4IhZ4SvQb.svg", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "Illumina", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/illumina-logo-image-07-Cdr8NBpWV2ByzR0LLcVrnKvvSsnFFl.jpg", width: 160, height: 60, maxH: "max-h-14" },
+    { name: "Truglobal", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/truglobal-o8.png-3haxn4WKnUbzIsUjgXm6IArEllxJQB.jpeg", width: 140, height: 50, maxH: "max-h-12" },
   ]
 
   // Row 3 - Arrow Right: Neev Systems, HCL, Johnson, KForce
   const clientsRow3 = [
-    { name: "Neev Systems", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/neevsystems_logo-09-L9iFlk70DZTMXNS11EuI56F7SJOj5N.jpg" },
-    { name: "HCL Tech", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Hcl-super-progress-10-X40n5WY7Sljc44gPub4vNq8UkAiEAd.png" },
-    { name: "Johnson & Johnson", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/johnson-johnson-logo-image-11-dlnsqbS8341XtqGxvI567pIJRGKBMX.svg" },
-    { name: "KForce", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/k-force-12-A60iXP5uYMoREmT1RdKX2ifCMYpGdr.png" },
+    { name: "Neev Systems", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/neevsystems_logo-09-9hUE01OiigXtalOeeUDA0f45T9SyBm.jpg", width: 180, height: 70, maxH: "max-h-16" },
+    { name: "HCL Tech", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Hcl-super-progress-10-ndRymbJNyPwlKZ5Bt4WbUopLLh0Ari.png", width: 180, height: 70, maxH: "max-h-16" },
+    { name: "Johnson & Johnson", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/johnson-johnson-logo-image-11-dlnsqbS8341XtqGxvI567pIJRGKBMX.svg", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "KForce", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/k-force-12-A60iXP5uYMoREmT1RdKX2ifCMYpGdr.png", width: 140, height: 50, maxH: "max-h-12" },
   ]
 
   // Row 4 - Arrow Left: ALKU, Altimetrik, Capgemini, N2S
   const clientsRow4 = [
-    { name: "ALKU", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ALKU-logo-image-13-ZTlf3cQ1G7MjM0M65QASMT2GBpCUrx.png" },
-    { name: "Altimetrik", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/altimetrik-14-7WEbWwANVE6CAsE2doSoW37mut4pfE.png" },
-    { name: "Capgemini", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/capgeminiBlue-img-15-g0gLr5SVyTGpYJJcCyXbxn5B8evsMD.svg" },
-    { name: "N2S", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/n2s-img-16-6RzQBGevAvoCLQHUgrTOV3jsxcZFiY.webp" },
+    { name: "ALKU", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ALKU-logo-image-13-ZTlf3cQ1G7MjM0M65QASMT2GBpCUrx.png", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "Altimetrik", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/altimetrik-14-7WEbWwANVE6CAsE2doSoW37mut4pfE.png", width: 160, height: 60, maxH: "max-h-14" },
+    { name: "Capgemini", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/capgeminiBlue-img-15-g0gLr5SVyTGpYJJcCyXbxn5B8evsMD.svg", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "N2S", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/n2s-img-16-6RzQBGevAvoCLQHUgrTOV3jsxcZFiY.webp", width: 140, height: 50, maxH: "max-h-12" },
   ]
 
   // Row 5 - Arrow Right: Deloitte, L&T, Randstad, Quadrant
   const clientsRow5 = [
-    { name: "Deloitte", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/deloitte-print-17.webp-Cw6ciL6hnHvm2F73EKPm5cuwJa70Jj.png" },
-    { name: "L&T", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/l%26t-18-A2kfIX3IslezNfDvUtdE7bepPCDsES.svg" },
-    { name: "Randstad", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/randstad-logo-19-oCpam3uRZuS39643M37Y0OYVYqmN7O.png" },
-    { name: "Quadrant", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Quadrant-logo-20-k9zcbmQhSEZJnd5fR3i3dVpKCwnFLX.png" },
+    { name: "Deloitte", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/deloitte-print-17.webp-Cw6ciL6hnHvm2F73EKPm5cuwJa70Jj.png", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "L&T", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/l%26t-18-A2kfIX3IslezNfDvUtdE7bepPCDsES.svg", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "Randstad", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/randstad-logo-19-oCpam3uRZuS39643M37Y0OYVYqmN7O.png", width: 140, height: 50, maxH: "max-h-12" },
+    { name: "Quadrant", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Quadrant-logo-20-k9zcbmQhSEZJnd5fR3i3dVpKCwnFLX.png", width: 140, height: 50, maxH: "max-h-12" },
   ]
 
   return (
@@ -96,9 +96,9 @@ export function ClientsSection() {
                 <Image
                   src={client.src}
                   alt={client.name}
-                  width={140}
-                  height={50}
-                  className="object-contain max-h-12 w-auto"
+                  width={client.width}
+                  height={client.height}
+                  className={`object-contain ${client.maxH} w-auto`}
                   unoptimized
                 />
               </div>
@@ -114,9 +114,9 @@ export function ClientsSection() {
                 <Image
                   src={client.src}
                   alt={client.name}
-                  width={140}
-                  height={50}
-                  className="object-contain max-h-12 w-auto"
+                  width={client.width}
+                  height={client.height}
+                  className={`object-contain ${client.maxH} w-auto`}
                   unoptimized
                 />
               </div>
@@ -132,9 +132,9 @@ export function ClientsSection() {
                 <Image
                   src={client.src}
                   alt={client.name}
-                  width={140}
-                  height={50}
-                  className="object-contain max-h-12 w-auto"
+                  width={client.width}
+                  height={client.height}
+                  className={`object-contain ${client.maxH} w-auto`}
                   unoptimized
                 />
               </div>
@@ -150,9 +150,9 @@ export function ClientsSection() {
                 <Image
                   src={client.src}
                   alt={client.name}
-                  width={140}
-                  height={50}
-                  className="object-contain max-h-12 w-auto"
+                  width={client.width}
+                  height={client.height}
+                  className={`object-contain ${client.maxH} w-auto`}
                   unoptimized
                 />
               </div>
