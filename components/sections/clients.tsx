@@ -14,21 +14,21 @@ export function ClientsSection() {
   const clientsRow2 = [
     { name: "FIS", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/FIS_image-05.png-eJgPn8ikIv4uK6WR3p1CfVxM5HX6dF.jpeg" },
     { name: "Palo Alto", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/panloaltgo-image-06-ftxq9GMMzXINd5vLd14XX4IhZ4SvQb.svg" },
-    { name: "Illumina", src: "https://blobs.vusercontent.net/blob/illumina-full_logo-07.svg-KCb1CkuBsdGkp5XQ5c68Amg1JIgqHD.xml" },
+    { name: "Illumina", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/illumina-logo-image-07-8VQlDu84HQTmrSQxr7qK4qUaUJ9UrE.jpg" },
     { name: "Truglobal", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/truglobal-o8.png-3haxn4WKnUbzIsUjgXm6IArEllxJQB.jpeg" },
   ]
 
   // Row 3 - Arrow Right: Neev Systems, HCL, Johnson, KForce
   const clientsRow3 = [
-    { name: "Neev Systems", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Neev_Logo-09.webp-rJZfYa9j3GUR8NrRxyBsX9M6qsMF5r.png" },
-    { name: "HCL", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/hcl-logo-10-3y9z8jDfhzjtUB6S5Ass9yNTLWm0zw.svg" },
+    { name: "Neev Systems", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/neevsystems_logo-09-L9iFlk70DZTMXNS11EuI56F7SJOj5N.jpg" },
+    { name: "HCL Tech", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Hcl-super-progress-10-X40n5WY7Sljc44gPub4vNq8UkAiEAd.png" },
     { name: "Johnson & Johnson", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/johnson-johnson-logo-image-11-dlnsqbS8341XtqGxvI567pIJRGKBMX.svg" },
     { name: "KForce", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/k-force-12-A60iXP5uYMoREmT1RdKX2ifCMYpGdr.png" },
   ]
 
   // Row 4 - Arrow Left: ALKU, Altimetrik, Capgemini, N2S
   const clientsRow4 = [
-    { name: "ALKU", src: "https://blobs.vusercontent.net/blob/ALKU-Logo-13.svg-QWZTOAUqarud91bNPXCcFwoJ7mDGzW.xml" },
+    { name: "ALKU", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/ALKU-logo-image-13-ZTlf3cQ1G7MjM0M65QASMT2GBpCUrx.png" },
     { name: "Altimetrik", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/altimetrik-14-7WEbWwANVE6CAsE2doSoW37mut4pfE.png" },
     { name: "Capgemini", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/capgeminiBlue-img-15-g0gLr5SVyTGpYJJcCyXbxn5B8evsMD.svg" },
     { name: "N2S", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/n2s-img-16-6RzQBGevAvoCLQHUgrTOV3jsxcZFiY.webp" },
@@ -38,8 +38,8 @@ export function ClientsSection() {
   const clientsRow5 = [
     { name: "Deloitte", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/deloitte-print-17.webp-Cw6ciL6hnHvm2F73EKPm5cuwJa70Jj.png" },
     { name: "L&T", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/l%26t-18-A2kfIX3IslezNfDvUtdE7bepPCDsES.svg" },
-    { name: "Randstad", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/randstad-19-uNGGqzOAUPeOixS8Cr5xbcABcXV37t.png" },
-    { name: "Quadrant", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/quadrant-20-5YbGWRMoRM4zTyo5F9JzQ115Qi6CDz.png" },
+    { name: "Randstad", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/randstad-logo-19-oCpam3uRZuS39643M37Y0OYVYqmN7O.png" },
+    { name: "Quadrant", src: "https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Quadrant-logo-20-k9zcbmQhSEZJnd5fR3i3dVpKCwnFLX.png" },
   ]
 
   return (
