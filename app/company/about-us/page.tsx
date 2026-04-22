@@ -5,8 +5,13 @@ import Image from "next/image"
 
 export const metadata: Metadata = {
   title: "About Us - Immense Brains",
-  description: "At Immense Brains, we exist to create opportunity – for our clients, our candidates, and each other.",
-}
+  description:
+    "At Immense Brains, we exist to create opportunity – for our clients, our candidates, and each other.",
+  robots: {
+    index: false,
+    follow: true,
+  },
+};
 
 const coreValues = [
   {
