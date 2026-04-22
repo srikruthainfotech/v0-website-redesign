@@ -17,9 +17,6 @@ export const metadata: Metadata = {
   title: 'Immense Brains - We Deliver Expertise No One Else Has',
   description: 'Custom software development, AI solutions, staff augmentation, and digital transformation services. Explore opportunities no one else can see.',
   generator: 'v0.app',
-  verification: {
-    google: "FeDE3ls6LV-z3m7jPjDEbjGlHo25Wz73mCHiO-p7_hk",
-  },
   icons: {
     icon: [
       {
@@ -46,6 +43,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="google-site-verification" content="FeDE3ls6LV-z3m7jPjDEbjGlHo25Wz73mCHiO-p7_hk" />
+      </head>
       <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
