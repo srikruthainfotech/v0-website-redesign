@@ -17,6 +17,9 @@ export const metadata: Metadata = {
   title: 'Immense Brains - We Deliver Expertise No One Else Has',
   description: 'Custom software development, AI solutions, staff augmentation, and digital transformation services. Explore opportunities no one else can see.',
   generator: 'v0.app',
+  verification: {
+    google: "FeDE3ls6LV-z3m7jPjDEbjGlHo25Wz73mCHiO-p7_hk",
+  },
   icons: {
     icon: [
       {
