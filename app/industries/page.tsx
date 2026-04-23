@@ -2,6 +2,13 @@ import Image from "next/image"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
+export const metadata = {
+  title: "Industries | Immense Brains",
+  description:
+    "Explore industries we serve including healthcare, finance, retail, and more.",
+}
+
+
 const industries = [
   {
     title: "BANKING & FINANCIAL",
