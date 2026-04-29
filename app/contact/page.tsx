@@ -5,8 +5,8 @@ import { Header } from "@/components/header"
 import { createClient } from "@supabase/supabase-js"
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_URL!,
+  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_ANON_KEY!
 )
 import { Footer } from "@/components/footer"
 import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
