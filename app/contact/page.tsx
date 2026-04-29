@@ -1,8 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Metadata } from "next"
 import { Header } from "@/components/header"
+import { createClient } from "@supabase/supabase-js"
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_URL!,
+  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_ANON_KEY!
+)
 import { Footer } from "@/components/footer"
 import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
 
@@ -44,11 +49,32 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    setIsSubmitting(false)
-    setSubmitted(true)
-    setFormData({ name: "", email: "", company: "", subject: "", message: "" })
+
+    try {
+      const { error } = await supabase.from("contact_us").insert([
+        {
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          subject: formData.subject,
+          message: formData.message,
+        },
+      ])
+
+      if (error) {
+        console.error("Error submitting form:", error)
+        alert("Failed to submit form. Please try again.")
+        return
+      }
+
+      setSubmitted(true)
+      setFormData({ name: "", email: "", company: "", subject: "", message: "" })
+    } catch (err) {
+      console.error("Error submitting form:", err)
+      alert("An unexpected error occurred. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
