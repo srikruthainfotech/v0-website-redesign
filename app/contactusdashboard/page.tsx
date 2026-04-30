@@ -39,7 +39,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  ChevronUp,
   LayoutDashboard,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
@@ -56,8 +55,8 @@ export default function ContactUsDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-  const [isDashboardExpanded, setIsDashboardExpanded] = useState(true)
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [isDashboardExpanded, setIsDashboardExpanded] = useState(false)
+  const [isAllSelected, setIsAllSelected] = useState(false)
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
 
@@ -115,44 +114,26 @@ export default function ContactUsDashboard() {
     setIsDeleteDialogOpen(true)
   }
 
-  // Handle select one
-  const handleSelectOne = (id: string) => {
-    setSelectedIds((prev) =>
-      prev.includes(id)
-        ? prev.filter((selectedId) => selectedId !== id)
-        : [...prev, id]
-    )
-  }
-
-  // Handle select all
-  const handleSelectAll = () => {
-    if (selectedIds.length === contacts.length) {
-      setSelectedIds([])
-    } else {
-      setSelectedIds(contacts.map((contact) => contact.id))
-    }
-  }
-
-  // Handle delete selected
-  const handleDeleteSelected = async () => {
-    if (selectedIds.length === 0) return
+  // Handle delete all
+  const handleDeleteAll = async () => {
+    if (!isAllSelected) return
 
     setIsDeletingSelected(true)
     try {
       const { error } = await supabase
         .from("contact_us")
         .delete()
-        .in("id", selectedIds)
+        .neq("id", "0")
 
       if (error) {
         console.error("Error deleting contacts:", error)
-        setMessage({ type: "error", text: "Failed to delete selected contacts" })
+        setMessage({ type: "error", text: "Failed to delete all contacts" })
         return
       }
 
-      setMessage({ type: "success", text: "Selected contacts deleted successfully" })
+      setMessage({ type: "success", text: "All contacts deleted successfully" })
       setIsDeleteSelectedDialogOpen(false)
-      setSelectedIds([])
+      setIsAllSelected(false)
       fetchContacts()
     } catch (err) {
       console.error("Error:", err)
@@ -375,11 +356,11 @@ export default function ContactUsDashboard() {
                   variant="destructive"
                   size="sm"
                   onClick={() => setIsDeleteSelectedDialogOpen(true)}
-                  disabled={selectedIds.length === 0}
+                  disabled={!isAllSelected}
                   className="gap-2"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Delete Selected ({selectedIds.length})
+                  Delete Selected
                 </Button>
                 <Button
                   variant="outline"
@@ -421,8 +402,8 @@ export default function ContactUsDashboard() {
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
                       <TableHead className="w-12">
                         <Checkbox
-                          checked={contacts.length > 0 && selectedIds.length === contacts.length}
-                          onCheckedChange={handleSelectAll}
+                          checked={isAllSelected}
+                          onCheckedChange={(checked) => setIsAllSelected(checked === true)}
                           aria-label="Select all"
                         />
                       </TableHead>
@@ -439,17 +420,9 @@ export default function ContactUsDashboard() {
                     {contacts.map((contact) => (
                       <TableRow 
                         key={contact.id} 
-                        className={`hover:bg-gray-50 transition-colors ${
-                          selectedIds.includes(contact.id) ? "bg-blue-50" : ""
-                        }`}
+                        className="hover:bg-gray-50 transition-colors"
                       >
-                        <TableCell>
-                          <Checkbox
-                            checked={selectedIds.includes(contact.id)}
-                            onCheckedChange={() => handleSelectOne(contact.id)}
-                            aria-label={`Select ${contact.name}`}
-                          />
-                        </TableCell>
+                        <TableCell />
                         <TableCell className="font-medium text-gray-900">{contact.name}</TableCell>
                         <TableCell>
                           <a
@@ -646,12 +619,10 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              Delete Selected Contacts
+              Delete All Contacts
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete{" "}
-              <span className="font-medium text-gray-900">{selectedIds.length}</span>{" "}
-              selected contact{selectedIds.length > 1 ? "s" : ""}?
+              Are you sure you want to delete all contact submissions?
               This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -665,7 +636,7 @@ export default function ContactUsDashboard() {
             </Button>
             <Button
               variant="destructive"
-              onClick={handleDeleteSelected}
+              onClick={handleDeleteAll}
               disabled={isDeletingSelected}
             >
               {isDeletingSelected ? (
@@ -674,7 +645,7 @@ export default function ContactUsDashboard() {
                   Deleting...
                 </>
               ) : (
-                `Delete ${selectedIds.length} Contact${selectedIds.length > 1 ? "s" : ""}`
+                "Delete All"
               )}
             </Button>
           </DialogFooter>
