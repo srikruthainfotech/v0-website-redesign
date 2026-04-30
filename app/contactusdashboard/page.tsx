@@ -4,9 +4,6 @@ import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
 import { supabase, type ContactUs } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import {
   Table,
   TableBody,
@@ -25,14 +22,22 @@ import {
 } from "@/components/ui/dialog"
 import {
   LogOut,
-  Pencil,
+  Eye,
   Trash2,
   Loader2,
   AlertCircle,
   CheckCircle,
-  LayoutDashboard,
   Users,
   RefreshCw,
+  ExternalLink,
+  Mail,
+  Building2,
+  FileText,
+  MessageSquare,
+  Calendar,
+  User,
+  Menu,
+  X,
 } from "lucide-react"
 import Link from "next/link"
 
@@ -42,17 +47,11 @@ export default function ContactUsDashboard() {
   const [isLoading, setIsLoading] = useState(true)
   const [contacts, setContacts] = useState<ContactUs[]>([])
   const [selectedContact, setSelectedContact] = useState<ContactUs | null>(null)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
-  const [editForm, setEditForm] = useState({
-    name: "",
-    email: "",
-    company: "",
-    subject: "",
-    message: "",
-  })
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   // Check authentication on mount
   useEffect(() => {
@@ -96,63 +95,16 @@ export default function ContactUsDashboard() {
     router.push("/login")
   }
 
-  // Open edit dialog
-  const openEditDialog = (contact: ContactUs) => {
+  // Open view dialog
+  const openViewDialog = (contact: ContactUs) => {
     setSelectedContact(contact)
-    setEditForm({
-      name: contact.name,
-      email: contact.email,
-      company: contact.company || "",
-      subject: contact.subject,
-      message: contact.message,
-    })
-    setIsEditDialogOpen(true)
+    setIsViewDialogOpen(true)
   }
 
   // Open delete dialog
   const openDeleteDialog = (contact: ContactUs) => {
     setSelectedContact(contact)
     setIsDeleteDialogOpen(true)
-  }
-
-  // Handle edit form change
-  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target
-    setEditForm((prev) => ({ ...prev, [name]: value }))
-  }
-
-  // Handle update
-  const handleUpdate = async () => {
-    if (!selectedContact) return
-
-    setIsSubmitting(true)
-    try {
-      const { error } = await supabase
-        .from("contact_us")
-        .update({
-          name: editForm.name,
-          email: editForm.email,
-          company: editForm.company || null,
-          subject: editForm.subject,
-          message: editForm.message,
-        })
-        .eq("id", selectedContact.id)
-
-      if (error) {
-        console.error("Error updating contact:", error)
-        setMessage({ type: "error", text: "Failed to update contact" })
-        return
-      }
-
-      setMessage({ type: "success", text: "Contact updated successfully" })
-      setIsEditDialogOpen(false)
-      fetchContacts()
-    } catch (err) {
-      console.error("Error:", err)
-      setMessage({ type: "error", text: "An unexpected error occurred" })
-    } finally {
-      setIsSubmitting(false)
-    }
   }
 
   // Handle delete
@@ -211,248 +163,328 @@ export default function ContactUsDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-[#0a1628] text-white shadow-lg">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+    <div className="min-h-screen flex bg-gray-50">
+      {/* Mobile Sidebar Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside 
+        className={`
+          fixed lg:static inset-y-0 left-0 z-50
+          w-64 bg-[#0a1628] text-white
+          transform transition-transform duration-300 ease-in-out
+          ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
+        `}
+      >
+        <div className="flex flex-col h-full">
+          {/* Sidebar Header */}
+          <div className="flex items-center justify-between p-4 border-b border-white/10">
             <div className="flex items-center gap-3">
-              <LayoutDashboard className="w-6 h-6 text-[#00d4ff]" />
-              <h1 className="text-xl font-semibold">Contact Us Dashboard</h1>
+              <div className="w-8 h-8 bg-[#00d4ff] rounded-lg flex items-center justify-center">
+                <span className="text-[#0a1628] font-bold text-sm">IB</span>
+              </div>
+              <span className="font-semibold text-lg">Dashboard</span>
             </div>
+            <button 
+              onClick={() => setIsSidebarOpen(false)}
+              className="lg:hidden p-1 hover:bg-white/10 rounded"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Sidebar Navigation */}
+          <nav className="flex-1 p-4">
+            <div className="space-y-1">
+              <button
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20 transition-colors"
+              >
+                <Users className="w-5 h-5" />
+                <span className="font-medium">ContactUsInfo</span>
+              </button>
+            </div>
+          </nav>
+
+          {/* Sidebar Footer */}
+          <div className="p-4 border-t border-white/10">
+            <div className="text-xs text-gray-400">
+              Logged in as Admin
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col min-h-screen">
+        {/* Header */}
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
+          <div className="flex items-center justify-between px-4 lg:px-6 h-16">
             <div className="flex items-center gap-4">
+              <button 
+                onClick={() => setIsSidebarOpen(true)}
+                className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
+              >
+                <Menu className="w-5 h-5 text-gray-600" />
+              </button>
+              <h1 className="text-lg lg:text-xl font-semibold text-gray-900">
+                Contact Us Dashboard
+              </h1>
+            </div>
+            <div className="flex items-center gap-2 lg:gap-4">
               <Link
                 href="/"
-                className="text-gray-300 hover:text-white text-sm transition-colors"
+                className="flex items-center gap-1.5 px-3 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
               >
-                View Site
+                <ExternalLink className="w-4 h-4" />
+                <span className="hidden sm:inline">View Site</span>
               </Link>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="text-gray-300 hover:text-white hover:bg-white/10"
+                className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 gap-1.5"
               >
-                <LogOut className="w-4 h-4 mr-2" />
-                Logout
+                <LogOut className="w-4 h-4" />
+                <span className="hidden sm:inline">Logout</span>
               </Button>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Message Alert */}
-        {message && (
-          <div
-            className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${
-              message.type === "success"
-                ? "bg-green-50 border border-green-200 text-green-700"
-                : "bg-red-50 border border-red-200 text-red-700"
-            }`}
-          >
-            {message.type === "success" ? (
-              <CheckCircle className="w-5 h-5 shrink-0" />
-            ) : (
-              <AlertCircle className="w-5 h-5 shrink-0" />
-            )}
-            <p>{message.text}</p>
-          </div>
-        )}
-
-        {/* Stats Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-[#00d4ff]" />
-              </div>
-              <div>
-                <p className="text-gray-500 text-sm">Total Inquiries</p>
-                <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
-              </div>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={fetchContacts}
-              disabled={isLoading}
-              className="gap-2"
+        {/* Main Content Area */}
+        <main className="flex-1 p-4 lg:p-6">
+          {/* Message Alert */}
+          {message && (
+            <div
+              className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${
+                message.type === "success"
+                  ? "bg-green-50 border border-green-200 text-green-700"
+                  : "bg-red-50 border border-red-200 text-red-700"
+              }`}
             >
-              <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
-              Refresh
-            </Button>
-          </div>
-        </div>
-
-        {/* Table Card */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Contact Submissions</h2>
-            <p className="text-sm text-gray-500 mt-1">
-              View and manage all contact form submissions
-            </p>
-          </div>
-
-          {isLoading ? (
-            <div className="p-12 text-center">
-              <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
-              <p className="text-gray-500 mt-2">Loading contacts...</p>
-            </div>
-          ) : contacts.length === 0 ? (
-            <div className="p-12 text-center">
-              <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">No contact submissions yet</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <Table>
-                <TableHeader>
-                  <TableRow className="bg-gray-50">
-                    <TableHead className="font-semibold">Name</TableHead>
-                    <TableHead className="font-semibold">Email</TableHead>
-                    <TableHead className="font-semibold">Company</TableHead>
-                    <TableHead className="font-semibold">Subject</TableHead>
-                    <TableHead className="font-semibold max-w-[200px]">Message</TableHead>
-                    <TableHead className="font-semibold">Date</TableHead>
-                    <TableHead className="font-semibold text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {contacts.map((contact) => (
-                    <TableRow key={contact.id}>
-                      <TableCell className="font-medium">{contact.name}</TableCell>
-                      <TableCell>
-                        <a
-                          href={`mailto:${contact.email}`}
-                          className="text-[#0066ff] hover:underline"
-                        >
-                          {contact.email}
-                        </a>
-                      </TableCell>
-                      <TableCell className="text-gray-500">
-                        {contact.company || "-"}
-                      </TableCell>
-                      <TableCell>{contact.subject}</TableCell>
-                      <TableCell className="max-w-[200px] truncate" title={contact.message}>
-                        {contact.message}
-                      </TableCell>
-                      <TableCell className="text-gray-500 text-sm">
-                        {formatDate(contact.created_at)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => openEditDialog(contact)}
-                            className="text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                          >
-                            <Pencil className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => openDeleteDialog(contact)}
-                            className="text-gray-500 hover:text-red-600 hover:bg-red-50"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              {message.type === "success" ? (
+                <CheckCircle className="w-5 h-5 shrink-0" />
+              ) : (
+                <AlertCircle className="w-5 h-5 shrink-0" />
+              )}
+              <p>{message.text}</p>
             </div>
           )}
-        </div>
-      </main>
 
-      {/* Edit Dialog */}
-      <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
-          <DialogHeader>
-            <DialogTitle>Edit Contact</DialogTitle>
-            <DialogDescription>
-              Make changes to the contact information below.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="edit-name">Name</Label>
-                <Input
-                  id="edit-name"
-                  name="name"
-                  value={editForm.name}
-                  onChange={handleEditChange}
-                />
+          {/* Stats Card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                  <Users className="w-6 h-6 text-[#00d4ff]" />
+                </div>
+                <div>
+                  <p className="text-gray-500 text-sm">Total Inquiries</p>
+                  <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-email">Email</Label>
-                <Input
-                  id="edit-email"
-                  name="email"
-                  type="email"
-                  value={editForm.email}
-                  onChange={handleEditChange}
-                />
-              </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="edit-company">Company</Label>
-                <Input
-                  id="edit-company"
-                  name="company"
-                  value={editForm.company}
-                  onChange={handleEditChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="edit-subject">Subject</Label>
-                <Input
-                  id="edit-subject"
-                  name="subject"
-                  value={editForm.subject}
-                  onChange={handleEditChange}
-                />
-              </div>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="edit-message">Message</Label>
-              <Textarea
-                id="edit-message"
-                name="message"
-                value={editForm.message}
-                onChange={handleEditChange}
-                rows={4}
-              />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={fetchContacts}
+                disabled={isLoading}
+                className="gap-2"
+              >
+                <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+                Refresh
+              </Button>
             </div>
           </div>
+
+          {/* Table Card */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="p-6 border-b border-gray-200">
+              <h2 className="text-lg font-semibold text-gray-900">Contact Submissions</h2>
+              <p className="text-sm text-gray-500 mt-1">
+                View and manage all contact form submissions
+              </p>
+            </div>
+
+            {isLoading ? (
+              <div className="p-12 text-center">
+                <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                <p className="text-gray-500 mt-2">Loading contacts...</p>
+              </div>
+            ) : contacts.length === 0 ? (
+              <div className="p-12 text-center">
+                <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <p className="text-gray-500">No contact submissions yet</p>
+              </div>
+            ) : (
+              <div className="overflow-x-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow className="bg-gray-50 hover:bg-gray-50">
+                      <TableHead className="font-semibold text-gray-700">Name</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Email</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Company</TableHead>
+                      <TableHead className="font-semibold text-gray-700 max-w-[180px]">Subject</TableHead>
+                      <TableHead className="font-semibold text-gray-700 max-w-[200px]">Message</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Date</TableHead>
+                      <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {contacts.map((contact) => (
+                      <TableRow 
+                        key={contact.id} 
+                        className="hover:bg-gray-50 transition-colors"
+                      >
+                        <TableCell className="font-medium text-gray-900">{contact.name}</TableCell>
+                        <TableCell>
+                          <a
+                            href={`mailto:${contact.email}`}
+                            className="text-[#0066ff] hover:underline"
+                          >
+                            {contact.email}
+                          </a>
+                        </TableCell>
+                        <TableCell className="text-gray-500">
+                          {contact.company || "-"}
+                        </TableCell>
+                        <TableCell 
+                          className="max-w-[180px] truncate text-gray-700" 
+                          title={contact.subject}
+                        >
+                          {contact.subject}
+                        </TableCell>
+                        <TableCell 
+                          className="max-w-[200px] truncate text-gray-500" 
+                          title={contact.message}
+                        >
+                          {contact.message}
+                        </TableCell>
+                        <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                          {formatDate(contact.created_at)}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          <div className="flex items-center justify-end gap-1">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => openViewDialog(contact)}
+                              className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                              title="View details"
+                            >
+                              <Eye className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              onClick={() => openDeleteDialog(contact)}
+                              className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                              title="Delete"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </div>
+        </main>
+      </div>
+
+      {/* View Contact Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                <User className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              Contact Details
+            </DialogTitle>
+            <DialogDescription>
+              Full details of the contact submission
+            </DialogDescription>
+          </DialogHeader>
+          
+          {selectedContact && (
+            <div className="space-y-4 py-4">
+              {/* Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Name</p>
+                  <p className="text-gray-900 mt-1">{selectedContact.name}</p>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Email</p>
+                  <a 
+                    href={`mailto:${selectedContact.email}`}
+                    className="text-[#0066ff] hover:underline mt-1 block"
+                  >
+                    {selectedContact.email}
+                  </a>
+                </div>
+              </div>
+
+              {/* Company */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Building2 className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company</p>
+                  <p className="text-gray-900 mt-1">{selectedContact.company || "Not provided"}</p>
+                </div>
+              </div>
+
+              {/* Subject */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Subject</p>
+                  <p className="text-gray-900 mt-1">{selectedContact.subject}</p>
+                </div>
+              </div>
+
+              {/* Message */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MessageSquare className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Message</p>
+                  <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">
+                    {selectedContact.message}
+                  </p>
+                </div>
+              </div>
+
+              {/* Date */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Submitted On</p>
+                  <p className="text-gray-900 mt-1">{formatDate(selectedContact.created_at)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <DialogFooter>
             <Button
               variant="outline"
-              onClick={() => setIsEditDialogOpen(false)}
-              disabled={isSubmitting}
+              onClick={() => setIsViewDialogOpen(false)}
             >
-              Cancel
-            </Button>
-            <Button
-              onClick={handleUpdate}
-              disabled={isSubmitting}
-              className="bg-[#0066ff] hover:bg-[#0052cc]"
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                "Save Changes"
-              )}
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -462,7 +494,10 @@ export default function ContactUsDashboard() {
       <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <DialogContent className="sm:max-w-[400px]">
           <DialogHeader>
-            <DialogTitle>Delete Contact</DialogTitle>
+            <DialogTitle className="flex items-center gap-2 text-red-600">
+              <Trash2 className="w-5 h-5" />
+              Delete Contact
+            </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete this contact submission from{" "}
               <span className="font-medium text-gray-900">{selectedContact?.name}</span>?
