@@ -38,7 +38,10 @@ import {
   User,
   Menu,
   X,
+  ChevronDown,
+  LayoutDashboard,
 } from "lucide-react"
+import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
 
 export default function ContactUsDashboard() {
@@ -52,6 +55,10 @@ export default function ContactUsDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isDashboardExpanded, setIsDashboardExpanded] = useState(false)
+  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
+  const [isDeletingSelected, setIsDeletingSelected] = useState(false)
 
   // Check authentication on mount
   useEffect(() => {
@@ -105,6 +112,53 @@ export default function ContactUsDashboard() {
   const openDeleteDialog = (contact: ContactUs) => {
     setSelectedContact(contact)
     setIsDeleteDialogOpen(true)
+  }
+
+  // Handle select all toggle
+  const handleSelectAll = () => {
+    if (selectedIds.length === contacts.length) {
+      setSelectedIds([])
+    } else {
+      setSelectedIds(contacts.map((c) => c.id))
+    }
+  }
+
+  // Handle individual row selection
+  const handleSelectOne = (id: string) => {
+    setSelectedIds((prev) =>
+      prev.includes(id)
+        ? prev.filter((selectedId) => selectedId !== id)
+        : [...prev, id]
+    )
+  }
+
+  // Handle delete selected
+  const handleDeleteSelected = async () => {
+    if (selectedIds.length === 0) return
+
+    setIsDeletingSelected(true)
+    try {
+      const { error } = await supabase
+        .from("contact_us")
+        .delete()
+        .in("id", selectedIds)
+
+      if (error) {
+        console.error("Error deleting contacts:", error)
+        setMessage({ type: "error", text: "Failed to delete selected contacts" })
+        return
+      }
+
+      setMessage({ type: "success", text: `${selectedIds.length} contact(s) deleted successfully` })
+      setIsDeleteSelectedDialogOpen(false)
+      setSelectedIds([])
+      fetchContacts()
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setIsDeletingSelected(false)
+    }
   }
 
   // Handle delete
@@ -183,13 +237,8 @@ export default function ContactUsDashboard() {
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#00d4ff] rounded-lg flex items-center justify-center">
-                <span className="text-[#0a1628] font-bold text-sm">IB</span>
-              </div>
-              <span className="font-semibold text-lg">Dashboard</span>
-            </div>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <span className="font-bold text-lg text-white">Immense Brains</span>
             <button 
               onClick={() => setIsSidebarOpen(false)}
               className="lg:hidden p-1 hover:bg-white/10 rounded"
@@ -199,14 +248,33 @@ export default function ContactUsDashboard() {
           </div>
 
           {/* Sidebar Navigation */}
-          <nav className="flex-1 p-4">
-            <div className="space-y-1">
+          <nav className="flex-1 px-3 py-4">
+            <div className="space-y-0.5">
+              {/* Dashboard Parent Menu */}
               <button
-                className="w-full flex items-center gap-3 px-4 py-3 rounded-lg bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20 transition-colors"
+                onClick={() => setIsDashboardExpanded(!isDashboardExpanded)}
+                className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-white/5 text-white transition-colors"
               >
-                <Users className="w-5 h-5" />
-                <span className="font-medium">ContactUsInfo</span>
+                <div className="flex items-center gap-2.5">
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span className="text-sm font-medium">Dashboard</span>
+                </div>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDashboardExpanded ? "rotate-180" : ""}`} />
               </button>
+              
+              {/* Submenu with smooth animation */}
+              <div 
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                  isDashboardExpanded ? "max-h-12 opacity-100" : "max-h-0 opacity-0"
+                }`}
+              >
+                <button
+                  className="w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md bg-[#00d4ff]/10 text-[#00d4ff] transition-colors text-sm"
+                >
+                  <Users className="w-4 h-4" />
+                  <span className="font-medium">Contact Us Info</span>
+                </button>
+              </div>
             </div>
           </nav>
 
@@ -231,9 +299,15 @@ export default function ContactUsDashboard() {
               >
                 <Menu className="w-5 h-5 text-gray-600" />
               </button>
-              <h1 className="text-lg lg:text-xl font-semibold text-gray-900">
-                Contact Us Dashboard
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-xl lg:text-2xl font-bold text-[#0a1628]">
+                  Immense Brains
+                </h1>
+                <span className="text-gray-300">|</span>
+                <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
+                  Contact Us Dashboard
+                </h2>
+              </div>
             </div>
             <div className="flex items-center gap-2 lg:gap-4">
               <Link
@@ -288,16 +362,28 @@ export default function ContactUsDashboard() {
                   <p className="text-2xl font-bold text-gray-900">{contacts.length}</p>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={fetchContacts}
-                disabled={isLoading}
-                className="gap-2"
-              >
-                <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
-                Refresh
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => setIsDeleteSelectedDialogOpen(true)}
+                  disabled={selectedIds.length === 0}
+                  className="gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Delete Selected {selectedIds.length > 0 && `(${selectedIds.length})`}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={fetchContacts}
+                  disabled={isLoading}
+                  className="gap-2"
+                >
+                  <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
+                  Refresh
+                </Button>
+              </div>
             </div>
           </div>
 
@@ -325,6 +411,14 @@ export default function ContactUsDashboard() {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
+                      <TableHead className="w-12">
+                        <Checkbox
+                          checked={contacts.length > 0 && selectedIds.length === contacts.length}
+                          onCheckedChange={handleSelectAll}
+                          aria-label="Select all"
+                          className={selectedIds.length > 0 && selectedIds.length < contacts.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                        />
+                      </TableHead>
                       <TableHead className="font-semibold text-gray-700">Name</TableHead>
                       <TableHead className="font-semibold text-gray-700">Email</TableHead>
                       <TableHead className="font-semibold text-gray-700">Company</TableHead>
@@ -338,8 +432,17 @@ export default function ContactUsDashboard() {
                     {contacts.map((contact) => (
                       <TableRow 
                         key={contact.id} 
-                        className="hover:bg-gray-50 transition-colors"
+                        className={`hover:bg-gray-50 transition-colors ${
+                          selectedIds.includes(contact.id) ? "bg-blue-50" : ""
+                        }`}
                       >
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedIds.includes(contact.id)}
+                            onCheckedChange={() => handleSelectOne(contact.id)}
+                            aria-label={`Select ${contact.name}`}
+                          />
+                        </TableCell>
                         <TableCell className="font-medium text-gray-900">{contact.name}</TableCell>
                         <TableCell>
                           <a
@@ -524,6 +627,47 @@ export default function ContactUsDashboard() {
                 </>
               ) : (
                 "Delete"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Selected Confirmation Dialog */}
+      <Dialog open={isDeleteSelectedDialogOpen} onOpenChange={setIsDeleteSelectedDialogOpen}>
+        <DialogContent className="sm:max-w-[400px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-red-600">
+              <Trash2 className="w-5 h-5" />
+              Delete Selected Contacts
+            </DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete{" "}
+              <span className="font-semibold text-gray-900">{selectedIds.length}</span>{" "}
+              selected contact{selectedIds.length > 1 ? "s" : ""}?
+              This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="mt-4">
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteSelectedDialogOpen(false)}
+              disabled={isDeletingSelected}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDeleteSelected}
+              disabled={isDeletingSelected}
+            >
+              {isDeletingSelected ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Deleting...
+                </>
+              ) : (
+                `Delete ${selectedIds.length} Contact${selectedIds.length > 1 ? "s" : ""}`
               )}
             </Button>
           </DialogFooter>
