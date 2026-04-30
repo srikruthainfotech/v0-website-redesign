@@ -220,14 +220,14 @@ export default function ContactUsDashboard() {
     <div className="min-h-screen flex bg-gray-50">
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 z-40 lg:hidden"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside 
+      <aside
         className={`
           fixed lg:static inset-y-0 left-0 z-50
           w-64 bg-[#0a1628] text-white
@@ -239,7 +239,7 @@ export default function ContactUsDashboard() {
           {/* Sidebar Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
             <span className="font-bold text-lg text-white">Immense Brains</span>
-            <button 
+            <button
               onClick={() => setIsSidebarOpen(false)}
               className="lg:hidden p-1 hover:bg-white/10 rounded"
             >
@@ -261,12 +261,11 @@ export default function ContactUsDashboard() {
                 </div>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDashboardExpanded ? "rotate-180" : ""}`} />
               </button>
-              
+
               {/* Submenu with smooth animation */}
-              <div 
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                  isDashboardExpanded ? "max-h-12 opacity-100" : "max-h-0 opacity-0"
-                }`}
+              <div
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-12 opacity-100" : "max-h-0 opacity-0"
+                  }`}
               >
                 <button
                   className="w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md bg-[#00d4ff]/10 text-[#00d4ff] transition-colors text-sm"
@@ -293,17 +292,13 @@ export default function ContactUsDashboard() {
         <header className="bg-white border-b border-gray-200 sticky top-0 z-30">
           <div className="flex items-center justify-between px-4 lg:px-6 h-16">
             <div className="flex items-center gap-4">
-              <button 
+              <button
                 onClick={() => setIsSidebarOpen(true)}
                 className="lg:hidden p-2 hover:bg-gray-100 rounded-lg"
               >
                 <Menu className="w-5 h-5 text-gray-600" />
               </button>
               <div className="flex items-center gap-3">
-                <h1 className="text-xl lg:text-2xl font-bold text-[#0a1628]">
-                  Immense Brains
-                </h1>
-                <span className="text-gray-300">|</span>
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
                   Contact Us Dashboard
                 </h2>
@@ -335,11 +330,10 @@ export default function ContactUsDashboard() {
           {/* Message Alert */}
           {message && (
             <div
-              className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${
-                message.type === "success"
+              className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${message.type === "success"
                   ? "bg-green-50 border border-green-200 text-green-700"
                   : "bg-red-50 border border-red-200 text-red-700"
-              }`}
+                }`}
             >
               {message.type === "success" ? (
                 <CheckCircle className="w-5 h-5 shrink-0" />
@@ -430,11 +424,10 @@ export default function ContactUsDashboard() {
                   </TableHeader>
                   <TableBody>
                     {contacts.map((contact) => (
-                      <TableRow 
-                        key={contact.id} 
-                        className={`hover:bg-gray-50 transition-colors ${
-                          selectedIds.includes(contact.id) ? "bg-blue-50" : ""
-                        }`}
+                      <TableRow
+                        key={contact.id}
+                        className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(contact.id) ? "bg-blue-50" : ""
+                          }`}
                       >
                         <TableCell>
                           <Checkbox
@@ -455,14 +448,14 @@ export default function ContactUsDashboard() {
                         <TableCell className="text-gray-500">
                           {contact.company || "-"}
                         </TableCell>
-                        <TableCell 
-                          className="max-w-[180px] truncate text-gray-700" 
+                        <TableCell
+                          className="max-w-[180px] truncate text-gray-700"
                           title={contact.subject}
                         >
                           {contact.subject}
                         </TableCell>
-                        <TableCell 
-                          className="max-w-[200px] truncate text-gray-500" 
+                        <TableCell
+                          className="max-w-[200px] truncate text-gray-500"
                           title={contact.message}
                         >
                           {contact.message}
@@ -516,7 +509,7 @@ export default function ContactUsDashboard() {
               Full details of the contact submission
             </DialogDescription>
           </DialogHeader>
-          
+
           {selectedContact && (
             <div className="space-y-4 py-4">
               {/* Name */}
@@ -533,7 +526,7 @@ export default function ContactUsDashboard() {
                 <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Email</p>
-                  <a 
+                  <a
                     href={`mailto:${selectedContact.email}`}
                     className="text-[#0066ff] hover:underline mt-1 block"
                   >
