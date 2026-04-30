@@ -56,7 +56,7 @@ export default function ContactUsDashboard() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isDashboardExpanded, setIsDashboardExpanded] = useState(false)
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
 
@@ -124,7 +124,7 @@ export default function ContactUsDashboard() {
   }
 
   // Handle individual row selection
-  const handleSelectOne = (id: string) => {
+  const handleSelectOne = (id: number) => {
     setSelectedIds((prev) =>
       prev.includes(id)
         ? prev.filter((selectedId) => selectedId !== id)
@@ -331,8 +331,8 @@ export default function ContactUsDashboard() {
           {message && (
             <div
               className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${message.type === "success"
-                  ? "bg-green-50 border border-green-200 text-green-700"
-                  : "bg-red-50 border border-red-200 text-red-700"
+                ? "bg-green-50 border border-green-200 text-green-700"
+                : "bg-red-50 border border-red-200 text-red-700"
                 }`}
             >
               {message.type === "success" ? (
@@ -357,6 +357,25 @@ export default function ContactUsDashboard() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
+
+                {/* Select All Button */}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (selectedIds.length === contacts.length) {
+                      setSelectedIds([])
+                    } else {
+                      setSelectedIds(contacts.map((c) => c.id))
+                    }
+                  }}
+                >
+                  {selectedIds.length === contacts.length && contacts.length > 0
+                    ? "Unselect All"
+                    : "Select All"}
+                </Button>
+
+                {/* Delete Button */}
                 <Button
                   variant="destructive"
                   size="sm"
@@ -365,8 +384,10 @@ export default function ContactUsDashboard() {
                   className="gap-2"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Delete Selected {selectedIds.length > 0 && `(${selectedIds.length})`}
+                  Delete Selected
                 </Button>
+
+                {/* Refresh */}
                 <Button
                   variant="outline"
                   size="sm"
@@ -377,6 +398,7 @@ export default function ContactUsDashboard() {
                   <RefreshCw className={`w-4 h-4 ${isLoading ? "animate-spin" : ""}`} />
                   Refresh
                 </Button>
+
               </div>
             </div>
           </div>
@@ -405,14 +427,6 @@ export default function ContactUsDashboard() {
                 <Table>
                   <TableHeader>
                     <TableRow className="bg-gray-50 hover:bg-gray-50">
-                      <TableHead className="w-12">
-                        <Checkbox
-                          checked={contacts.length > 0 && selectedIds.length === contacts.length}
-                          onCheckedChange={handleSelectAll}
-                          aria-label="Select all"
-                          className={selectedIds.length > 0 && selectedIds.length < contacts.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
-                        />
-                      </TableHead>
                       <TableHead className="font-semibold text-gray-700">Name</TableHead>
                       <TableHead className="font-semibold text-gray-700">Email</TableHead>
                       <TableHead className="font-semibold text-gray-700">Company</TableHead>
@@ -432,8 +446,13 @@ export default function ContactUsDashboard() {
                         <TableCell>
                           <Checkbox
                             checked={selectedIds.includes(contact.id)}
-                            onCheckedChange={() => handleSelectOne(contact.id)}
-                            aria-label={`Select ${contact.name}`}
+                            onCheckedChange={(checked) => {
+                              if (checked) {
+                                setSelectedIds((prev) => [...prev, contact.id])
+                              } else {
+                                setSelectedIds((prev) => prev.filter((id) => id !== contact.id))
+                              }
+                            }}
                           />
                         </TableCell>
                         <TableCell className="font-medium text-gray-900">{contact.name}</TableCell>
