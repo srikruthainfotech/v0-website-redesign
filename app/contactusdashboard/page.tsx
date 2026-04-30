@@ -237,13 +237,8 @@ export default function ContactUsDashboard() {
       >
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between p-4 border-b border-white/10">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-[#00d4ff] rounded-lg flex items-center justify-center">
-                <span className="text-[#0a1628] font-bold text-sm">IB</span>
-              </div>
-              <span className="font-semibold text-lg">Dashboard</span>
-            </div>
+          <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
+            <span className="font-bold text-lg text-white">Immense Brains</span>
             <button 
               onClick={() => setIsSidebarOpen(false)}
               className="lg:hidden p-1 hover:bg-white/10 rounded"
@@ -253,32 +248,30 @@ export default function ContactUsDashboard() {
           </div>
 
           {/* Sidebar Navigation */}
-          <nav className="flex-1 p-4">
-            <div className="space-y-1">
+          <nav className="flex-1 px-3 py-4">
+            <div className="space-y-0.5">
               {/* Dashboard Parent Menu */}
               <button
                 onClick={() => setIsDashboardExpanded(!isDashboardExpanded)}
-                className="w-full flex items-center justify-between px-4 py-3 rounded-lg hover:bg-white/5 text-white transition-colors"
+                className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-white/5 text-white transition-colors"
               >
-                <div className="flex items-center gap-3">
-                  <LayoutDashboard className="w-5 h-5" />
-                  <span className="font-medium">Dashboard</span>
+                <div className="flex items-center gap-2.5">
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span className="text-sm font-medium">Dashboard</span>
                 </div>
-                <div className={`transition-transform duration-200 ${isDashboardExpanded ? "rotate-180" : ""}`}>
-                  <ChevronDown className="w-4 h-4" />
-                </div>
+                <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDashboardExpanded ? "rotate-180" : ""}`} />
               </button>
               
               {/* Submenu with smooth animation */}
               <div 
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                  isDashboardExpanded ? "max-h-20 opacity-100" : "max-h-0 opacity-0"
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                  isDashboardExpanded ? "max-h-12 opacity-100" : "max-h-0 opacity-0"
                 }`}
               >
                 <button
-                  className="w-full flex items-center gap-3 pl-12 pr-4 py-3 rounded-lg bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/20 transition-colors ml-2"
+                  className="w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md bg-[#00d4ff]/10 text-[#00d4ff] transition-colors text-sm"
                 >
-                  <Users className="w-5 h-5" />
+                  <Users className="w-4 h-4" />
                   <span className="font-medium">Contact Us Info</span>
                 </button>
               </div>
