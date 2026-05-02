@@ -56,7 +56,7 @@ export default function ContactUsDashboard() {
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isDashboardExpanded, setIsDashboardExpanded] = useState(false)
-  const [selectedIds, setSelectedIds] = useState<string[]>([])
+  const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
 
@@ -124,7 +124,7 @@ export default function ContactUsDashboard() {
   }
 
   // Handle individual row selection
-  const handleSelectOne = (id: string) => {
+  const handleSelectOne = (id: number) => {
     setSelectedIds((prev) =>
       prev.includes(id)
         ? prev.filter((selectedId) => selectedId !== id)
@@ -331,8 +331,8 @@ export default function ContactUsDashboard() {
           {message && (
             <div
               className={`mb-6 p-4 rounded-lg flex items-center gap-2 ${message.type === "success"
-                  ? "bg-green-50 border border-green-200 text-green-700"
-                  : "bg-red-50 border border-red-200 text-red-700"
+                ? "bg-green-50 border border-green-200 text-green-700"
+                : "bg-red-50 border border-red-200 text-red-700"
                 }`}
             >
               {message.type === "success" ? (
@@ -365,7 +365,7 @@ export default function ContactUsDashboard() {
                   className="gap-2"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Delete Selected {selectedIds.length > 0 && `(${selectedIds.length})`}
+                  Delete Selected
                 </Button>
                 <Button
                   variant="outline"
