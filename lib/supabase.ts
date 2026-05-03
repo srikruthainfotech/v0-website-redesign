@@ -20,3 +20,14 @@ export type User = {
   username: string
   password: string
 }
+
+export type TalentReferral = {
+  id: number
+  your_name: string
+  your_email: string
+  candidate_name: string
+  candidate_email: string
+  position: string
+  location: string
+  created_at: string
+}
