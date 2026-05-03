@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
-
+import { supabase } from "@/lib/supabase"
 export function ReferralForm() {
   const [formData, setFormData] = useState({
     yourName: "",
@@ -24,27 +24,49 @@ export function ReferralForm() {
     setFormData((prev) => ({ ...prev, resume: file }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    console.log("Form submitted:", formData)
+    try {
+      const { error } = await supabase
+        .from("talent_referrals")
+        .insert([
+          {
+            your_name: formData.yourName,
+            your_email: formData.yourEmail,
+            candidate_name: formData.candidateName,
+            candidate_email: formData.candidateEmail,
+            position: formData.positionOfInterest,
+            location: formData.candidateLocation,
+          },
+        ])
 
-    alert("Thank you for your referral! Our team will review it and get back to you shortly.")
+      if (error) {
+        console.error("❌ Insert error:", error)
+        alert("Failed to submit referral")
+        return
+      }
 
-    // ✅ Reset state
-    setFormData({
-      yourName: "",
-      yourEmail: "",
-      candidateName: "",
-      candidateEmail: "",
-      positionOfInterest: "",
-      candidateLocation: "",
-      resume: null,
-    })
+      alert("✅ Referral submitted successfully!")
 
-    // ✅ IMPORTANT: Reset file input UI
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
+      // RESET FORM
+      setFormData({
+        yourName: "",
+        yourEmail: "",
+        candidateName: "",
+        candidateEmail: "",
+        positionOfInterest: "",
+        candidateLocation: "",
+        resume: null,
+      })
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+    } catch (err) {
+      console.error("Unexpected error:", err)
+      alert("Something went wrong")
     }
   }
 
