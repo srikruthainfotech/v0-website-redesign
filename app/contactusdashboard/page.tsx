@@ -42,6 +42,9 @@ import {
   LayoutDashboard,
   Briefcase,
   MapPin,
+  ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
@@ -64,6 +67,14 @@ export default function ContactUsDashboard() {
   const [activeTab, setActiveTab] = useState<"contact" | "referrals">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
+  
+  // Sorting state for contacts
+  const [contactSortColumn, setContactSortColumn] = useState<keyof ContactUs | null>(null)
+  const [contactSortDirection, setContactSortDirection] = useState<"asc" | "desc">("asc")
+  
+  // Sorting state for referrals
+  const [referralSortColumn, setReferralSortColumn] = useState<keyof TalentReferral | null>(null)
+  const [referralSortDirection, setReferralSortDirection] = useState<"asc" | "desc">("asc")
 
   // Check authentication on mount
   useEffect(() => {
@@ -101,7 +112,6 @@ export default function ContactUsDashboard() {
 
   // Fetch referrals from Supabase
   const fetchReferrals = useCallback(async () => {
-    console.log("[v0] ACTIVE TAB:", activeTab)
     setReferralLoading(true)
     try {
       const { data, error } = await supabase
@@ -115,7 +125,6 @@ export default function ContactUsDashboard() {
         return
       }
 
-      console.log("[v0] REFERRALS:", data)
       setReferrals(data || [])
     } catch (err) {
       console.error("Error:", err)
@@ -254,6 +263,80 @@ export default function ContactUsDashboard() {
       hour: "2-digit",
       minute: "2-digit",
     })
+  }
+
+  // Handle contact sorting
+  const handleContactSort = (column: keyof ContactUs) => {
+    if (contactSortColumn === column) {
+      setContactSortDirection(contactSortDirection === "asc" ? "desc" : "asc")
+    } else {
+      setContactSortColumn(column)
+      setContactSortDirection("asc")
+    }
+  }
+
+  // Handle referral sorting
+  const handleReferralSort = (column: keyof TalentReferral) => {
+    if (referralSortColumn === column) {
+      setReferralSortDirection(referralSortDirection === "asc" ? "desc" : "asc")
+    } else {
+      setReferralSortColumn(column)
+      setReferralSortDirection("asc")
+    }
+  }
+
+  // Get sorted contacts
+  const sortedContacts = [...contacts].sort((a, b) => {
+    if (!contactSortColumn) return 0
+    
+    const aValue = a[contactSortColumn]
+    const bValue = b[contactSortColumn]
+    
+    if (aValue === null || aValue === undefined) return 1
+    if (bValue === null || bValue === undefined) return -1
+    
+    let comparison = 0
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      comparison = aValue.localeCompare(bValue)
+    } else if (typeof aValue === "number" && typeof bValue === "number") {
+      comparison = aValue - bValue
+    } else {
+      comparison = String(aValue).localeCompare(String(bValue))
+    }
+    
+    return contactSortDirection === "asc" ? comparison : -comparison
+  })
+
+  // Get sorted referrals
+  const sortedReferrals = [...referrals].sort((a, b) => {
+    if (!referralSortColumn) return 0
+    
+    const aValue = a[referralSortColumn]
+    const bValue = b[referralSortColumn]
+    
+    if (aValue === null || aValue === undefined) return 1
+    if (bValue === null || bValue === undefined) return -1
+    
+    let comparison = 0
+    if (typeof aValue === "string" && typeof bValue === "string") {
+      comparison = aValue.localeCompare(bValue)
+    } else if (typeof aValue === "number" && typeof bValue === "number") {
+      comparison = aValue - bValue
+    } else {
+      comparison = String(aValue).localeCompare(String(bValue))
+    }
+    
+    return referralSortDirection === "asc" ? comparison : -comparison
+  })
+
+  // Render sort icon
+  const renderSortIcon = (column: string, currentColumn: string | null, direction: "asc" | "desc") => {
+    if (column !== currentColumn) {
+      return <ArrowUpDown className="w-4 h-4 ml-1 opacity-50" />
+    }
+    return direction === "asc" 
+      ? <ArrowUp className="w-4 h-4 ml-1 text-[#00d4ff]" />
+      : <ArrowDown className="w-4 h-4 ml-1 text-[#00d4ff]" />
   }
 
   // Clear message after 5 seconds
@@ -494,17 +577,65 @@ export default function ContactUsDashboard() {
                             className={selectedIds.length > 0 && selectedIds.length < contacts.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
                           />
                         </TableHead>
-                        <TableHead className="font-semibold text-gray-700">Name</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Email</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Company</TableHead>
-                        <TableHead className="font-semibold text-gray-700 max-w-[180px]">Subject</TableHead>
-                        <TableHead className="font-semibold text-gray-700 max-w-[200px]">Message</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Date</TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("name")}
+                        >
+                          <div className="flex items-center">
+                            Name
+                            {renderSortIcon("name", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("email")}
+                        >
+                          <div className="flex items-center">
+                            Email
+                            {renderSortIcon("email", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("company")}
+                        >
+                          <div className="flex items-center">
+                            Company
+                            {renderSortIcon("company", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 max-w-[180px] cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("subject")}
+                        >
+                          <div className="flex items-center">
+                            Subject
+                            {renderSortIcon("subject", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 max-w-[200px] cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("message")}
+                        >
+                          <div className="flex items-center">
+                            Message
+                            {renderSortIcon("message", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleContactSort("created_at")}
+                        >
+                          <div className="flex items-center">
+                            Date
+                            {renderSortIcon("created_at", contactSortColumn, contactSortDirection)}
+                          </div>
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {contacts.map((contact) => (
+                      {sortedContacts.map((contact) => (
                         <TableRow
                           key={contact.id}
                           className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(contact.id) ? "bg-blue-50" : ""
@@ -608,18 +739,74 @@ export default function ContactUsDashboard() {
                             className={selectedIds.length > 0 && selectedIds.length < referrals.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
                           />
                         </TableHead>
-                        <TableHead className="font-semibold text-gray-700">Your Name</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Your Email</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Candidate Name</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Candidate Email</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Position</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Location</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Date</TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("your_name")}
+                        >
+                          <div className="flex items-center">
+                            Your Name
+                            {renderSortIcon("your_name", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("your_email")}
+                        >
+                          <div className="flex items-center">
+                            Your Email
+                            {renderSortIcon("your_email", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("candidate_name")}
+                        >
+                          <div className="flex items-center">
+                            Candidate Name
+                            {renderSortIcon("candidate_name", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("candidate_email")}
+                        >
+                          <div className="flex items-center">
+                            Candidate Email
+                            {renderSortIcon("candidate_email", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("position")}
+                        >
+                          <div className="flex items-center">
+                            Position
+                            {renderSortIcon("position", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("location")}
+                        >
+                          <div className="flex items-center">
+                            Location
+                            {renderSortIcon("location", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={() => handleReferralSort("created_at")}
+                        >
+                          <div className="flex items-center">
+                            Date
+                            {renderSortIcon("created_at", referralSortColumn, referralSortDirection)}
+                          </div>
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {referrals.map((referral) => (
+                      {sortedReferrals.map((referral) => (
                         <TableRow
                           key={referral.id}
                           className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(referral.id) ? "bg-blue-50" : ""
