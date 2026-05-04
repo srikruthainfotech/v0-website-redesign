@@ -29,5 +29,6 @@ export type TalentReferral = {
   candidate_email: string
   position: string
   location: string
+  resume_url: string | null
   created_at: string
 }
