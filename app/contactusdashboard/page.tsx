@@ -42,6 +42,8 @@ import {
   LayoutDashboard,
   Briefcase,
   MapPin,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
@@ -64,6 +66,8 @@ export default function ContactUsDashboard() {
   const [activeTab, setActiveTab] = useState<"contact" | "referrals">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
+  const [contactDateSort, setContactDateSort] = useState<"asc" | "desc">("desc")
+  const [referralDateSort, setReferralDateSort] = useState<"asc" | "desc">("desc")
 
   // Check authentication on mount
   useEffect(() => {
@@ -101,7 +105,6 @@ export default function ContactUsDashboard() {
 
   // Fetch referrals from Supabase
   const fetchReferrals = useCallback(async () => {
-    console.log("[v0] ACTIVE TAB:", activeTab)
     setReferralLoading(true)
     try {
       const { data, error } = await supabase
@@ -115,7 +118,6 @@ export default function ContactUsDashboard() {
         return
       }
 
-      console.log("[v0] REFERRALS:", data)
       setReferrals(data || [])
     } catch (err) {
       console.error("Error:", err)
@@ -263,6 +265,29 @@ export default function ContactUsDashboard() {
       return () => clearTimeout(timer)
     }
   }, [message])
+
+  // Sorted contacts based on date
+  const sortedContacts = [...contacts].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime()
+    const dateB = new Date(b.created_at).getTime()
+    return contactDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
+  // Sorted referrals based on date
+  const sortedReferrals = [...referrals].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime()
+    const dateB = new Date(b.created_at).getTime()
+    return referralDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
+  // Toggle sort functions
+  const toggleContactDateSort = () => {
+    setContactDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  const toggleReferralDateSort = () => {
+    setReferralDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
 
   if (!isAuthenticated) {
     return (
@@ -499,12 +524,24 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Company</TableHead>
                         <TableHead className="font-semibold text-gray-700 max-w-[180px]">Subject</TableHead>
                         <TableHead className="font-semibold text-gray-700 max-w-[200px]">Message</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Date</TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleContactDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Date
+                            {contactDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
-                    <TableBody>
-                      {contacts.map((contact) => (
+<TableBody>
+                    {sortedContacts.map((contact) => (
                         <TableRow
                           key={contact.id}
                           className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(contact.id) ? "bg-blue-50" : ""
@@ -614,12 +651,24 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Candidate Email</TableHead>
                         <TableHead className="font-semibold text-gray-700">Position</TableHead>
                         <TableHead className="font-semibold text-gray-700">Location</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Date</TableHead>
+                        <TableHead 
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleReferralDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Date
+                            {referralDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {referrals.map((referral) => (
+                      {sortedReferrals.map((referral) => (
                         <TableRow
                           key={referral.id}
                           className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(referral.id) ? "bg-blue-50" : ""
