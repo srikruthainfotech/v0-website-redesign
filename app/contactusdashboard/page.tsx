@@ -258,30 +258,6 @@ export default function ContactUsDashboard() {
       minute: "2-digit",
     })
   }
-  const getFileName = (url: string) => {
-    try {
-      const lastPart = url.split("/").pop() || ""
-
-      // remove timestamp (before first "-")
-      const cleanName = lastPart.substring(lastPart.indexOf("-") + 1)
-
-      return decodeURIComponent(cleanName)
-    } catch {
-      return "Resume.pdf"
-    }
-  }
-
-  const handleDownload = async (url: string) => {
-    const response = await fetch(url)
-    const blob = await response.blob()
-
-    const link = document.createElement("a")
-    link.href = URL.createObjectURL(blob)
-    link.download = getFileName(url)
-    document.body.appendChild(link)
-    link.click()
-    link.remove()
-  }
 
   // Clear message after 5 seconds
   useEffect(() => {
@@ -376,8 +352,8 @@ export default function ContactUsDashboard() {
                 <button
                   onClick={() => setActiveTab("contact")}
                   className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "contact"
-                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
-                    : "hover:bg-white/5 text-white"
+                      ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                      : "hover:bg-white/5 text-white"
                     }`}
                 >
                   <Users className="w-4 h-4" />
@@ -386,8 +362,8 @@ export default function ContactUsDashboard() {
                 <button
                   onClick={() => setActiveTab("referrals")}
                   className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "referrals"
-                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
-                    : "hover:bg-white/5 text-white"
+                      ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                      : "hover:bg-white/5 text-white"
                     }`}
                 >
                   <Briefcase className="w-4 h-4" />
@@ -732,22 +708,40 @@ export default function ContactUsDashboard() {
                           </TableCell>
                           <TableCell>
                             {referral.resume_url ? (
-                              <div className="flex items-center gap-2">
-
-                                <a
-                                  href={referral.resume_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="text-[#0066ff] hover:underline text-sm font-medium"
+                              <div className="flex items-center gap-1">
+                                <Button
+                                  variant="outline"
+                                  size="sm"
+                                  asChild
+                                  className="h-7 px-2 text-xs"
+                                  title="View Resume"
                                 >
-                                  {getFileName(referral.resume_url)}
-                                </a>
-
-                                <Download
-                                  className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
-                                  onClick={() => handleDownload(referral.resume_url!)}
-                                />
-
+                                  <a
+                                    href={referral.resume_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Eye className="w-3 h-3 mr-1" />
+                                    View
+                                  </a>
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  asChild
+                                  className="h-7 px-2 text-xs text-gray-500 hover:text-gray-700"
+                                  title="Download Resume"
+                                >
+                                  <a
+                                    href={referral.resume_url}
+                                    download
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                  >
+                                    <Download className="w-3 h-3 mr-1" />
+                                    Download
+                                  </a>
+                                </Button>
                               </div>
                             ) : (
                               <span className="text-gray-400 text-sm">Not uploaded</span>
@@ -948,7 +942,22 @@ export default function ContactUsDashboard() {
                   <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Resume</p>
                   {(selectedContact as unknown as TalentReferral).resume_url ? (
                     <div className="flex items-center gap-2 mt-2">
-
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        asChild
+                        className="h-8"
+                        title="View Resume"
+                      >
+                        <a
+                          href={(selectedContact as unknown as TalentReferral).resume_url!}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Eye className="w-4 h-4 mr-1.5" />
+                          View
+                        </a>
+                      </Button>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -956,23 +965,15 @@ export default function ContactUsDashboard() {
                         className="h-8 text-gray-500 hover:text-gray-700"
                         title="Download Resume"
                       >
-                        <div className="flex items-center gap-2 mt-2">
-                          <a
-                            href={(selectedContact as unknown as TalentReferral).resume_url!}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-[#0066ff] hover:underline text-sm"
-                          >
-                            {getFileName((selectedContact as unknown as TalentReferral).resume_url!)}
-                          </a>
-
-                          <Download
-                            className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
-                            onClick={() =>
-                              handleDownload((selectedContact as unknown as TalentReferral).resume_url!)
-                            }
-                          />
-                        </div>
+                        <a
+                          href={(selectedContact as unknown as TalentReferral).resume_url!}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <Download className="w-4 h-4 mr-1.5" />
+                          Download
+                        </a>
                       </Button>
                     </div>
                   ) : (
