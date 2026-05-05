@@ -958,13 +958,13 @@ export default function ContactUsDashboard() {
                       >
                         <div className="flex items-center gap-2 mt-2">
                           <a
-  href={(selectedContact as unknown as TalentReferral).resume_url!}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="text-[#0066ff] hover:underline text-sm"
->
-  {getFileName((selectedContact as unknown as TalentReferral).resume_url!)}
-</a>
+                            href={(selectedContact as unknown as TalentReferral).resume_url!}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#0066ff] hover:underline text-sm"
+                          >
+                            {getFileName((selectedContact as unknown as TalentReferral).resume_url!)}
+                          </a>
 
                           <Download
                             className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
