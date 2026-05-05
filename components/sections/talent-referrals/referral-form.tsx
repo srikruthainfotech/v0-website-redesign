@@ -28,6 +28,33 @@ export function ReferralForm() {
     e.preventDefault()
 
     try {
+      let resumeUrl: string | null = null
+
+      // ✅ STEP 1: Upload file (ADD THIS BLOCK)
+      if (formData.resume) {
+        const file = formData.resume
+
+        const fileName = `${Date.now()}-${file.name}`
+
+        const { error: uploadError } = await supabase.storage
+          .from("resumes") // 👈 MUST MATCH your bucket name
+          .upload(fileName, file)
+
+        if (uploadError) {
+          console.error("❌ Upload error:", uploadError)
+          alert("File upload failed")
+          return
+        }
+
+        // ✅ STEP 2: Get public URL
+        const { data } = supabase.storage
+          .from("resumes")
+          .getPublicUrl(fileName)
+
+        resumeUrl = data.publicUrl
+      }
+
+      // ✅ STEP 3: Insert into DB (UPDATE THIS PART)
       const { error } = await supabase
         .from("talent_referrals")
         .insert([
@@ -38,6 +65,7 @@ export function ReferralForm() {
             candidate_email: formData.candidateEmail,
             position: formData.positionOfInterest,
             location: formData.candidateLocation,
+            resume_url: resumeUrl, // ⭐ IMPORTANT ADD THIS
           },
         ])
 
