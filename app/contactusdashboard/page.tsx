@@ -733,12 +733,14 @@ export default function ContactUsDashboard() {
                             {referral.resume_url ? (
                               <div className="flex items-center gap-2">
 
-                                <span
-                                  onClick={() => handleDownload(referral.resume_url!)}
-                                  className="text-[#0066ff] hover:underline text-sm font-medium cursor-pointer"
+                                <a
+                                  href={referral.resume_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[#0066ff] hover:underline text-sm font-medium"
                                 >
                                   {getFileName(referral.resume_url)}
-                                </span>
+                                </a>
 
                                 <Download
                                   className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
