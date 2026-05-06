@@ -186,6 +186,19 @@ export default function ContactUsDashboard() {
     const itemType = activeTab === "contact" ? "contact(s)" : "referral(s)"
 
     try {
+      // ✅ DELETE FILES FROM STORAGE (ONLY FOR REFERRALS)
+      if (activeTab === "referrals") {
+        const filesToDelete = referrals
+          .filter(r => selectedIds.includes(r.id) && r.resume_url)
+          .map(r =>
+            decodeURIComponent(r.resume_url!.split("/").slice(-1)[0])
+          )
+        if (filesToDelete.length > 0) {
+          await supabase.storage
+            .from("resumes")
+            .remove(filesToDelete)
+        }
+      }
       const { error } = await supabase
         .from(tableName)
         .delete()
@@ -218,31 +231,46 @@ export default function ContactUsDashboard() {
     if (!selectedContact) return
 
     setIsSubmitting(true)
+
     const tableName = activeTab === "contact" ? "contact_us" : "talent_referrals"
     const itemType = activeTab === "contact" ? "contact" : "referral"
 
     try {
+      // ✅ STEP 1: DELETE FILE FROM STORAGE (ONLY FOR REFERRALS)
+      if (activeTab === "referrals") {
+        const referral = selectedContact as unknown as TalentReferral
+
+        if (referral.resume_url) {
+          // extract file name from URL
+          const filePath = decodeURIComponent(
+            referral.resume_url.split("/").slice(-1)[0]
+          )
+
+          await supabase.storage
+            .from("resumes")
+            .remove([filePath])
+        }
+      }
+
+      // ✅ STEP 2: DELETE FROM DATABASE
       const { error } = await supabase
         .from(tableName)
         .delete()
         .eq("id", selectedContact.id)
 
       if (error) {
-        console.error(`Error deleting ${itemType}:`, error)
         setMessage({ type: "error", text: `Failed to delete ${itemType}` })
         return
       }
 
-      setMessage({ type: "success", text: `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} deleted successfully` })
+      setMessage({ type: "success", text: `${itemType} deleted successfully` })
+
       setIsDeleteDialogOpen(false)
-      if (activeTab === "contact") {
-        fetchContacts()
-      } else {
-        fetchReferrals()
-      }
+
+      activeTab === "contact" ? fetchContacts() : fetchReferrals()
+
     } catch (err) {
-      console.error("Error:", err)
-      setMessage({ type: "error", text: "An unexpected error occurred" })
+      setMessage({ type: "error", text: "Unexpected error occurred" })
     } finally {
       setIsSubmitting(false)
     }
