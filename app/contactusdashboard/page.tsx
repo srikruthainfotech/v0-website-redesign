@@ -44,6 +44,7 @@ import {
   MapPin,
   ArrowUp,
   ArrowDown,
+  Download,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
@@ -183,8 +184,21 @@ export default function ContactUsDashboard() {
     setIsDeletingSelected(true)
     const tableName = activeTab === "contact" ? "contact_us" : "talent_referrals"
     const itemType = activeTab === "contact" ? "contact(s)" : "referral(s)"
-    
+
     try {
+      // ✅ DELETE FILES FROM STORAGE (ONLY FOR REFERRALS)
+      if (activeTab === "referrals") {
+        const filesToDelete = referrals
+          .filter(r => selectedIds.includes(r.id) && r.resume_url)
+          .map(r =>
+            decodeURIComponent(r.resume_url!.split("/").slice(-1)[0])
+          )
+        if (filesToDelete.length > 0) {
+          await supabase.storage
+            .from("resumes")
+            .remove(filesToDelete)
+        }
+      }
       const { error } = await supabase
         .from(tableName)
         .delete()
@@ -217,31 +231,46 @@ export default function ContactUsDashboard() {
     if (!selectedContact) return
 
     setIsSubmitting(true)
+
     const tableName = activeTab === "contact" ? "contact_us" : "talent_referrals"
     const itemType = activeTab === "contact" ? "contact" : "referral"
-    
+
     try {
+      // ✅ STEP 1: DELETE FILE FROM STORAGE (ONLY FOR REFERRALS)
+      if (activeTab === "referrals") {
+        const referral = selectedContact as unknown as TalentReferral
+
+        if (referral.resume_url) {
+          // extract file name from URL
+          const filePath = decodeURIComponent(
+            referral.resume_url.split("/").slice(-1)[0]
+          )
+
+          await supabase.storage
+            .from("resumes")
+            .remove([filePath])
+        }
+      }
+
+      // ✅ STEP 2: DELETE FROM DATABASE
       const { error } = await supabase
         .from(tableName)
         .delete()
         .eq("id", selectedContact.id)
 
       if (error) {
-        console.error(`Error deleting ${itemType}:`, error)
         setMessage({ type: "error", text: `Failed to delete ${itemType}` })
         return
       }
 
-      setMessage({ type: "success", text: `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} deleted successfully` })
+      setMessage({ type: "success", text: `${itemType} deleted successfully` })
+
       setIsDeleteDialogOpen(false)
-      if (activeTab === "contact") {
-        fetchContacts()
-      } else {
-        fetchReferrals()
-      }
+
+      activeTab === "contact" ? fetchContacts() : fetchReferrals()
+
     } catch (err) {
-      console.error("Error:", err)
-      setMessage({ type: "error", text: "An unexpected error occurred" })
+      setMessage({ type: "error", text: "Unexpected error occurred" })
     } finally {
       setIsSubmitting(false)
     }
@@ -257,7 +286,30 @@ export default function ContactUsDashboard() {
       minute: "2-digit",
     })
   }
+  const getFileName = (url: string) => {
+    try {
+      const lastPart = url.split("/").pop() || ""
 
+      // remove timestamp (before first "-")
+      const cleanName = lastPart.substring(lastPart.indexOf("-") + 1)
+
+      return decodeURIComponent(cleanName)
+    } catch {
+      return "Resume.pdf"
+    }
+  }
+
+  const handleDownload = async (url: string) => {
+    const response = await fetch(url)
+    const blob = await response.blob()
+
+    const link = document.createElement("a")
+    link.href = URL.createObjectURL(blob)
+    link.download = getFileName(url)
+    document.body.appendChild(link)
+    link.click()
+    link.remove()
+  }
   // Clear message after 5 seconds
   useEffect(() => {
     if (message) {
@@ -350,22 +402,20 @@ export default function ContactUsDashboard() {
               >
                 <button
                   onClick={() => setActiveTab("contact")}
-                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${
-                    activeTab === "contact" 
-                      ? "bg-[#00d4ff]/10 text-[#00d4ff]" 
-                      : "hover:bg-white/5 text-white"
-                  }`}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "contact"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
                 >
                   <Users className="w-4 h-4" />
                   <span className="font-medium">Contact Us Info</span>
                 </button>
                 <button
                   onClick={() => setActiveTab("referrals")}
-                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${
-                    activeTab === "referrals" 
-                      ? "bg-[#00d4ff]/10 text-[#00d4ff]" 
-                      : "hover:bg-white/5 text-white"
-                  }`}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "referrals"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
                 >
                   <Briefcase className="w-4 h-4" />
                   <span className="font-medium">Talent Referrals</span>
@@ -524,7 +574,7 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Company</TableHead>
                         <TableHead className="font-semibold text-gray-700 max-w-[180px]">Subject</TableHead>
                         <TableHead className="font-semibold text-gray-700 max-w-[200px]">Message</TableHead>
-                        <TableHead 
+                        <TableHead
                           className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={toggleContactDateSort}
                         >
@@ -540,8 +590,8 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
-<TableBody>
-                    {sortedContacts.map((contact) => (
+                    <TableBody>
+                      {sortedContacts.map((contact) => (
                         <TableRow
                           key={contact.id}
                           className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(contact.id) ? "bg-blue-50" : ""
@@ -651,7 +701,8 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Candidate Email</TableHead>
                         <TableHead className="font-semibold text-gray-700">Position</TableHead>
                         <TableHead className="font-semibold text-gray-700">Location</TableHead>
-                        <TableHead 
+                        <TableHead className="font-semibold text-gray-700">Resume</TableHead>
+                        <TableHead
                           className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={toggleReferralDateSort}
                         >
@@ -706,6 +757,29 @@ export default function ContactUsDashboard() {
                               {referral.location}
                             </div>
                           </TableCell>
+                          <TableCell>
+                            {referral.resume_url ? (
+                              <div className="flex items-center gap-2">
+
+                                <a
+                                  href={referral.resume_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[#0066ff] hover:underline text-sm font-medium"
+                                >
+                                  {getFileName(referral.resume_url)}
+                                </a>
+
+                                <Download
+                                  className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+                                  onClick={() => handleDownload(referral.resume_url!)}
+                                />
+
+                              </div>
+                            ) : (
+                              <span className="text-gray-400 text-sm">Not uploaded</span>
+                            )}
+                          </TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                             {formatDate(referral.created_at)}
                           </TableCell>
@@ -757,7 +831,7 @@ export default function ContactUsDashboard() {
               {activeTab === "contact" ? "Contact Details" : "Referral Details"}
             </DialogTitle>
             <DialogDescription>
-              {activeTab === "contact" 
+              {activeTab === "contact"
                 ? "Full details of the contact submission"
                 : "Full details of the talent referral"}
             </DialogDescription>
@@ -894,6 +968,39 @@ export default function ContactUsDashboard() {
                 </div>
               </div>
 
+              {/* Resume */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Resume</p>
+                  {(selectedContact as unknown as TalentReferral).resume_url ? (
+                    <div className="flex items-center gap-2 mt-2">
+
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="h-8 text-gray-500 hover:text-gray-700"
+                        title="Download Resume"
+                      >
+                        <div className="flex items-center gap-2 mt-2">
+                          <a
+                            href={(selectedContact as unknown as TalentReferral).resume_url! + "?download=1"}
+                            download
+                            className="flex items-center gap-1 text-[#0066ff] hover:underline text-sm"
+                          >
+                            {getFileName((selectedContact as unknown as TalentReferral).resume_url!)}
+                            <Download className="w-4 h-4" />
+                          </a>
+                        </div>
+                      </Button>
+                    </div>
+                  ) : (
+                    <p className="text-gray-400 mt-1">Not uploaded</p>
+                  )}
+                </div>
+              </div>
+
               {/* Date */}
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                 <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
@@ -927,8 +1034,8 @@ export default function ContactUsDashboard() {
             <DialogDescription>
               Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : "referral"} from{" "}
               <span className="font-medium text-gray-900">
-                {activeTab === "contact" 
-                  ? selectedContact?.name 
+                {activeTab === "contact"
+                  ? selectedContact?.name
                   : (selectedContact as unknown as TalentReferral)?.your_name}
               </span>?
               This action cannot be undone.
