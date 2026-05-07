@@ -39,7 +39,7 @@ export function ReferralForm() {
     const maxSize = 5 * 1024 * 1024
 
     if (file.size > maxSize) {
-      alert("File size must be less than or equal to 5MB")
+      alert("Please upload a PDF resume up to 5MB")
 
       if (fileInputRef.current) {
         fileInputRef.current.value = ""
@@ -214,6 +214,7 @@ export function ReferralForm() {
               name="resume"
               onChange={handleFileChange}
               accept=".pdf"
+              required
               className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium  file:bg-[#0a1628] file:py-1.5 file:px-3 file:rounded-md file:text-white hover:file:bg-[#0f2847] cursor-pointer"
             />
           </div>
