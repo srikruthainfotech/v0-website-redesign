@@ -20,8 +20,38 @@ export function ReferralForm() {
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] || null
-    setFormData((prev) => ({ ...prev, resume: file }))
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    // ✅ Allow only PDF
+    if (file.type !== "application/pdf") {
+      alert("Only PDF files are allowed")
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    // ✅ Max file size = 5MB
+    const maxSize = 5 * 1024 * 1024
+
+    if (file.size > maxSize) {
+      alert("File size must be less than or equal to 5MB")
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      resume: file,
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -183,7 +213,7 @@ export function ReferralForm() {
               type="file"
               name="resume"
               onChange={handleFileChange}
-              accept=".pdf,.doc,.docx"
+              accept=".pdf"
               className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium  file:bg-[#0a1628] file:py-1.5 file:px-3 file:rounded-md file:text-white hover:file:bg-[#0f2847] cursor-pointer"
             />
           </div>
