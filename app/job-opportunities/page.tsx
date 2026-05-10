@@ -1,18 +1,17 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobListings } from "@/components/job-opportunities/job-listings"
-import { getJobs, getCategories, getJobTypes, getLocations } from "@/lib/job-data"
+import { getJobs, getLocations, getDesignations } from "@/lib/job-data"
 import { Users, TrendingUp, Globe, Award } from "lucide-react"
 
 export const revalidate = 60 // Revalidate every 60 seconds
 
 export default async function CareersPage() {
   // Fetch all data from Supabase
-  const [jobs, categories, jobTypes, locations] = await Promise.all([
+  const [jobs, locations, designations] = await Promise.all([
     getJobs(),
-    getCategories(),
-    getJobTypes(),
     getLocations(),
+    getDesignations(),
   ])
 
   const benefits = [
@@ -117,9 +116,8 @@ export default async function CareersPage() {
           {/* Job Listings with Search Filter */}
           <JobListings 
             initialJobs={jobs}
-            categories={categories}
-            jobTypes={jobTypes}
             locations={locations}
+            designations={designations}
           />
         </div>
       </main>

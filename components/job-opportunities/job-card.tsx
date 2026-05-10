@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Briefcase, MapPin, Calendar } from "lucide-react"
+import { MapPin, Calendar, Users } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { QuickApplyModal } from "./quick-apply-modal"
 
@@ -12,6 +12,20 @@ interface JobCardProps {
 
 export function JobCard({ job }: JobCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+
+  // Format the posted date
+  const formatDate = (dateStr: string) => {
+    try {
+      const date = new Date(dateStr)
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    } catch {
+      return dateStr
+    }
+  }
 
   return (
     <>
@@ -26,8 +40,8 @@ export function JobCard({ job }: JobCardProps) {
           {/* Job Details */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
-              <Briefcase className="w-4 h-4" />
-              <span>{job.type}</span>
+              <Users className="w-4 h-4" />
+              <span>{job.numberOfOpenings} Opening{job.numberOfOpenings !== 1 ? "s" : ""}</span>
             </div>
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
@@ -35,14 +49,14 @@ export function JobCard({ job }: JobCardProps) {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>Posted {job.postedDate}</span>
+              <span>Posted {formatDate(job.postedDate)}</span>
             </div>
           </div>
         </div>
 
-        {/* Description */}
-        <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-          Qualifications {job.description}
+        {/* Job Duties (truncated) */}
+        <p className="text-sm text-gray-600 mb-4 leading-relaxed line-clamp-2">
+          {job.jobDuties}
         </p>
 
         {/* Buttons */}

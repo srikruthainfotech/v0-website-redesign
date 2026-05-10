@@ -6,23 +6,26 @@ import { Search } from "lucide-react"
 interface JobSearchFilterProps {
   onSearch: (filters: {
     keywords: string
-    category: string
-    jobType: string
+    designation: string
     location: string
   }) => void
-  categories: string[]
-  jobTypes: string[]
   locations: string[]
+  designations: string[]
 }
 
-export function JobSearchFilter({ onSearch, categories, jobTypes, locations }: JobSearchFilterProps) {
+export function JobSearchFilter({ onSearch, locations, designations }: JobSearchFilterProps) {
   const [keywords, setKeywords] = useState("")
-  const [category, setCategory] = useState(categories[0] || "All Categories")
-  const [jobType, setJobType] = useState(jobTypes[0] || "All Types")
+  const [designation, setDesignation] = useState(designations[0] || "All Designations")
   const [location, setLocation] = useState(locations[0] || "All Locations")
 
   const handleSearch = () => {
-    onSearch({ keywords, category, jobType, location })
+    onSearch({ keywords, designation, location })
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleSearch()
+    }
   }
 
   return (
@@ -30,36 +33,24 @@ export function JobSearchFilter({ onSearch, categories, jobTypes, locations }: J
       {/* Keywords Input */}
       <input
         type="text"
-        placeholder="Keywords"
+        placeholder="Search by title, post ID..."
         value={keywords}
         onChange={(e) => setKeywords(e.target.value)}
+        onKeyDown={handleKeyPress}
         className="w-full px-4 py-2.5 border border-gray-300 rounded-sm text-sm bg-white focus:outline-none focus:border-blue-500 mb-4"
       />
 
       {/* Filter Row */}
       <div className="flex flex-col sm:flex-row gap-3">
-        {/* Category Dropdown */}
+        {/* Designation Dropdown */}
         <select
-          value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          value={designation}
+          onChange={(e) => setDesignation(e.target.value)}
           className="flex-1 px-3 py-2.5 border border-gray-300 rounded-sm text-sm bg-white focus:outline-none focus:border-blue-500 cursor-pointer"
         >
-          {categories.map((cat) => (
-            <option key={cat} value={cat}>
-              {cat === "All Categories" ? "Category" : cat}
-            </option>
-          ))}
-        </select>
-
-        {/* Job Type Dropdown */}
-        <select
-          value={jobType}
-          onChange={(e) => setJobType(e.target.value)}
-          className="flex-1 px-3 py-2.5 border border-gray-300 rounded-sm text-sm bg-white focus:outline-none focus:border-blue-500 cursor-pointer"
-        >
-          {jobTypes.map((type) => (
-            <option key={type} value={type}>
-              {type === "All Types" ? "Job Type" : type}
+          {designations.map((d) => (
+            <option key={d} value={d}>
+              {d === "All Designations" ? "Designation" : d}
             </option>
           ))}
         </select>

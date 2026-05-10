@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Briefcase, MapPin, Calendar } from "lucide-react"
+import { X, MapPin, Calendar, Users } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { JobApplicationForm } from "./job-application-form"
 
@@ -27,6 +27,20 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
 
   const handleCancelClose = () => {
     setShowConfirmDialog(false)
+  }
+
+  // Format the posted date
+  const formatDate = (dateStr: string) => {
+    try {
+      const date = new Date(dateStr)
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    } catch {
+      return dateStr
+    }
   }
 
   return (
@@ -84,8 +98,8 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
           {/* Job Details Row */}
           <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-4">
             <div className="flex items-center gap-1">
-              <Briefcase className="w-4 h-4" />
-              <span>{job.type}</span>
+              <Users className="w-4 h-4" />
+              <span>{job.numberOfOpenings} Opening{job.numberOfOpenings !== 1 ? "s" : ""}</span>
             </div>
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
@@ -93,18 +107,33 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>Posted {job.postedDate}</span>
+              <span>Posted {formatDate(job.postedDate)}</span>
             </div>
           </div>
 
-          {/* Qualifications */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Qualifications</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-              {job.qualifications.map((qual, index) => (
-                <li key={index}>{qual}</li>
-              ))}
-            </ul>
+          {/* Qualifications Section */}
+          <div className="mb-6 space-y-4">
+            {/* Job Duties */}
+            <div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">Job Duties</h4>
+              <p className="text-sm text-gray-700 whitespace-pre-line">{job.jobDuties}</p>
+            </div>
+
+            {/* Education */}
+            {job.education && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Education</h4>
+                <p className="text-sm text-gray-700">{job.education}</p>
+              </div>
+            )}
+
+            {/* Experience */}
+            {job.experience && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-2">Experience</h4>
+                <p className="text-sm text-gray-700">{job.experience}</p>
+              </div>
+            )}
           </div>
 
           {/* Application Form */}

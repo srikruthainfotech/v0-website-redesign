@@ -34,14 +34,15 @@ export type TalentReferral = {
 }
 
 export type JobOpening = {
-  id: number
   post_id: string
-  title: string
-  type: string
+  posting_date: string
+  position: string
+  number_of_openings: number
   location: string
-  posted_date: string
-  category: string
-  description: string
-  qualifications: string[]
+  job_duties: string
+  education: string
+  experience: string
+  posted_by: string
+  designation: string
   created_at: string
 }

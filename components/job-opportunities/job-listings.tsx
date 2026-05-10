@@ -7,18 +7,16 @@ import type { Job } from "@/lib/job-data"
 
 interface JobListingsProps {
   initialJobs: Job[]
-  categories: string[]
-  jobTypes: string[]
   locations: string[]
+  designations: string[]
 }
 
-export function JobListings({ initialJobs, categories, jobTypes, locations }: JobListingsProps) {
+export function JobListings({ initialJobs, locations, designations }: JobListingsProps) {
   const [filteredJobs, setFilteredJobs] = useState(initialJobs)
 
   const handleSearch = (filters: {
     keywords: string
-    category: string
-    jobType: string
+    designation: string
     location: string
   }) => {
     let results = initialJobs
@@ -29,18 +27,14 @@ export function JobListings({ initialJobs, categories, jobTypes, locations }: Jo
       results = results.filter(
         (job) =>
           job.title.toLowerCase().includes(keywords) ||
-          job.description.toLowerCase().includes(keywords)
+          job.jobDuties.toLowerCase().includes(keywords) ||
+          job.postId.toLowerCase().includes(keywords)
       )
     }
 
-    // Filter by category
-    if (filters.category && filters.category !== "All Categories") {
-      results = results.filter((job) => job.category === filters.category)
-    }
-
-    // Filter by job type
-    if (filters.jobType && filters.jobType !== "All Types") {
-      results = results.filter((job) => job.type === filters.jobType)
+    // Filter by designation
+    if (filters.designation && filters.designation !== "All Designations") {
+      results = results.filter((job) => job.designation === filters.designation)
     }
 
     // Filter by location
@@ -57,9 +51,8 @@ export function JobListings({ initialJobs, categories, jobTypes, locations }: Jo
       <div className="mb-6">
         <JobSearchFilter 
           onSearch={handleSearch}
-          categories={categories}
-          jobTypes={jobTypes}
           locations={locations}
+          designations={designations}
         />
       </div>
 
