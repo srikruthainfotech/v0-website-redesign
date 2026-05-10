@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Search } from "lucide-react"
-import { categories, jobTypes, locations } from "@/lib/job-data"
 
 interface JobSearchFilterProps {
   onSearch: (filters: {
@@ -11,13 +10,16 @@ interface JobSearchFilterProps {
     jobType: string
     location: string
   }) => void
+  categories: string[]
+  jobTypes: string[]
+  locations: string[]
 }
 
-export function JobSearchFilter({ onSearch }: JobSearchFilterProps) {
+export function JobSearchFilter({ onSearch, categories, jobTypes, locations }: JobSearchFilterProps) {
   const [keywords, setKeywords] = useState("")
-  const [category, setCategory] = useState(categories[0])
-  const [jobType, setJobType] = useState(jobTypes[0])
-  const [location, setLocation] = useState(locations[0])
+  const [category, setCategory] = useState(categories[0] || "All Categories")
+  const [jobType, setJobType] = useState(jobTypes[0] || "All Types")
+  const [location, setLocation] = useState(locations[0] || "All Locations")
 
   const handleSearch = () => {
     onSearch({ keywords, category, jobType, location })

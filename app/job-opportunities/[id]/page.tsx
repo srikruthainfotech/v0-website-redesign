@@ -3,13 +3,16 @@ import { Briefcase, MapPin, Calendar } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobApplicationForm } from "@/components/job-opportunities/job-application-form"
-import { getJobById, jobs } from "@/lib/job-data"
+import { getJobById, getJobs } from "@/lib/job-data"
 
 interface JobDetailPageProps {
   params: Promise<{ id: string }>
 }
 
+export const revalidate = 60 // Revalidate every 60 seconds
+
 export async function generateStaticParams() {
+  const jobs = await getJobs()
   return jobs.map((job) => ({
     id: job.id,
   }))
@@ -17,7 +20,7 @@ export async function generateStaticParams() {
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
   const { id } = await params
-  const job = getJobById(id)
+  const job = await getJobById(id)
 
   if (!job) {
     notFound()

@@ -32,3 +32,16 @@ export type TalentReferral = {
   resume_url: string | null
   created_at: string
 }
+
+export type JobOpening = {
+  id: number
+  post_id: string
+  title: string
+  type: string
+  location: string
+  posted_date: string
+  category: string
+  description: string
+  qualifications: string[]
+  created_at: string
+}

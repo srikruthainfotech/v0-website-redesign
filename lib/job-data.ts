@@ -1,3 +1,5 @@
+import { supabase, type JobOpening } from "./supabase"
+
 export interface Job {
   id: string
   postId: string
@@ -10,38 +12,98 @@ export interface Job {
   qualifications: string[]
 }
 
-export const jobs: Job[] = [
-  {
-    id: "123456",
-    postId: "123456",
-    title: "Software Engineer",
-    type: "Full-time",
-    location: "USA",
-    postedDate: "3 months ago",
-    category: "Engineering",
-    description: "5-7 years of web development experience in .NET Knowledge of database schema design, normalization and optimization with a strong background in T-SQL Proficiency with SQL Server integra...",
-    qualifications: [
-      "5-7 years of web development experience in .NET",
-      "Knowledge of database schema design, normalization and optimization with a strong background in T-SQL",
-      "Proficiency with SQL Server integration services and SQL Reporting Services report development",
-      "Demonstrated experience in e-commerce web integration",
-      "Advanced knowledge of HTML5/DOM, XML, CSS3, AJAX and JavaScript, particularly the jQuery framework",
-      "Understanding of and experience with Web Services",
-      "Exposure and strong understanding of MVC frameworks",
-      "Experience with version control systems",
-      "Qualified candidates must possess:",
-      "Desire to cultivate a variety of web and database skill sets in a collaborative team environment",
-      "Strong work ethic and ability to learn quickly",
-      "Initiative, creativity and attention to detail",
-      "Ability to prioritize, execute and deliver projects on time",
-    ],
-  },
-]
+// Transform database row to Job interface
+function transformJobOpening(row: JobOpening): Job {
+  return {
+    id: row.id.toString(),
+    postId: row.post_id,
+    title: row.title,
+    type: row.type,
+    location: row.location,
+    postedDate: row.posted_date,
+    category: row.category,
+    description: row.description,
+    qualifications: row.qualifications || [],
+  }
+}
 
+// Fetch all jobs from Supabase
+export async function getJobs(): Promise<Job[]> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("*")
+    .order("created_at", { ascending: false })
+
+  if (error) {
+    console.error("Error fetching jobs:", error)
+    return []
+  }
+
+  return (data || []).map(transformJobOpening)
+}
+
+// Fetch a single job by ID from Supabase
+export async function getJobById(id: string): Promise<Job | null> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("*")
+    .eq("id", parseInt(id, 10))
+    .single()
+
+  if (error) {
+    console.error("Error fetching job:", error)
+    return null
+  }
+
+  return data ? transformJobOpening(data) : null
+}
+
+// Fetch distinct categories from Supabase
+export async function getCategories(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("category")
+
+  if (error) {
+    console.error("Error fetching categories:", error)
+    return ["All Categories"]
+  }
+
+  const uniqueCategories = [...new Set((data || []).map((row) => row.category))]
+  return ["All Categories", ...uniqueCategories]
+}
+
+// Fetch distinct job types from Supabase
+export async function getJobTypes(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("type")
+
+  if (error) {
+    console.error("Error fetching job types:", error)
+    return ["All Types"]
+  }
+
+  const uniqueTypes = [...new Set((data || []).map((row) => row.type))]
+  return ["All Types", ...uniqueTypes]
+}
+
+// Fetch distinct locations from Supabase
+export async function getLocations(): Promise<string[]> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("location")
+
+  if (error) {
+    console.error("Error fetching locations:", error)
+    return ["All Locations"]
+  }
+
+  const uniqueLocations = [...new Set((data || []).map((row) => row.location))]
+  return ["All Locations", ...uniqueLocations]
+}
+
+// Static fallback data for filters (used as defaults)
 export const categories = ["All Categories", "Engineering", "Design", "Marketing", "Sales", "Support"]
 export const jobTypes = ["All Types", "Full-time", "Part-time", "Contract", "Remote"]
 export const locations = ["All Locations", "USA", "India", "UK", "Remote"]
-
-export function getJobById(id: string): Job | undefined {
-  return jobs.find((job) => job.id === id)
-}
