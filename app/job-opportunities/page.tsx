@@ -1,51 +1,16 @@
 "use client"
 
-import { useState } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobSearchFilter } from "@/components/job-opportunities/job-search-filter"
 import { JobCard } from "@/components/job-opportunities/job-card"
-import { jobs } from "@/lib/job-data"
+import { getJobs } from "@/lib/job-data"
 import { Users, TrendingUp, Globe, Award } from "lucide-react"
 
-export default function CareersPage() {
-  const [filteredJobs, setFilteredJobs] = useState(jobs)
+export default async function CareersPage() {
+  const filteredJobs = await getJobs()
 
-  const handleSearch = (filters: {
-    keywords: string
-    category: string
-    jobType: string
-    location: string
-  }) => {
-    let results = jobs
 
-    // Filter by keywords
-    if (filters.keywords) {
-      const keywords = filters.keywords.toLowerCase()
-      results = results.filter(
-        (job) =>
-          job.title.toLowerCase().includes(keywords) ||
-          job.description.toLowerCase().includes(keywords)
-      )
-    }
-
-    // Filter by category
-    if (filters.category && filters.category !== "All Categories") {
-      results = results.filter((job) => job.category === filters.category)
-    }
-
-    // Filter by job type
-    if (filters.jobType && filters.jobType !== "All Types") {
-      results = results.filter((job) => job.type === filters.jobType)
-    }
-
-    // Filter by location
-    if (filters.location && filters.location !== "All Locations") {
-      results = results.filter((job) => job.location === filters.location)
-    }
-
-    setFilteredJobs(results)
-  }
 
   const benefits = [
     {
@@ -146,11 +111,7 @@ export default function CareersPage() {
             Current Openings
           </h2>
 
-          {/* Search Filter */}
-          <div className="mb-6">
-            <JobSearchFilter onSearch={handleSearch} />
-          </div>
-
+          
           {/* Job Listings */}
           <div className="space-y-4">
             {filteredJobs.length > 0 ? (

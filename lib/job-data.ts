@@ -1,47 +1,48 @@
+import { supabase } from "@/lib/supabase"
+
 export interface Job {
-  id: string
-  postId: string
-  title: string
-  type: string
+  id: number
+  post_id: string
+  posting_date: string
+  position: string
+  number_of_openings: number
   location: string
-  postedDate: string
-  category: string
-  description: string
-  qualifications: string[]
+  job_duties: string
+  education: string
+  experience: string
+  posted_by: string
+  designation: string
 }
 
-export const jobs: Job[] = [
-  {
-    id: "123456",
-    postId: "123456",
-    title: "Software Engineer",
-    type: "Full-time",
-    location: "USA",
-    postedDate: "3 months ago",
-    category: "Engineering",
-    description: "5-7 years of web development experience in .NET Knowledge of database schema design, normalization and optimization with a strong background in T-SQL Proficiency with SQL Server integra...",
-    qualifications: [
-      "5-7 years of web development experience in .NET",
-      "Knowledge of database schema design, normalization and optimization with a strong background in T-SQL",
-      "Proficiency with SQL Server integration services and SQL Reporting Services report development",
-      "Demonstrated experience in e-commerce web integration",
-      "Advanced knowledge of HTML5/DOM, XML, CSS3, AJAX and JavaScript, particularly the jQuery framework",
-      "Understanding of and experience with Web Services",
-      "Exposure and strong understanding of MVC frameworks",
-      "Experience with version control systems",
-      "Qualified candidates must possess:",
-      "Desire to cultivate a variety of web and database skill sets in a collaborative team environment",
-      "Strong work ethic and ability to learn quickly",
-      "Initiative, creativity and attention to detail",
-      "Ability to prioritize, execute and deliver projects on time",
-    ],
-  },
-]
+export async function getJobs(): Promise<Job[]> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("*")
+    .order("id", { ascending: false })
 
-export const categories = ["All Categories", "Engineering", "Design", "Marketing", "Sales", "Support"]
-export const jobTypes = ["All Types", "Full-time", "Part-time", "Contract", "Remote"]
-export const locations = ["All Locations", "USA", "India", "UK", "Remote"]
+  if (error) {
+    console.error(error)
+    return []
+  }
 
-export function getJobById(id: string): Job | undefined {
-  return jobs.find((job) => job.id === id)
+  return data || []
 }
+
+export async function getJobById(id: string): Promise<Job | null> {
+  const { data, error } = await supabase
+    .from("job_openings")
+    .select("*")
+    .eq("post_id", id)
+    .single()
+
+  if (error) {
+    console.error(error)
+    return null
+  }
+
+  return data
+}
+
+export const categories = ["All Categories"]
+export const jobTypes = ["All Types"]
+export const locations = ["All Locations"]

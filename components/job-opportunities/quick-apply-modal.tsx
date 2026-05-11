@@ -78,14 +78,14 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
         <div className="px-6 py-4">
           {/* Job Title */}
           <h3 className="text-base font-semibold text-gray-900 mb-3">
-            Post ID: {job.postId}. {job.title}
+            Post ID: {job.post_id}. {job.position}
           </h3>
 
           {/* Job Details Row */}
           <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-4">
             <div className="flex items-center gap-1">
               <Briefcase className="w-4 h-4" />
-              <span>{job.type}</span>
+              <span>Full-time</span>
             </div>
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
@@ -93,18 +93,44 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>Posted {job.postedDate}</span>
+              <span>
+                Posted {new Date(job.posting_date).toLocaleDateString()}
+              </span>
             </div>
           </div>
 
-          {/* Qualifications */}
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Qualifications</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-              {job.qualifications.map((qual, index) => (
-                <li key={index}>{qual}</li>
-              ))}
-            </ul>
+          <div className="space-y-5 mb-6">
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                JOB DUTIES
+              </h3>
+
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {job.job_duties}
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                EDUCATION
+              </h3>
+
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {job.education}
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                EXPERIENCE
+              </h3>
+
+              <p className="text-sm text-gray-700 leading-relaxed">
+                {job.experience}
+              </p>
+            </div>
+
           </div>
 
           {/* Application Form */}

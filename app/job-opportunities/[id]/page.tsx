@@ -3,21 +3,16 @@ import { Briefcase, MapPin, Calendar } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobApplicationForm } from "@/components/job-opportunities/job-application-form"
-import { getJobById, jobs } from "@/lib/job-data"
+import { getJobById } from "@/lib/job-data"
 
 interface JobDetailPageProps {
   params: Promise<{ id: string }>
 }
 
-export async function generateStaticParams() {
-  return jobs.map((job) => ({
-    id: job.id,
-  }))
-}
 
 export default async function JobDetailPage({ params }: JobDetailPageProps) {
   const { id } = await params
-  const job = getJobById(id)
+  const job = await getJobById(id)
 
   if (!job) {
     notFound()
@@ -33,14 +28,14 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
           <div className="bg-gray-50 rounded-sm p-5">
             {/* Job Title */}
             <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
-              Post ID: {job.postId}. {job.title}
+              Post ID: {job.post_id}. {job.position}
             </h2>
 
             {/* Job Details Row */}
             <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-6">
               <div className="flex items-center gap-1">
                 <Briefcase className="w-4 h-4" />
-                <span>{job.type}</span>
+                <span>Full-time</span>
               </div>
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
@@ -48,20 +43,45 @@ export default async function JobDetailPage({ params }: JobDetailPageProps) {
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
-                <span>Posted {job.postedDate}</span>
+                <span>
+                  Posted {new Date(job.posting_date).toLocaleDateString()}
+                </span>
               </div>
             </div>
 
-            {/* Qualifications Section */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Qualifications</h3>
-              <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-                {job.qualifications.map((qual, index) => (
-                  <li key={index}>{qual}</li>
-                ))}
-              </ul>
-            </div>
+            <div className="space-y-6 mb-8">
 
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  JOB DUTIES
+                </h3>
+
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {job.job_duties}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  EDUCATION
+                </h3>
+
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {job.education}
+                </p>
+              </div>
+
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  EXPERIENCE
+                </h3>
+
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  {job.experience}
+                </p>
+              </div>
+
+            </div>
             {/* Application Form */}
             <div className="border-t border-gray-200 pt-6">
               <JobApplicationForm />

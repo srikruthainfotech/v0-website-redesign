@@ -10,7 +10,11 @@ interface JobApplicationFormProps {
   showCloseButton?: boolean
 }
 
-export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = false }: JobApplicationFormProps) {
+export function JobApplicationForm({
+  onClose,
+  onCloseAttempt,
+  showCloseButton = false,
+}: JobApplicationFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",

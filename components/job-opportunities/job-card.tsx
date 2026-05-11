@@ -20,14 +20,14 @@ export function JobCard({ job }: JobCardProps) {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-3">
           {/* Job Title */}
           <h3 className="text-base font-semibold text-gray-900">
-            Post ID: {job.postId}. <span className="font-bold">{job.title}</span>
+            Post ID: {job.post_id}. <span className="font-bold">{job.position}</span>
           </h3>
 
           {/* Job Details */}
           <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600">
             <div className="flex items-center gap-1">
               <Briefcase className="w-4 h-4" />
-              <span>{job.type}</span>
+              <span>Full-time</span>
             </div>
             <div className="flex items-center gap-1">
               <MapPin className="w-4 h-4" />
@@ -35,14 +35,16 @@ export function JobCard({ job }: JobCardProps) {
             </div>
             <div className="flex items-center gap-1">
               <Calendar className="w-4 h-4" />
-              <span>Posted {job.postedDate}</span>
+              <span>
+                Posted {new Date(job.posting_date).toLocaleDateString()}
+              </span>
             </div>
           </div>
         </div>
 
         {/* Description */}
         <p className="text-sm text-gray-600 mb-4 leading-relaxed">
-          Qualifications {job.description}
+          Qualifications {job.job_duties}
         </p>
 
         {/* Buttons */}
@@ -54,7 +56,7 @@ export function JobCard({ job }: JobCardProps) {
             Quick Apply
           </button>
           <Link
-            href={`/job-opportunities/${job.id}`}
+            href={`/job-opportunities/${job.post_id}`}
             className="px-5 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded-md transition-colors"
           >
             Read More
