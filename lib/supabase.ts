@@ -45,3 +45,14 @@ export type JobOpening = {
   posted_by: string | null
   designation: string | null
 }
+
+export type JobApplication = {
+  id: number
+  name: string
+  email: string
+  phone: string
+  cover_letter: string | null
+  resume_url: string | null
+  post_id: string | null
+  created_at: string
+}

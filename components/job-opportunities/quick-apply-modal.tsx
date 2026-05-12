@@ -135,7 +135,7 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
           </div>
           {/* Application Form */}
           <div className="border-t border-gray-200 pt-4">
-            <JobApplicationForm onClose={onClose} onCloseAttempt={handleCloseAttempt} showCloseButton={true} />
+            <JobApplicationForm postId={job.postId} onClose={onClose} onCloseAttempt={handleCloseAttempt} showCloseButton={true} />
           </div>
         </div>
       </div>
