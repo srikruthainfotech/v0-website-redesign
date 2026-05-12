@@ -112,10 +112,14 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                 const value = valueParts.join(":").trim()
 
                 return (
-                  <div key={index} className="grid grid-cols-[220px_1fr] gap-4">
+                  <div key={index} className="grid grid-cols-[220px_20px_1fr] gap-2">
 
                     <div className="font-bold uppercase whitespace-pre-line">
                       {label}
+                    </div>
+
+                    <div className="font-bold">
+                      :
                     </div>
 
                     <div className="leading-7 break-words">
