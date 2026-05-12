@@ -1,15 +1,84 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobSearchFilter } from "@/components/job-opportunities/job-search-filter"
 import { JobCard } from "@/components/job-opportunities/job-card"
-import { jobs } from "@/lib/job-data"
+import { jobs, type Job } from "@/lib/job-data"
+import { supabase, type JobOpening } from "@/lib/supabase"
 import { Users, TrendingUp, Globe, Award } from "lucide-react"
 
 export default function CareersPage() {
   const [filteredJobs, setFilteredJobs] = useState(jobs)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+
+    const fetchJobs = async () => {
+
+      setIsLoading(true)
+
+      const { data, error } = await supabase
+        .from("job_openings")
+        .select("*")
+        .order("posting_date", { ascending: false })
+
+      if (error || !data) {
+        console.error(error)
+        setIsLoading(false)
+        return
+      }
+
+      const formattedJobs: Job[] = data.map((job: JobOpening) => ({
+        id: String(job.id),
+
+        postId: job.post_id,
+
+        // DB VALUES
+        postedDate: job.posting_date,
+
+        // STATIC VALUES
+        title: "Software Engineer",
+
+        type: "Full-time",
+
+        location: "USA",
+
+        category: "Engineering",
+
+        description:
+          "5-7 years of web development experience in .NET Knowledge of database schema design, normalization and optimization with a strong background in T-SQL Proficiency with SQL Server integra...",
+
+        qualifications: [
+
+          `POSITION: ${job.position || ""}`,
+
+          `NUMBER OF OPENINGS: ${job.number_of_openings || ""}`,
+
+          `LOCATION: ${job.location || ""}`,
+
+          `JOB DUTIES: ${job.job_duties || ""}`,
+
+          `EDUCATION: ${job.education || ""}`,
+
+          `EXPERIENCE: ${job.experience || ""}`,
+
+          `POSTED BY: ${job.posted_by || ""}`,
+
+          `DESIGNATION: ${job.designation || ""}`,
+
+        ],
+      }))
+
+      setFilteredJobs(formattedJobs)
+
+      setIsLoading(false)
+    }
+
+    fetchJobs()
+
+  }, [])
 
   const handleSearch = (filters: {
     keywords: string

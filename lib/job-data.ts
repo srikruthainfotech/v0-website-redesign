@@ -9,8 +9,7 @@ export interface Job {
   description: string
   qualifications: string[]
 }
-
-export const jobs: Job[] = [
+export let jobs: Job[] = [
   {
     id: "123456",
     postId: "123456",
