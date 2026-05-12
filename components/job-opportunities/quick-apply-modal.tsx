@@ -97,16 +97,42 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
             </div>
           </div>
 
-          {/* Qualifications */}
+          {/* Job Posting Notice */}
           <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Qualifications</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700">
-              {job.qualifications.map((qual, index) => (
-                <li key={index}>{qual}</li>
-              ))}
-            </ul>
-          </div>
 
+            <h3 className="text-2xl font-bold text-center text-black mb-8">
+              JOB POSTING NOTICE
+            </h3>
+
+            <div className="border border-gray-300 p-6 text-sm text-black space-y-6">
+
+              {job.qualifications.map((qual, index) => {
+
+                const [label, ...valueParts] = qual.split(":")
+                const value = valueParts.join(":").trim()
+
+                return (
+                  <div key={index} className="grid grid-cols-[220px_20px_1fr] gap-2">
+
+                    <div className="font-bold uppercase whitespace-pre-line">
+                      {label}
+                    </div>
+
+                    <div className="font-bold">
+                      :
+                    </div>
+
+                    <div className="leading-7 break-words">
+                      {value}
+                    </div>
+
+                  </div>
+                )
+              })}
+
+            </div>
+
+          </div>
           {/* Application Form */}
           <div className="border-t border-gray-200 pt-4">
             <JobApplicationForm onClose={onClose} onCloseAttempt={handleCloseAttempt} showCloseButton={true} />
