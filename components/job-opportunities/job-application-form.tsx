@@ -81,7 +81,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
       const filePath = `${Date.now()}-${file.name}`
 
       const { error: uploadError } = await supabase.storage
-        .from("job-applications")
+        .from("resumes")
         .upload(filePath, file)
 
       if (uploadError) {
@@ -93,7 +93,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
 
       // Step 2: Get public URL
       const { data: publicUrlData } = supabase.storage
-        .from("job-applications")
+        .from("resumes")
         .getPublicUrl(filePath)
 
       const resumeUrl = publicUrlData.publicUrl
@@ -121,7 +121,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
 
       // Success
       setSubmitMessage({ type: "success", text: "Application submitted successfully!" })
-      
+
       // Clear form
       setFormData({
         name: "",
@@ -155,11 +155,10 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
       {/* Success/Error Message */}
       {submitMessage && (
         <div
-          className={`p-3 rounded text-sm ${
-            submitMessage.type === "success"
-              ? "bg-green-50 border border-green-200 text-green-700"
-              : "bg-red-50 border border-red-200 text-red-700"
-          }`}
+          className={`p-3 rounded text-sm ${submitMessage.type === "success"
+            ? "bg-green-50 border border-green-200 text-green-700"
+            : "bg-red-50 border border-red-200 text-red-700"
+            }`}
         >
           {submitMessage.text}
         </div>
