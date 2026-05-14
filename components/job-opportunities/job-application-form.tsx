@@ -105,7 +105,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
           {
             name: formData.name.trim(),
             email: formData.email.trim(),
-            phone: formData.phone.trim(),
+            phone: `+${formData.phone.trim()}`,
             cover_letter: formData.coverLetter.trim() || null,
             resume_url: resumeUrl,
             post_id: postId || null,
@@ -122,6 +122,10 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
       // Success
       setSubmitMessage({ type: "success", text: "Application submitted successfully!" })
 
+      setTimeout(() => {
+        setSubmitMessage(null)
+      }, 2000)
+
       // Clear form
       setFormData({
         name: "",
@@ -134,12 +138,6 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
         fileInputRef.current.value = ""
       }
 
-      // Close modal after short delay if onClose is provided
-      if (onClose) {
-        setTimeout(() => {
-          onClose()
-        }, 1500)
-      }
     } catch (err) {
       console.error("Unexpected error:", err)
       setSubmitMessage({ type: "error", text: "An unexpected error occurred. Please try again." })
