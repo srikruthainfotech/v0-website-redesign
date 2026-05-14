@@ -237,10 +237,15 @@ export default function ContactUsDashboard() {
           .map(j =>
             decodeURIComponent(j.resume_url!.split("/").slice(-1)[0])
           )
+
         if (filesToDelete.length > 0) {
-          await supabase.storage
-            .from("job-applications")
+          const { error: storageDeleteError } = await supabase.storage
+            .from("resumes")
             .remove(filesToDelete)
+
+          if (storageDeleteError) {
+            console.error("Storage delete error:", storageDeleteError)
+          }
         }
       }
       const { error } = await supabase
@@ -1071,8 +1076,8 @@ export default function ContactUsDashboard() {
               {activeTab === "contact"
                 ? "Full details of the contact submission"
                 : activeTab === "referrals"
-                ? "Full details of the talent referral"
-                : "Full details of the job application"}
+                  ? "Full details of the talent referral"
+                  : "Full details of the job application"}
             </DialogDescription>
           </DialogHeader>
 
@@ -1373,8 +1378,8 @@ export default function ContactUsDashboard() {
                 {activeTab === "contact"
                   ? selectedContact?.name
                   : activeTab === "referrals"
-                  ? (selectedContact as unknown as TalentReferral)?.your_name
-                  : (selectedContact as unknown as JobApplication)?.name}
+                    ? (selectedContact as unknown as TalentReferral)?.your_name
+                    : (selectedContact as unknown as JobApplication)?.name}
               </span>?
               This action cannot be undone.
             </DialogDescription>
