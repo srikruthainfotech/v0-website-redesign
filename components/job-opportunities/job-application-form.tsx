@@ -105,7 +105,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
           {
             name: formData.name.trim(),
             email: formData.email.trim(),
-            phone: formData.phone.trim(),
+            phone: `+${formData.phone.trim()}`,
             cover_letter: formData.coverLetter.trim() || null,
             resume_url: resumeUrl,
             post_id: postId || null,
