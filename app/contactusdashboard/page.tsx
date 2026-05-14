@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { supabase, type ContactUs, type TalentReferral } from "@/lib/supabase"
+import { supabase, type ContactUs, type TalentReferral, type JobApplication } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -45,6 +45,8 @@ import {
   ArrowUp,
   ArrowDown,
   Download,
+  Phone,
+  FileCheck,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import Link from "next/link"
@@ -64,11 +66,14 @@ export default function ContactUsDashboard() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
-  const [activeTab, setActiveTab] = useState<"contact" | "referrals">("contact")
+  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
   const [contactDateSort, setContactDateSort] = useState<"asc" | "desc">("desc")
   const [referralDateSort, setReferralDateSort] = useState<"asc" | "desc">("desc")
+  const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
+  const [jobLoading, setJobLoading] = useState(false)
+  const [jobDateSort, setJobDateSort] = useState<"asc" | "desc">("desc")
 
   // Check authentication on mount
   useEffect(() => {
@@ -128,16 +133,42 @@ export default function ContactUsDashboard() {
     }
   }, [activeTab])
 
+  // Fetch job applications from Supabase
+  const fetchJobApplications = useCallback(async () => {
+    setJobLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from("job_applications")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching job applications:", error)
+        setMessage({ type: "error", text: "Failed to fetch job applications" })
+        return
+      }
+
+      setJobApplications(data || [])
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setJobLoading(false)
+    }
+  }, [])
+
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
     if (activeTab === "contact") {
       fetchContacts()
-    } else {
+    } else if (activeTab === "referrals") {
       fetchReferrals()
+    } else if (activeTab === "jobs") {
+      fetchJobApplications()
     }
     setSelectedIds([])
-  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals])
+  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications])
 
   // Handle logout
   const handleLogout = () => {
@@ -160,7 +191,7 @@ export default function ContactUsDashboard() {
 
   // Handle select all toggle
   const handleSelectAll = () => {
-    const currentData = activeTab === "contact" ? contacts : referrals
+    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : jobApplications
     if (selectedIds.length === currentData.length) {
       setSelectedIds([])
     } else {
@@ -182,11 +213,11 @@ export default function ContactUsDashboard() {
     if (selectedIds.length === 0) return
 
     setIsDeletingSelected(true)
-    const tableName = activeTab === "contact" ? "contact_us" : "talent_referrals"
-    const itemType = activeTab === "contact" ? "contact(s)" : "referral(s)"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : "job_applications"
+    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : "application(s)"
 
     try {
-      // ✅ DELETE FILES FROM STORAGE (ONLY FOR REFERRALS)
+      // ✅ DELETE FILES FROM STORAGE (FOR REFERRALS)
       if (activeTab === "referrals") {
         const filesToDelete = referrals
           .filter(r => selectedIds.includes(r.id) && r.resume_url)
@@ -196,6 +227,19 @@ export default function ContactUsDashboard() {
         if (filesToDelete.length > 0) {
           await supabase.storage
             .from("resumes")
+            .remove(filesToDelete)
+        }
+      }
+      // ✅ DELETE FILES FROM STORAGE (FOR JOB APPLICATIONS)
+      if (activeTab === "jobs") {
+        const filesToDelete = jobApplications
+          .filter(j => selectedIds.includes(j.id) && j.resume_url)
+          .map(j =>
+            decodeURIComponent(j.resume_url!.split("/").slice(-1)[0])
+          )
+        if (filesToDelete.length > 0) {
+          await supabase.storage
+            .from("job-applications")
             .remove(filesToDelete)
         }
       }
@@ -215,8 +259,10 @@ export default function ContactUsDashboard() {
       setSelectedIds([])
       if (activeTab === "contact") {
         fetchContacts()
-      } else {
+      } else if (activeTab === "referrals") {
         fetchReferrals()
+      } else {
+        fetchJobApplications()
       }
     } catch (err) {
       console.error("Error:", err)
@@ -232,11 +278,11 @@ export default function ContactUsDashboard() {
 
     setIsSubmitting(true)
 
-    const tableName = activeTab === "contact" ? "contact_us" : "talent_referrals"
-    const itemType = activeTab === "contact" ? "contact" : "referral"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : "job_applications"
+    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : "application"
 
     try {
-      // ✅ STEP 1: DELETE FILE FROM STORAGE (ONLY FOR REFERRALS)
+      // ✅ STEP 1: DELETE FILE FROM STORAGE (FOR REFERRALS)
       if (activeTab === "referrals") {
         const referral = selectedContact as unknown as TalentReferral
 
@@ -248,6 +294,22 @@ export default function ContactUsDashboard() {
 
           await supabase.storage
             .from("resumes")
+            .remove([filePath])
+        }
+      }
+
+      // ✅ STEP 1B: DELETE FILE FROM STORAGE (FOR JOB APPLICATIONS)
+      if (activeTab === "jobs") {
+        const application = selectedContact as unknown as JobApplication
+
+        if (application.resume_url) {
+          // extract file name from URL
+          const filePath = decodeURIComponent(
+            application.resume_url.split("/").slice(-1)[0]
+          )
+
+          await supabase.storage
+            .from("job-applications")
             .remove([filePath])
         }
       }
@@ -267,7 +329,13 @@ export default function ContactUsDashboard() {
 
       setIsDeleteDialogOpen(false)
 
-      activeTab === "contact" ? fetchContacts() : fetchReferrals()
+      if (activeTab === "contact") {
+        fetchContacts()
+      } else if (activeTab === "referrals") {
+        fetchReferrals()
+      } else {
+        fetchJobApplications()
+      }
 
     } catch (err) {
       setMessage({ type: "error", text: "Unexpected error occurred" })
@@ -332,6 +400,13 @@ export default function ContactUsDashboard() {
     return referralDateSort === "asc" ? dateA - dateB : dateB - dateA
   })
 
+  // Sorted job applications based on date
+  const sortedJobApplications = [...jobApplications].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime()
+    const dateB = new Date(b.created_at).getTime()
+    return jobDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
   // Toggle sort functions
   const toggleContactDateSort = () => {
     setContactDateSort(prev => prev === "asc" ? "desc" : "asc")
@@ -339,6 +414,10 @@ export default function ContactUsDashboard() {
 
   const toggleReferralDateSort = () => {
     setReferralDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  const toggleJobDateSort = () => {
+    setJobDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
 
   if (!isAuthenticated) {
@@ -397,7 +476,7 @@ export default function ContactUsDashboard() {
 
               {/* Submenu with smooth animation */}
               <div
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-24 opacity-100" : "max-h-0 opacity-0"
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-36 opacity-100" : "max-h-0 opacity-0"
                   }`}
               >
                 <button
@@ -417,8 +496,18 @@ export default function ContactUsDashboard() {
                     : "hover:bg-white/5 text-white"
                     }`}
                 >
-                  <Briefcase className="w-4 h-4" />
+                  <FileCheck className="w-4 h-4" />
                   <span className="font-medium">Talent Referrals</span>
+                </button>
+                <button
+                  onClick={() => setActiveTab("jobs")}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "jobs"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
+                >
+                  <Briefcase className="w-4 h-4" />
+                  <span className="font-medium">Job Openings</span>
                 </button>
               </div>
             </div>
@@ -447,7 +536,7 @@ export default function ContactUsDashboard() {
               </button>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
-                  {activeTab === "contact" ? "Contact Us Dashboard" : "Talent Referrals Dashboard"}
+                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : "Job Openings Dashboard"}
                 </h2>
               </div>
             </div>
@@ -498,16 +587,18 @@ export default function ContactUsDashboard() {
                 <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
                   {activeTab === "contact" ? (
                     <Users className="w-6 h-6 text-[#00d4ff]" />
+                  ) : activeTab === "referrals" ? (
+                    <FileCheck className="w-6 h-6 text-[#00d4ff]" />
                   ) : (
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   )}
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">
-                    {activeTab === "contact" ? "Total Inquiries" : "Total Referrals"}
+                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : "Total Applications"}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {activeTab === "contact" ? contacts.length : referrals.length}
+                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : jobApplications.length}
                   </p>
                 </div>
               </div>
@@ -525,11 +616,11 @@ export default function ContactUsDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={activeTab === "contact" ? fetchContacts : fetchReferrals}
-                  disabled={activeTab === "contact" ? isLoading : referralLoading}
+                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : fetchJobApplications}
+                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : jobLoading}
                   className="gap-2"
                 >
-                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : referralLoading) ? "animate-spin" : ""}`} />
+                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : jobLoading) ? "animate-spin" : ""}`} />
                   Refresh
                 </Button>
               </div>
@@ -813,10 +904,154 @@ export default function ContactUsDashboard() {
               )}
             </div>
           )}
+
+          {/* Job Applications Table Card */}
+          {activeTab === "jobs" && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Job Application Submissions</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  View and manage all job application submissions
+                </p>
+              </div>
+
+              {jobLoading ? (
+                <div className="p-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                  <p className="text-gray-500 mt-2">Loading applications...</p>
+                </div>
+              ) : jobApplications.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No job applications yet</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={jobApplications.length > 0 && selectedIds.length === jobApplications.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < jobApplications.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Applicant Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Phone</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Post ID</TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[200px]">Cover Letter</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Resume</TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleJobDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Date
+                            {jobDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedJobApplications.map((application) => (
+                        <TableRow
+                          key={application.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(application.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(application.id)}
+                              onCheckedChange={() => handleSelectOne(application.id)}
+                              aria-label={`Select ${application.name}`}
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium text-gray-900">{application.name}</TableCell>
+                          <TableCell>
+                            <a
+                              href={`mailto:${application.email}`}
+                              className="text-[#0066ff] hover:underline"
+                            >
+                              {application.email}
+                            </a>
+                          </TableCell>
+                          <TableCell className="text-gray-700">
+                            {application.phone || "-"}
+                          </TableCell>
+                          <TableCell className="text-gray-700">
+                            {application.post_id || "-"}
+                          </TableCell>
+                          <TableCell
+                            className="max-w-[200px] truncate text-gray-500"
+                            title={application.cover_letter || ""}
+                          >
+                            {application.cover_letter || "-"}
+                          </TableCell>
+                          <TableCell>
+                            {application.resume_url ? (
+                              <div className="flex items-center gap-2">
+                                <a
+                                  href={application.resume_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-[#0066ff] hover:underline text-sm font-medium"
+                                >
+                                  {getFileName(application.resume_url)}
+                                </a>
+                                <Download
+                                  className="w-4 h-4 text-gray-500 hover:text-gray-700 cursor-pointer"
+                                  onClick={() => handleDownload(application.resume_url!)}
+                                />
+                              </div>
+                            ) : (
+                              <span className="text-gray-400 text-sm">Not uploaded</span>
+                            )}
+                          </TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {formatDate(application.created_at)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openViewDialog(application as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(application as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       </div>
 
-      {/* View Contact/Referral Dialog */}
+      {/* View Contact/Referral/Job Application Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
         <DialogContent className="sm:max-w-[550px]">
           <DialogHeader>
@@ -824,16 +1059,20 @@ export default function ContactUsDashboard() {
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
                 {activeTab === "contact" ? (
                   <User className="w-4 h-4 text-[#00d4ff]" />
+                ) : activeTab === "referrals" ? (
+                  <FileCheck className="w-4 h-4 text-[#00d4ff]" />
                 ) : (
                   <Briefcase className="w-4 h-4 text-[#00d4ff]" />
                 )}
               </div>
-              {activeTab === "contact" ? "Contact Details" : "Referral Details"}
+              {activeTab === "contact" ? "Contact Details" : activeTab === "referrals" ? "Referral Details" : "Application Details"}
             </DialogTitle>
             <DialogDescription>
               {activeTab === "contact"
                 ? "Full details of the contact submission"
-                : "Full details of the talent referral"}
+                : activeTab === "referrals"
+                ? "Full details of the talent referral"
+                : "Full details of the job application"}
             </DialogDescription>
           </DialogHeader>
 
@@ -1012,6 +1251,103 @@ export default function ContactUsDashboard() {
             </div>
           )}
 
+          {selectedContact && activeTab === "jobs" && (
+            <div className="space-y-4 py-4">
+              {/* Applicant Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Applicant Name</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobApplication).name}</p>
+                </div>
+              </div>
+
+              {/* Email */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Email</p>
+                  <a
+                    href={`mailto:${(selectedContact as unknown as JobApplication).email}`}
+                    className="text-[#0066ff] hover:underline mt-1 block"
+                  >
+                    {(selectedContact as unknown as JobApplication).email}
+                  </a>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Phone className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Phone</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobApplication).phone || "Not provided"}</p>
+                </div>
+              </div>
+
+              {/* Post ID */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Post ID</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobApplication).post_id || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Cover Letter */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MessageSquare className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Cover Letter</p>
+                  <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">
+                    {(selectedContact as unknown as JobApplication).cover_letter || "Not provided"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Resume */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Resume</p>
+                  {(selectedContact as unknown as JobApplication).resume_url ? (
+                    <div className="flex items-center gap-2 mt-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        asChild
+                        className="h-8 text-gray-500 hover:text-gray-700"
+                        title="Download Resume"
+                      >
+                        <div className="flex items-center gap-2 mt-2">
+                          <a
+                            href={(selectedContact as unknown as JobApplication).resume_url! + "?download=1"}
+                            download
+                            className="flex items-center gap-1 text-[#0066ff] hover:underline text-sm"
+                          >
+                            {getFileName((selectedContact as unknown as JobApplication).resume_url!)}
+                            <Download className="w-4 h-4" />
+                          </a>
+                        </div>
+                      </Button>
+                    </div>
+                  ) : (
+                    <p className="text-gray-400 mt-1">Not uploaded</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Date */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Submitted On</p>
+                  <p className="text-gray-900 mt-1">{formatDate(selectedContact.created_at)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -1029,14 +1365,16 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Contact" : "Delete Referral"}
+              {activeTab === "contact" ? "Delete Contact" : activeTab === "referrals" ? "Delete Referral" : "Delete Application"}
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : "referral"} from{" "}
+              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : activeTab === "referrals" ? "referral" : "job application"} from{" "}
               <span className="font-medium text-gray-900">
                 {activeTab === "contact"
                   ? selectedContact?.name
-                  : (selectedContact as unknown as TalentReferral)?.your_name}
+                  : activeTab === "referrals"
+                  ? (selectedContact as unknown as TalentReferral)?.your_name
+                  : (selectedContact as unknown as JobApplication)?.name}
               </span>?
               This action cannot be undone.
             </DialogDescription>
@@ -1073,12 +1411,12 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Selected Contacts" : "Delete Selected Referrals"}
+              {activeTab === "contact" ? "Delete Selected Contacts" : activeTab === "referrals" ? "Delete Selected Referrals" : "Delete Selected Applications"}
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete{" "}
               <span className="font-semibold text-gray-900">{selectedIds.length}</span>{" "}
-              selected {activeTab === "contact" ? "contact" : "referral"}{selectedIds.length > 1 ? "s" : ""}?
+              selected {activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : "application"}{selectedIds.length > 1 ? "s" : ""}?
               This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -1101,7 +1439,7 @@ export default function ContactUsDashboard() {
                   Deleting...
                 </>
               ) : (
-                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : "Referral"}${selectedIds.length > 1 ? "s" : ""}`
+                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : activeTab === "referrals" ? "Referral" : "Application"}${selectedIds.length > 1 ? "s" : ""}`
               )}
             </Button>
           </DialogFooter>

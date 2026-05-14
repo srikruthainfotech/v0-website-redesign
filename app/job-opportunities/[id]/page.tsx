@@ -95,7 +95,7 @@ export default async function JobDetailPage({
 
             {/* Application Form */}
             <div className="border-t border-gray-200 pt-6">
-              <JobApplicationForm />
+              <JobApplicationForm postId={job.post_id} />
             </div>
           </div>
         </div>

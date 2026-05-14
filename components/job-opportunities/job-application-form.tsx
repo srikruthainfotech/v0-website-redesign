@@ -3,14 +3,17 @@
 import { useState, useRef } from "react"
 import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
+import { supabase } from "@/lib/supabase"
+import { Loader2 } from "lucide-react"
 
 interface JobApplicationFormProps {
+  postId?: string
   onClose?: () => void
   onCloseAttempt?: () => void
   showCloseButton?: boolean
 }
 
-export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = false }: JobApplicationFormProps) {
+export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseButton = false }: JobApplicationFormProps) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -18,6 +21,8 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
     coverLetter: "",
   })
   const [fileName, setFileName] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitMessage, setSubmitMessage] = useState<{ type: "success" | "error"; text: string } | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -40,27 +45,124 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
     fileInputRef.current?.click()
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData, fileName)
-    alert("Application submitted successfully!")
-    // Clear form fields after successful submission
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      coverLetter: "",
-    })
-    setFileName(null)
-    if (fileInputRef.current) {
-      fileInputRef.current.value = ""
+    setSubmitMessage(null)
+
+    // Validation
+    if (!formData.name.trim()) {
+      setSubmitMessage({ type: "error", text: "Name is required" })
+      return
     }
-    if (onClose) onClose()
+    if (!formData.email.trim() || !validateEmail(formData.email)) {
+      setSubmitMessage({ type: "error", text: "Please enter a valid email address" })
+      return
+    }
+    if (!formData.phone.trim()) {
+      setSubmitMessage({ type: "error", text: "Phone number is required" })
+      return
+    }
+    const file = fileInputRef.current?.files?.[0]
+    if (!file) {
+      setSubmitMessage({ type: "error", text: "Resume is required" })
+      return
+    }
+
+    setIsSubmitting(true)
+
+    try {
+      // Step 1: Upload resume to Supabase Storage
+      const fileExt = file.name.split(".").pop()
+      const filePath = `${Date.now()}-${file.name}`
+
+      const { error: uploadError } = await supabase.storage
+        .from("resumes")
+        .upload(filePath, file)
+
+      if (uploadError) {
+        console.error("Upload error:", uploadError)
+        setSubmitMessage({ type: "error", text: "Failed to upload resume. Please try again." })
+        setIsSubmitting(false)
+        return
+      }
+
+      // Step 2: Get public URL
+      const { data: publicUrlData } = supabase.storage
+        .from("resumes")
+        .getPublicUrl(filePath)
+
+      const resumeUrl = publicUrlData.publicUrl
+
+      // Step 3: Insert into database
+      const { error: insertError } = await supabase
+        .from("job_applications")
+        .insert([
+          {
+            name: formData.name.trim(),
+            email: formData.email.trim(),
+            phone: formData.phone.trim(),
+            cover_letter: formData.coverLetter.trim() || null,
+            resume_url: resumeUrl,
+            post_id: postId || null,
+          },
+        ])
+
+      if (insertError) {
+        console.error("Insert error:", insertError)
+        setSubmitMessage({ type: "error", text: "Failed to submit application. Please try again." })
+        setIsSubmitting(false)
+        return
+      }
+
+      // Success
+      setSubmitMessage({ type: "success", text: "Application submitted successfully!" })
+
+      // Clear form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        coverLetter: "",
+      })
+      setFileName(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+      // Close modal after short delay if onClose is provided
+      if (onClose) {
+        setTimeout(() => {
+          onClose()
+        }, 1500)
+      }
+    } catch (err) {
+      console.error("Unexpected error:", err)
+      setSubmitMessage({ type: "error", text: "An unexpected error occurred. Please try again." })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <h3 className="text-base font-semibold text-gray-900 mb-4">Apply For This Job</h3>
+
+      {/* Success/Error Message */}
+      {submitMessage && (
+        <div
+          className={`p-3 rounded text-sm ${submitMessage.type === "success"
+            ? "bg-green-50 border border-green-200 text-green-700"
+            : "bg-red-50 border border-red-200 text-red-700"
+            }`}
+        >
+          {submitMessage.text}
+        </div>
+      )}
 
       {/* Name Field */}
       <div className="flex items-center">
@@ -74,7 +176,8 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
           onChange={handleInputChange}
           placeholder="Enter your full name"
           required
-          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          disabled={isSubmitting}
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -90,7 +193,8 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
           onChange={handleInputChange}
           placeholder="Enter your email address"
           required
-          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500"
+          disabled={isSubmitting}
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -106,6 +210,7 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
             onChange={handlePhoneChange}
             enableSearch={true}
             searchPlaceholder="Search country..."
+            disabled={isSubmitting}
             inputProps={{
               name: "phone",
               required: true,
@@ -131,7 +236,8 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
           onChange={handleInputChange}
           placeholder="Tell us why you're a great fit for this role..."
           rows={4}
-          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-y"
+          disabled={isSubmitting}
+          className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 resize-y disabled:bg-gray-100 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -151,11 +257,13 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
             onChange={handleFileChange}
             className="hidden"
             required
+            disabled={isSubmitting}
           />
           <button
             type="button"
             onClick={handleBrowseClick}
-            className="px-4 py-1.5 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs font-medium rounded transition-colors"
+            disabled={isSubmitting}
+            className="px-4 py-1.5 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs font-medium rounded transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             Browse
           </button>
@@ -168,16 +276,25 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
           <button
             type="button"
             onClick={onCloseAttempt || onClose}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded transition-colors"
+            disabled={isSubmitting}
+            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium rounded transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             Close
           </button>
         )}
         <button
           type="submit"
-          className="px-6 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded transition-colors"
+          disabled={isSubmitting}
+          className="px-6 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
         >
-          Submit Application
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-4 h-4 animate-spin" />
+              Submitting...
+            </>
+          ) : (
+            "Submit Application"
+          )}
         </button>
       </div>
 
@@ -255,6 +372,15 @@ export function JobApplicationForm({ onClose, onCloseAttempt, showCloseButton = 
         
         .phone-input-wrapper .react-tel-input .country-list .country.highlight {
           background-color: #eff6ff;
+        }
+
+        .phone-input-wrapper .react-tel-input.disabled .form-control {
+          background-color: #f3f4f6;
+          cursor: not-allowed;
+        }
+        
+        .phone-input-wrapper .react-tel-input.disabled .flag-dropdown {
+          cursor: not-allowed;
         }
       `}</style>
     </form>
