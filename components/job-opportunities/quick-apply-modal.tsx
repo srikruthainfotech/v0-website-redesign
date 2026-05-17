@@ -122,15 +122,24 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                 return (
                   <div key={index}>
 
-                    <div className="grid grid-cols-[220px_minmax(0,1fr)] items-start">
+                    <div
+                      className={`${label === "POSTED BY" || label === "DESIGNATION"
+                        ? "flex items-center gap-2"
+                        : "grid grid-cols-[220px_minmax(0,1fr)] items-start"
+                        }`}
+                    >
 
                       {/* LABEL */}
                       <div className="font-bold uppercase whitespace-pre-line leading-6">
                         {formattedLabel}
                       </div>
 
-                      {/* VALUE */}
-                      <div className="leading-6 break-words">
+                      <div
+                        className={`${label === "POSTED BY" || label === "DESIGNATION"
+                          ? "leading-6"
+                          : "leading-6 break-words"
+                          }`}
+                      >
                         {value}
                       </div>
 
