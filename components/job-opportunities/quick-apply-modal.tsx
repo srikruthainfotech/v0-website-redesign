@@ -123,10 +123,18 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                   <div key={index}>
 
                     <div
-                      className={`${label === "POSTED BY" || label === "DESIGNATION"
-                        ? "flex items-center gap-2"
-                        : "grid grid-cols-[220px_minmax(0,1fr)] items-start"
-                        }`}
+                      className={
+                        label === "POSTED BY" || label === "DESIGNATION"
+                          ? "flex items-center gap-2"
+                          : "grid items-start"
+                      }
+                      style={
+                        label === "POSTED BY" || label === "DESIGNATION"
+                          ? {}
+                          : {
+                            gridTemplateColumns: "220px minmax(0,1fr)",
+                          }
+                      }
                     >
 
                       {/* LABEL */}
@@ -135,10 +143,11 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                       </div>
 
                       <div
-                        className={`${label === "POSTED BY" || label === "DESIGNATION"
-                          ? "leading-6"
-                          : "leading-6 break-words"
-                          }`}
+                        className={
+                          label === "POSTED BY" || label === "DESIGNATION"
+                            ? "leading-6"
+                            : "leading-6 break-words"
+                        }
                       >
                         {value}
                       </div>
