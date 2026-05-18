@@ -111,50 +111,27 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                 const [label, ...valueParts] = qual.split(":")
                 const value = valueParts.join(":").trim()
 
-                const formattedLabel =
-                  label === "NUMBER OF OPENINGS"
-                    ? "NUMBER OF\nOPENINGS:"
-                    : `${label}:`
-
-                const isLastMainField =
-                  label === "EXPERIENCE"
-
                 return (
-                  <div key={index}>
+                  <div key={index} className="grid grid-cols-[220px_20px_1fr] gap-2">
 
-                    <div
-                      className={`${label === "POSTED BY" || label === "DESIGNATION"
-                        ? "flex items-center gap-2"
-                        : "grid grid-cols-[220px_minmax(0,1fr)] items-start"
-                        }`}
-                    >
-
-                      {/* LABEL */}
-                      <div className="font-bold uppercase whitespace-pre-line leading-6">
-                        {formattedLabel}
-                      </div>
-
-                      <div
-                        className={`${label === "POSTED BY" || label === "DESIGNATION"
-                          ? "leading-6"
-                          : "leading-6 break-words"
-                          }`}
-                      >
-                        {value}
-                      </div>
-
+                    <div className="font-bold uppercase whitespace-pre-line">
+                      {label}
                     </div>
 
-                    {/* LINE AFTER EXPERIENCE */}
-                    {isLastMainField && (
-                      <div className="border-t border-gray-300 mt-8"></div>
-                    )}
+                    <div className="font-bold">
+                      :
+                    </div>
+
+                    <div className="leading-7 break-words">
+                      {value}
+                    </div>
 
                   </div>
                 )
               })}
 
             </div>
+
           </div>
           {/* Application Form */}
           <div className="border-t border-gray-200 pt-4">
