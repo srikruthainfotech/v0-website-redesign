@@ -30,85 +30,39 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
   }
 
   const handlePrint = () => {
-    const printContents = document.getElementById("print-job-notice")?.innerHTML
-
-    const printWindow = window.open("", "_blank", "width=900,height=700")
-
-    if (!printWindow || !printContents) return
-
-    printWindow.document.write(`
-      <html>
-        <head>
-          <title>Job Posting Notice</title>
-          <style>
-            body {
-              font-family: Arial, sans-serif;
-              padding: 32px;
-              color: #000;
-              line-height: 1.5;
-            }
-
-            .print-header {
-              text-align: center;
-              font-size: 12px;
-              font-weight: 600;
-              margin-bottom: 24px;
-            }
-
-            .job-title {
-              text-align: center;
-              font-size: 28px;
-              font-weight: 700;
-              margin-bottom: 32px;
-            }
-
-            .print-section {
-              page-break-inside: avoid;
-              break-inside: avoid;
-            }
-
-            table {
-              width: 100%;
-              border-collapse: collapse;
-            }
-
-            td {
-              vertical-align: top;
-              padding: 10px 0;
-            }
-
-            @page {
-              margin: 16mm;
-            }
-
-            @media print {
-              body {
-                margin: 0;
-                padding: 0;
-              }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="print-header">
-            Immense Brains - IT Consulting and Development Services
-          </div>
-          ${printContents}
-        </body>
-      </html>
-    `)
-
-    printWindow.document.close()
-    printWindow.focus()
-
-    setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-    }, 500)
+    window.print()
   }
 
   return (
     <>
+      {/* Print Styles */}
+      <style jsx global>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+
+          #print-job-notice,
+          #print-job-notice * {
+            visibility: visible;
+          }
+
+          #print-job-notice {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: none;
+          }
+
+          .no-print {
+            display: none !important;
+          }
+        }
+      `}</style>
+
       <div className="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto py-10">
       {/* Overlay */}
       <div
