@@ -111,20 +111,49 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
                 const [label, ...valueParts] = qual.split(":")
                 const value = valueParts.join(":").trim()
 
+                const formattedLabel =
+                  label === "NUMBER OF OPENINGS"
+                    ? "NUMBER OF\nOPENINGS:"
+                    : `${label}:`
+
+                const isLastMainField =
+                  label === "EXPERIENCE"
+
+                const isInlineField =
+                  label === "POSTED BY" || label === "DESIGNATION"
+
                 return (
-                  <div key={index} className="grid grid-cols-[220px_20px_1fr] gap-2">
+                  <div key={index}>
 
-                    <div className="font-bold uppercase whitespace-pre-line">
-                      {label}
+                    <div
+                      className={
+                        isInlineField
+                          ? "flex items-center gap-2"
+                          : "grid grid-cols-[220px_minmax(0,1fr)] items-start"
+                      }
+                    >
+
+                      {/* LABEL */}
+                      <div className="font-bold uppercase whitespace-pre-line leading-6">
+                        {formattedLabel}
+                      </div>
+
+                      <div
+                        className={
+                          isInlineField
+                            ? "leading-6"
+                            : "leading-6 break-words"
+                        }
+                      >
+                        {value}
+                      </div>
+
                     </div>
 
-                    <div className="font-bold">
-                      :
-                    </div>
-
-                    <div className="leading-7 break-words">
-                      {value}
-                    </div>
+                    {/* LINE AFTER EXPERIENCE */}
+                    {isLastMainField && (
+                      <div className="border-t border-gray-300 mt-8"></div>
+                    )}
 
                   </div>
                 )
