@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { X, Briefcase, MapPin, Calendar } from "lucide-react"
+import { X, Briefcase, MapPin, Calendar, Printer } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { JobApplicationForm } from "./job-application-form"
 
@@ -29,8 +29,41 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
     setShowConfirmDialog(false)
   }
 
+  const handlePrint = () => {
+    window.print()
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto py-10">
+    <>
+      {/* Print Styles */}
+      <style jsx global>{`
+        @media print {
+          body * {
+            visibility: hidden;
+          }
+
+          #print-job-notice,
+          #print-job-notice * {
+            visibility: visible;
+          }
+
+          #print-job-notice {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            background: white;
+            padding: 20px;
+            box-shadow: none;
+          }
+
+          .no-print {
+            display: none !important;
+          }
+        }
+      `}</style>
+
+      <div className="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto py-10">
       {/* Overlay */}
       <div
         className="fixed inset-0 bg-black/50"
@@ -97,8 +130,19 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
             </div>
           </div>
 
+          {/* Print Job Notice Button */}
+          <div className="mb-4 no-print">
+            <button
+              onClick={handlePrint}
+              className="inline-flex items-center gap-2 border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 px-5 py-2 rounded-full text-sm font-medium transition-colors"
+            >
+              <Printer className="w-4 h-4" />
+              Print Job Notice
+            </button>
+          </div>
+
           {/* Job Posting Notice */}
-          <div className="mb-6">
+          <div id="print-job-notice" className="mb-6">
 
             <h3 className="text-2xl font-bold text-center text-black mb-8">
               JOB POSTING NOTICE
@@ -169,5 +213,6 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
         </div>
       </div>
     </div>
+    </>
   )
 }
