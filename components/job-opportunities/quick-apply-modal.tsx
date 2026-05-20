@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { X, Briefcase, MapPin, Calendar } from "lucide-react"
+import { useState, useRef } from "react"
+import { X, Briefcase, MapPin, Calendar, Printer } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { JobApplicationForm } from "./job-application-form"
 
@@ -13,6 +13,7 @@ interface QuickApplyModalProps {
 
 export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const printRef = useRef<HTMLDivElement>(null)
 
   if (!isOpen) return null
 
@@ -27,6 +28,281 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
 
   const handleCancelClose = () => {
     setShowConfirmDialog(false)
+  }
+
+  const handlePrint = () => {
+    const printContent = printRef.current
+    if (!printContent) return
+
+    const printWindow = window.open('', '_blank')
+    if (!printWindow) return
+
+    // Parse qualifications into structured data
+    const qualData: { [key: string]: string } = {}
+    job.qualifications.forEach((qual) => {
+      const colonIndex = qual.indexOf(':')
+      if (colonIndex > -1) {
+        const label = qual.substring(0, colonIndex).trim().toUpperCase()
+        const value = qual.substring(colonIndex + 1).trim()
+        qualData[label] = value
+      }
+    })
+
+    const printHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Job Posting Notice - ${job.title}</title>
+        <style>
+          @page {
+            size: A4;
+            margin: 20mm 15mm;
+          }
+          
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+          }
+          
+          body {
+            font-family: Arial, sans-serif;
+            font-size: 12pt;
+            line-height: 1.4;
+            color: #000;
+          }
+          
+          .print-page {
+            width: 210mm;
+            min-height: 257mm;
+            padding: 0;
+            position: relative;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+          }
+          
+          .print-page:last-child {
+            page-break-after: auto;
+          }
+          
+          .page-header {
+            text-align: center;
+            font-size: 10pt;
+            font-weight: bold;
+            margin-bottom: 15mm;
+            padding-top: 5mm;
+          }
+          
+          .page-content {
+            flex: 1;
+          }
+          
+          .page-footer {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            padding-top: 10mm;
+            border-top: 1px solid #ccc;
+            margin-top: auto;
+          }
+          
+          .job-title {
+            font-size: 11pt;
+            font-weight: bold;
+            margin-bottom: 8mm;
+          }
+          
+          .job-meta {
+            display: flex;
+            gap: 20mm;
+            font-size: 10pt;
+            margin-bottom: 10mm;
+            color: #333;
+          }
+          
+          .notice-title {
+            text-align: center;
+            font-size: 16pt;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10mm;
+          }
+          
+          .notice-content {
+            border: 1px solid #333;
+            padding: 8mm;
+          }
+          
+          .field-row {
+            display: table;
+            width: 100%;
+            margin-bottom: 5mm;
+          }
+          
+          .field-label {
+            display: table-cell;
+            width: 55mm;
+            font-weight: bold;
+            text-transform: uppercase;
+            vertical-align: top;
+            padding-right: 5mm;
+          }
+          
+          .field-value {
+            display: table-cell;
+            vertical-align: top;
+          }
+          
+          .section-divider {
+            border-top: 1px solid #333;
+            margin: 8mm 0;
+          }
+          
+          .signature-section {
+            margin-top: 8mm;
+          }
+          
+          @media print {
+            .print-page {
+              width: 100%;
+              min-height: auto;
+              height: auto;
+            }
+          }
+        </style>
+      </head>
+      <body>
+        <!-- PAGE 1 -->
+        <div class="print-page">
+          <div class="page-header">
+            Immense Brains - IT Consulting and Development Services
+          </div>
+          
+          <div class="page-content">
+            <div class="job-title">
+              Post ID: ${job.postId}. ${job.title}
+            </div>
+            
+            <div class="job-meta">
+              <span>Job Type: ${job.type}</span>
+              <span>Location: ${job.location}</span>
+              <span>Posted: ${job.postedDate}</span>
+            </div>
+            
+            <div class="notice-title">JOB POSTING NOTICE</div>
+            
+            <div class="notice-content">
+              <div class="field-row">
+                <div class="field-label">POSITION:</div>
+                <div class="field-value">${qualData['POSITION'] || job.title}</div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-label">NUMBER OF<br>OPENINGS:</div>
+                <div class="field-value">${qualData['NUMBER OF OPENINGS'] || '1'}</div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-label">LOCATION:</div>
+                <div class="field-value">${qualData['LOCATION'] || job.location}</div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-label">JOB DUTIES:</div>
+                <div class="field-value">${qualData['JOB DUTIES'] || job.description}</div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="page-footer">
+            <span>Immense Brains - IT Consulting and Development Services</span>
+            <span>Page 1/4</span>
+          </div>
+        </div>
+        
+        <!-- PAGE 2 -->
+        <div class="print-page">
+          <div class="page-header">
+            Immense Brains - IT Consulting and Development Services
+          </div>
+          
+          <div class="page-content">
+            <div class="notice-content">
+              <div class="field-row">
+                <div class="field-label">EDUCATION:</div>
+                <div class="field-value">${qualData['EDUCATION'] || 'As per job requirements'}</div>
+              </div>
+              
+              <div class="field-row">
+                <div class="field-label">EXPERIENCE:</div>
+                <div class="field-value">${qualData['EXPERIENCE'] || 'As per job requirements'}</div>
+              </div>
+              
+              <div class="section-divider"></div>
+              
+              <div class="signature-section">
+                <div class="field-row">
+                  <div class="field-label">POSTED BY:</div>
+                  <div class="field-value">${qualData['POSTED BY'] || 'HR Department'}</div>
+                </div>
+                
+                <div class="field-row">
+                  <div class="field-label">DESIGNATION:</div>
+                  <div class="field-value">${qualData['DESIGNATION'] || 'Human Resources'}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="page-footer">
+            <span>Immense Brains - IT Consulting and Development Services</span>
+            <span>Page 2/4</span>
+          </div>
+        </div>
+        
+        <!-- PAGE 3 - INTENTIONALLY EMPTY -->
+        <div class="print-page">
+          <div class="page-header">
+            Immense Brains - IT Consulting and Development Services
+          </div>
+          
+          <div class="page-content">
+            <!-- Intentionally empty -->
+          </div>
+          
+          <div class="page-footer">
+            <span>Immense Brains - IT Consulting and Development Services</span>
+            <span>Page 3/4</span>
+          </div>
+        </div>
+        
+        <!-- PAGE 4 - INTENTIONALLY EMPTY -->
+        <div class="print-page">
+          <div class="page-header">
+            Immense Brains - IT Consulting and Development Services
+          </div>
+          
+          <div class="page-content">
+            <!-- Intentionally empty -->
+          </div>
+          
+          <div class="page-footer">
+            <span>Immense Brains - IT Consulting and Development Services</span>
+            <span>Page 4/4</span>
+          </div>
+        </div>
+      </body>
+      </html>
+    `
+
+    printWindow.document.write(printHTML)
+    printWindow.document.close()
+    
+    printWindow.onload = () => {
+      printWindow.print()
+    }
   }
 
   return (
@@ -75,11 +351,20 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
         </button>
 
         {/* Content */}
-        <div className="px-6 py-4">
+        <div className="px-6 py-4" ref={printRef}>
           {/* Job Title */}
-          <h3 className="text-base font-semibold text-gray-900 mb-3">
-            Post ID: {job.postId}. {job.title}
-          </h3>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-base font-semibold text-gray-900">
+              Post ID: {job.postId}. {job.title}
+            </h3>
+            <button
+              onClick={handlePrint}
+              className="flex items-center gap-2 px-4 py-2 bg-[#8B4513] hover:bg-[#6b3410] text-white text-sm font-medium rounded-full transition-colors"
+            >
+              <Printer className="w-4 h-4" />
+              Print Job Notice
+            </button>
+          </div>
 
           {/* Job Details Row */}
           <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-4">
