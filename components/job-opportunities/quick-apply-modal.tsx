@@ -30,39 +30,111 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
   }
 
   const handlePrint = () => {
-    window.print()
+    const printContent = document.getElementById("print-job-notice")
+    if (!printContent) return
+
+    // Get qualifications content without the border box
+    const qualificationsHtml = job.qualifications.map((qual) => {
+      const [label, ...valueParts] = qual.split(":")
+      const value = valueParts.join(":").trim()
+      const isInlineField = label === "POSTED BY" || label === "DESIGNATION"
+      const isLastMainField = label === "EXPERIENCE"
+      
+      return `
+        <tr>
+          <td style="font-weight: bold; text-transform: uppercase; vertical-align: top; padding: 8px 16px 8px 0; width: 180px; white-space: ${label === "NUMBER OF OPENINGS" ? "pre-line" : "nowrap"};">
+            ${label === "NUMBER OF OPENINGS" ? "NUMBER OF\nOPENINGS:" : `${label}:`}
+          </td>
+          <td style="vertical-align: top; padding: 8px 0;">
+            ${value}
+          </td>
+        </tr>
+        ${isLastMainField ? `<tr><td colspan="2" style="padding: 16px 0;"><hr style="border: none; border-top: 1px solid #d1d5db;"></td></tr>` : ""}
+      `
+    }).join("")
+
+    const printWindow = window.open("", "_blank", "width=900,height=700")
+    if (!printWindow) return
+
+    printWindow.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Job Posting Notice - ${job.title}</title>
+          <style>
+            * {
+              margin: 0;
+              padding: 0;
+              box-sizing: border-box;
+            }
+            body {
+              font-family: Arial, sans-serif;
+              font-size: 14px;
+              line-height: 1.5;
+              color: #000;
+              padding: 40px;
+            }
+            .header {
+              text-align: center;
+              font-size: 12px;
+              margin-bottom: 24px;
+            }
+            .posting-date {
+              text-align: right;
+              font-size: 13px;
+              margin-bottom: 16px;
+            }
+            .posting-date strong {
+              font-weight: bold;
+            }
+            .title {
+              text-align: center;
+              font-size: 18px;
+              font-weight: bold;
+              margin-bottom: 32px;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+            }
+            @media print {
+              body {
+                padding: 20px;
+              }
+              @page {
+                margin: 20mm;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            Immense Brains - IT Consulting and Development Services
+          </div>
+          <div class="posting-date">
+            <strong>Posting Date:</strong> ${job.postedDate}
+          </div>
+          <div class="title">
+            JOB POSTING NOTICE
+          </div>
+          <table>
+            ${qualificationsHtml}
+          </table>
+        </body>
+      </html>
+    `)
+
+    printWindow.document.close()
+    printWindow.focus()
+
+    setTimeout(() => {
+      printWindow.print()
+      printWindow.close()
+    }, 300)
   }
 
   return (
     <>
-      {/* Print Styles */}
-      <style jsx global>{`
-        @media print {
-          body * {
-            visibility: hidden;
-          }
-
-          #print-job-notice,
-          #print-job-notice * {
-            visibility: visible;
-          }
-
-          #print-job-notice {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            background: white;
-            padding: 20px;
-            box-shadow: none;
-          }
-
-          .no-print {
-            display: none !important;
-          }
-        }
-      `}</style>
-
       <div className="fixed inset-0 z-50 flex justify-center bg-black/50 overflow-y-auto py-10">
       {/* Overlay */}
       <div
