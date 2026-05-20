@@ -43,7 +43,7 @@ export default function CareersPage() {
 
         type: "Full-time",
 
-        location: "USA",
+        location: "United States",
 
         category: "Engineering",
 
