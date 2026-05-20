@@ -166,3 +166,31 @@
 .animate-marquee-reverse {
   animation: marquee-reverse 20s linear infinite;
 }
+
+/* Print styles for Job Posting Notice */
+@media print {
+  @page {
+    size: A4;
+    margin: 20mm 15mm;
+  }
+  
+  body {
+    background: white !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  /* Hide everything except the modal content */
+  body > *:not(.fixed) {
+    display: none !important;
+  }
+  
+  /* Reset modal positioning for print */
+  .fixed.inset-0 {
+    position: static !important;
+    display: block !important;
+    background: white !important;
+    overflow: visible !important;
+    padding: 0 !important;
+  }
+}
