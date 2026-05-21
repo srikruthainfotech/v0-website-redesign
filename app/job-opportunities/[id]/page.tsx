@@ -38,17 +38,17 @@ export default async function JobDetailPage({
 
             {/* Job Title */}
             <h2 className="text-xl md:text-2xl font-semibold text-gray-900 mb-4">
-              Post ID: {job.post_id}. Software Engineer
+              Post ID: {job.post_id}. {job.position}
             </h2>
             {/* Job Details Row */}
             <div className="flex flex-wrap gap-6 text-sm text-gray-600 mb-6">
               <div className="flex items-center gap-1">
                 <Briefcase className="w-4 h-4" />
-                <span>Full-time</span>
+                <span>{job.job_type}</span>
               </div>
               <div className="flex items-center gap-1">
                 <MapPin className="w-4 h-4" />
-                <span>USA</span>
+                <span>{job.location}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
