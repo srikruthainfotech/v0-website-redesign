@@ -22,6 +22,7 @@ export default function CareersPage() {
       const { data, error } = await supabase
         .from("job_openings")
         .select("*")
+        .eq("status", "Active")
         .order("posting_date", { ascending: false })
 
       if (error || !data) {
