@@ -38,17 +38,16 @@ export default function CareersPage() {
         // DB VALUES
         postedDate: job.posting_date,
 
-        // STATIC VALUES
-        title: "Software Engineer",
+        // DYNAMIC VALUES FROM DB
+        title: job.position || "",
 
-        type: "Full-time",
+        type: job.job_type || "",
 
-        location: "USA",
+        location: job.location || "",
 
         category: "Engineering",
 
-        description:
-          "5-7 years of web development experience in .NET Knowledge of database schema design, normalization and optimization with a strong background in T-SQL Proficiency with SQL Server integra...",
+        description: job.job_description || "",
 
         qualifications: [
 
