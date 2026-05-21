@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { supabase, type ContactUs, type TalentReferral, type JobApplication } from "@/lib/supabase"
+import { supabase, type ContactUs, type TalentReferral, type JobApplication, type JobOpening } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -66,7 +66,7 @@ export default function ContactUsDashboard() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
-  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs">("contact")
+  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs" | "jobpostings">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
   const [contactDateSort, setContactDateSort] = useState<"asc" | "desc">("desc")
@@ -74,6 +74,9 @@ export default function ContactUsDashboard() {
   const [jobApplications, setJobApplications] = useState<JobApplication[]>([])
   const [jobLoading, setJobLoading] = useState(false)
   const [jobDateSort, setJobDateSort] = useState<"asc" | "desc">("desc")
+  const [jobPostings, setJobPostings] = useState<JobOpening[]>([])
+  const [jobPostingLoading, setJobPostingLoading] = useState(false)
+  const [jobPostingDateSort, setJobPostingDateSort] = useState<"asc" | "desc">("desc")
 
   // Check authentication on mount
   useEffect(() => {
@@ -157,6 +160,30 @@ export default function ContactUsDashboard() {
     }
   }, [])
 
+  // Fetch job postings from Supabase
+  const fetchJobPostings = useCallback(async () => {
+    setJobPostingLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from("job_openings")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching job postings:", error)
+        setMessage({ type: "error", text: "Failed to fetch job postings" })
+        return
+      }
+
+      setJobPostings(data || [])
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setJobPostingLoading(false)
+    }
+  }, [])
+
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
@@ -166,9 +193,11 @@ export default function ContactUsDashboard() {
       fetchReferrals()
     } else if (activeTab === "jobs") {
       fetchJobApplications()
+    } else if (activeTab === "jobpostings") {
+      fetchJobPostings()
     }
     setSelectedIds([])
-  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications])
+  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications, fetchJobPostings])
 
   // Handle logout
   const handleLogout = () => {
@@ -191,7 +220,7 @@ export default function ContactUsDashboard() {
 
   // Handle select all toggle
   const handleSelectAll = () => {
-    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : jobApplications
+    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : activeTab === "jobs" ? jobApplications : jobPostings
     if (selectedIds.length === currentData.length) {
       setSelectedIds([])
     } else {
@@ -213,8 +242,8 @@ export default function ContactUsDashboard() {
     if (selectedIds.length === 0) return
 
     setIsDeletingSelected(true)
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : "job_applications"
-    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : "application(s)"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : "job_openings"
+    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : activeTab === "jobs" ? "application(s)" : "posting(s)"
 
     try {
       // ✅ DELETE FILES FROM STORAGE (FOR REFERRALS)
@@ -266,8 +295,10 @@ export default function ContactUsDashboard() {
         fetchContacts()
       } else if (activeTab === "referrals") {
         fetchReferrals()
-      } else {
+      } else if (activeTab === "jobs") {
         fetchJobApplications()
+      } else {
+        fetchJobPostings()
       }
     } catch (err) {
       console.error("Error:", err)
@@ -283,8 +314,8 @@ export default function ContactUsDashboard() {
 
     setIsSubmitting(true)
 
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : "job_applications"
-    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : "application"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : "job_openings"
+    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : "posting"
 
     try {
       // ✅ STEP 1: DELETE FILE FROM STORAGE (FOR REFERRALS)
@@ -338,8 +369,10 @@ export default function ContactUsDashboard() {
         fetchContacts()
       } else if (activeTab === "referrals") {
         fetchReferrals()
-      } else {
+      } else if (activeTab === "jobs") {
         fetchJobApplications()
+      } else {
+        fetchJobPostings()
       }
 
     } catch (err) {
@@ -412,6 +445,13 @@ export default function ContactUsDashboard() {
     return jobDateSort === "asc" ? dateA - dateB : dateB - dateA
   })
 
+  // Sorted job postings based on posting_date
+  const sortedJobPostings = [...jobPostings].sort((a, b) => {
+    const dateA = new Date(a.posting_date).getTime()
+    const dateB = new Date(b.posting_date).getTime()
+    return jobPostingDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
   // Toggle sort functions
   const toggleContactDateSort = () => {
     setContactDateSort(prev => prev === "asc" ? "desc" : "asc")
@@ -423,6 +463,10 @@ export default function ContactUsDashboard() {
 
   const toggleJobDateSort = () => {
     setJobDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  const toggleJobPostingDateSort = () => {
+    setJobPostingDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
 
   if (!isAuthenticated) {
@@ -481,7 +525,7 @@ export default function ContactUsDashboard() {
 
               {/* Submenu with smooth animation */}
               <div
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-36 opacity-100" : "max-h-0 opacity-0"
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
                   }`}
               >
                 <button
@@ -514,6 +558,16 @@ export default function ContactUsDashboard() {
                   <Briefcase className="w-4 h-4" />
                   <span className="font-medium">Job Openings</span>
                 </button>
+                <button
+                  onClick={() => setActiveTab("jobpostings")}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "jobpostings"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
+                >
+                  <Briefcase className="w-4 h-4" />
+                  <span className="font-medium">Job Postings</span>
+                </button>
               </div>
             </div>
           </nav>
@@ -541,7 +595,7 @@ export default function ContactUsDashboard() {
               </button>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
-                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : "Job Openings Dashboard"}
+                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : activeTab === "jobs" ? "Job Openings Dashboard" : "Job Postings Dashboard"}
                 </h2>
               </div>
             </div>
@@ -594,16 +648,18 @@ export default function ContactUsDashboard() {
                     <Users className="w-6 h-6 text-[#00d4ff]" />
                   ) : activeTab === "referrals" ? (
                     <FileCheck className="w-6 h-6 text-[#00d4ff]" />
+                  ) : activeTab === "jobs" ? (
+                    <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   ) : (
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   )}
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">
-                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : "Total Applications"}
+                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : activeTab === "jobs" ? "Total Applications" : "Total Job Posts"}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : jobApplications.length}
+                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : activeTab === "jobs" ? jobApplications.length : jobPostings.length}
                   </p>
                 </div>
               </div>
@@ -621,11 +677,11 @@ export default function ContactUsDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : fetchJobApplications}
-                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : jobLoading}
+                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : activeTab === "jobs" ? fetchJobApplications : fetchJobPostings}
+                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : jobPostingLoading}
                   className="gap-2"
                 >
-                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : jobLoading) ? "animate-spin" : ""}`} />
+                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : jobPostingLoading) ? "animate-spin" : ""}`} />
                   Refresh
                 </Button>
               </div>
@@ -1053,6 +1109,122 @@ export default function ContactUsDashboard() {
               )}
             </div>
           )}
+
+          {/* Job Postings Table Card */}
+          {activeTab === "jobpostings" && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Job Postings</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  View and manage all job postings
+                </p>
+              </div>
+
+              {jobPostingLoading ? (
+                <div className="p-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                  <p className="text-gray-500 mt-2">Loading job postings...</p>
+                </div>
+              ) : jobPostings.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Briefcase className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No job postings found</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={jobPostings.length > 0 && selectedIds.length === jobPostings.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < jobPostings.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Post ID</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Position</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Job Type</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Location</TableHead>
+                        <TableHead className="font-semibold text-gray-700">No Of Openings</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Posted By</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleJobPostingDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Posted Date
+                            {jobPostingDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedJobPostings.map((posting) => (
+                        <TableRow
+                          key={posting.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(posting.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(posting.id)}
+                              onCheckedChange={() => handleSelectOne(posting.id)}
+                              aria-label={`Select ${posting.post_id}`}
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium text-gray-900">{posting.post_id}</TableCell>
+                          <TableCell className="text-gray-700">{posting.position || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{posting.job_type || "-"}</TableCell>
+                          <TableCell className="text-gray-500">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {posting.location || "-"}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-gray-700">{posting.number_of_openings || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {posting.posting_date ? formatDate(posting.posting_date) : "-"}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openViewDialog(posting as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(posting as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       </div>
 
@@ -1066,18 +1238,22 @@ export default function ContactUsDashboard() {
                   <User className="w-4 h-4 text-[#00d4ff]" />
                 ) : activeTab === "referrals" ? (
                   <FileCheck className="w-4 h-4 text-[#00d4ff]" />
+                ) : activeTab === "jobs" ? (
+                  <Briefcase className="w-4 h-4 text-[#00d4ff]" />
                 ) : (
                   <Briefcase className="w-4 h-4 text-[#00d4ff]" />
                 )}
               </div>
-              {activeTab === "contact" ? "Contact Details" : activeTab === "referrals" ? "Referral Details" : "Application Details"}
+              {activeTab === "contact" ? "Contact Details" : activeTab === "referrals" ? "Referral Details" : activeTab === "jobs" ? "Application Details" : "Job Posting Details"}
             </DialogTitle>
             <DialogDescription>
               {activeTab === "contact"
                 ? "Full details of the contact submission"
                 : activeTab === "referrals"
                   ? "Full details of the talent referral"
-                  : "Full details of the job application"}
+                  : activeTab === "jobs"
+                    ? "Full details of the job application"
+                    : "Full details of the job posting"}
             </DialogDescription>
           </DialogHeader>
 
@@ -1353,6 +1529,135 @@ export default function ContactUsDashboard() {
             </div>
           )}
 
+          {selectedContact && activeTab === "jobpostings" && (
+            <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+              {/* Post ID */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Post ID</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).post_id}</p>
+                </div>
+              </div>
+
+
+
+              {/* Job Role */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Job Role</p>
+                  <p className="text-gray-900 mt-1">
+                    {(selectedContact as unknown as JobOpening).position || "Not specified"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Job Type */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Job Type</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).job_type || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Location */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Location</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).location || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Number of Openings */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">No Of Openings</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).number_of_openings || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Job Description */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MessageSquare className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Job Description</p>
+                  <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">
+                    {(selectedContact as unknown as JobOpening).job_description || "Not provided"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Job Duties */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Job Duties</p>
+                  <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">
+                    {(selectedContact as unknown as JobOpening).job_duties || "Not provided"}
+                  </p>
+                </div>
+              </div>
+
+              {/* Education */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Building2 className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Education</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).education || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Experience */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Experience</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).experience || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Posted By */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Posted By</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).posted_by || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Designation */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Designation</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).designation || "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Posting Date */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Posting Date</p>
+                  <p className="text-gray-900 mt-1">{(selectedContact as unknown as JobOpening).posting_date ? formatDate((selectedContact as unknown as JobOpening).posting_date) : "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Created At */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Created At</p>
+                  <p className="text-gray-900 mt-1">{formatDate(selectedContact.created_at)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <DialogFooter>
             <Button
               variant="outline"
@@ -1370,16 +1675,18 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Contact" : activeTab === "referrals" ? "Delete Referral" : "Delete Application"}
+              {activeTab === "contact" ? "Delete Contact" : activeTab === "referrals" ? "Delete Referral" : activeTab === "jobs" ? "Delete Application" : "Delete Job Posting"}
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : activeTab === "referrals" ? "referral" : "job application"} from{" "}
+              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "job application" : "job posting"} from{" "}
               <span className="font-medium text-gray-900">
                 {activeTab === "contact"
                   ? selectedContact?.name
                   : activeTab === "referrals"
                     ? (selectedContact as unknown as TalentReferral)?.your_name
-                    : (selectedContact as unknown as JobApplication)?.name}
+                    : activeTab === "jobs"
+                      ? (selectedContact as unknown as JobApplication)?.name
+                      : (selectedContact as unknown as JobOpening)?.post_id}
               </span>?
               This action cannot be undone.
             </DialogDescription>
@@ -1416,12 +1723,12 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Selected Contacts" : activeTab === "referrals" ? "Delete Selected Referrals" : "Delete Selected Applications"}
+              {activeTab === "contact" ? "Delete Selected Contacts" : activeTab === "referrals" ? "Delete Selected Referrals" : activeTab === "jobs" ? "Delete Selected Applications" : "Delete Selected Job Postings"}
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete{" "}
               <span className="font-semibold text-gray-900">{selectedIds.length}</span>{" "}
-              selected {activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : "application"}{selectedIds.length > 1 ? "s" : ""}?
+              selected {activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : "job posting"}{selectedIds.length > 1 ? "s" : ""}?
               This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -1444,7 +1751,7 @@ export default function ContactUsDashboard() {
                   Deleting...
                 </>
               ) : (
-                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : activeTab === "referrals" ? "Referral" : "Application"}${selectedIds.length > 1 ? "s" : ""}`
+                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : activeTab === "referrals" ? "Referral" : activeTab === "jobs" ? "Application" : "Job Posting"}${selectedIds.length > 1 ? "s" : ""}`
               )}
             </Button>
           </DialogFooter>
