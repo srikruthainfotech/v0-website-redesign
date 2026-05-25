@@ -589,7 +589,7 @@ export default function ContactUsDashboard() {
     if (!selectedUser) return
     setIsUserSubmitting(true)
     try {
-      const updateData: Partial<UserManagement> = {
+      const updateData: Record<string, string | null> = {
         user_id: userFormData.user_id,
         username: userFormData.username,
         first_name: userFormData.first_name,
