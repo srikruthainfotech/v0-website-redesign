@@ -47,6 +47,7 @@ export type JobOpening = {
   experience: string | null
   posted_by: string | null
   designation: string | null
+  status?: string
   created_at: string
 }
 
