@@ -1148,6 +1148,18 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Job Type</TableHead>
                         <TableHead className="font-semibold text-gray-700">Location</TableHead>
                         <TableHead className="font-semibold text-gray-700">No Of Openings</TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Job Description
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Job Duties
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Education
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Experience
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700">Posted By</TableHead>
                         <TableHead className="font-semibold text-gray-700">Designation</TableHead>
                         <TableHead
@@ -1190,6 +1202,33 @@ export default function ContactUsDashboard() {
                             </div>
                           </TableCell>
                           <TableCell className="text-gray-700">{posting.number_of_openings || "-"}</TableCell>
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.job_description || ""}
+                          >
+                            {posting.job_description || "-"}
+                          </TableCell>
+
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.job_duties || ""}
+                          >
+                            {posting.job_duties || "-"}
+                          </TableCell>
+
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.education || ""}
+                          >
+                            {posting.education || "-"}
+                          </TableCell>
+
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.experience || ""}
+                          >
+                            {posting.experience || "-"}
+                          </TableCell>
                           <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
                           <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
