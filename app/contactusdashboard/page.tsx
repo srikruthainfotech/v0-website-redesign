@@ -1162,6 +1162,9 @@ export default function ContactUsDashboard() {
                         </TableHead>
                         <TableHead className="font-semibold text-gray-700">Posted By</TableHead>
                         <TableHead className="font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead className="font-semibold text-gray-700">
+                          Status
+                        </TableHead>
                         <TableHead
                           className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={toggleJobPostingDateSort}
@@ -1231,6 +1234,9 @@ export default function ContactUsDashboard() {
                           </TableCell>
                           <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
                           <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
+                          <TableCell className="text-gray-700">
+                            {posting.status || "-"}
+                          </TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                             {posting.posting_date ? formatDate(posting.posting_date) : "-"}
                           </TableCell>
