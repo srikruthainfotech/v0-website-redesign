@@ -105,6 +105,8 @@ export default function ContactUsDashboard() {
   })
   const [isUserSubmitting, setIsUserSubmitting] = useState(false)
   const [loggedInUsername, setLoggedInUsername] = useState("")
+  const [roles, setRoles] = useState<any[]>([])
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([])
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
@@ -214,13 +216,40 @@ export default function ContactUsDashboard() {
     }
   }, [])
 
+  // Fetch roles from Supabase
+  const fetchRoles = useCallback(async () => {
+    try {
+      const { data, error } = await supabase
+        .from("roles")
+        .select("*")
+        .order("role_id", { ascending: true })
+
+      if (error) {
+        console.error("Error fetching roles:", error)
+        return
+      }
+
+      setRoles(data || [])
+    } catch (err) {
+      console.error("Error:", err)
+    }
+  }, [])
+
   // Fetch users from Supabase
   const fetchUsers = useCallback(async () => {
     setUsersLoading(true)
     try {
       const { data, error } = await supabase
         .from("users")
-        .select("*")
+        .select(`
+  *,
+  user_roles (
+    role_id,
+    roles (
+      role_name
+    )
+  )
+`)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -229,7 +258,15 @@ export default function ContactUsDashboard() {
         return
       }
 
-      setUsers(data || [])
+      const formattedUsers = (data || []).map((user: any) => ({
+        ...user,
+        roles:
+          user.user_roles?.map(
+            (item: any) => item.roles.role_name
+          ) || [],
+      }))
+
+      setUsers(formattedUsers)
     } catch (err) {
       console.error("Error:", err)
       setMessage({ type: "error", text: "An unexpected error occurred" })
@@ -241,6 +278,7 @@ export default function ContactUsDashboard() {
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
+    fetchRoles()
     if (activeTab === "contact") {
       fetchContacts()
     } else if (activeTab === "referrals") {
@@ -558,23 +596,53 @@ export default function ContactUsDashboard() {
       // Hash the password before saving
       const hashedPassword = await bcrypt.hash(userFormData.password, 10)
 
-      const { error } = await supabase.from("users").insert([
-        {
-          user_id: userFormData.user_id,
-          username: userFormData.username,
-          first_name: userFormData.first_name,
-          last_name: userFormData.last_name,
-          employee_id: userFormData.employee_id,
-          password: hashedPassword,
-          start_date: userFormData.start_date || null,
-          end_date: userFormData.end_date || null,
-        },
-      ])
-
+      const {
+        data: insertedUser,
+        error,
+      }: {
+        data: UserManagement | null
+        error: any
+      } = await supabase
+        .from("users")
+        .insert([
+          {
+            user_id: userFormData.user_id,
+            username: userFormData.username,
+            first_name: userFormData.first_name,
+            last_name: userFormData.last_name,
+            employee_id: userFormData.employee_id,
+            password: hashedPassword,
+            start_date: userFormData.start_date || null,
+            end_date: userFormData.end_date || null,
+          },
+        ])
+        .select()
+        .single()
       if (error) {
         console.error("Error adding user:", error)
         setMessage({ type: "error", text: "Failed to add user" })
         return
+      }
+      if (error) {
+        console.error("Error adding user:", error)
+        setMessage({ type: "error", text: "Failed to add user" })
+        return
+      }
+
+      // INSERT USER ROLES
+      if (insertedUser && selectedRoles.length > 0) {
+        const roleRows = selectedRoles.map((roleId) => ({
+          user_id: insertedUser.id,
+          role_id: roleId,
+        }))
+
+        const { error: roleError } = await supabase
+          .from("user_roles")
+          .insert(roleRows)
+
+        if (roleError) {
+          console.error("Error inserting roles:", roleError)
+        }
       }
 
       setMessage({ type: "success", text: "User added successfully" })
@@ -589,6 +657,7 @@ export default function ContactUsDashboard() {
         start_date: "",
         end_date: "",
       })
+      setSelectedRoles([])
       fetchUsers()
     } catch (err) {
       console.error("Error:", err)
@@ -884,7 +953,22 @@ export default function ContactUsDashboard() {
                 {activeTab === "users" && (
                   <Button
                     size="sm"
-                    onClick={() => setIsAddUserDialogOpen(true)}
+                    onClick={() => {
+                      setSelectedRoles([])
+
+                      setUserFormData({
+                        user_id: "",
+                        username: "",
+                        first_name: "",
+                        last_name: "",
+                        employee_id: "",
+                        password: "",
+                        start_date: "",
+                        end_date: "",
+                      })
+
+                      setIsAddUserDialogOpen(true)
+                    }}
                     className="gap-2 bg-[#0066ff] hover:bg-[#0052cc]"
                   >
                     <Plus className="w-4 h-4" />
@@ -1538,6 +1622,9 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Username</TableHead>
                         <TableHead className="font-semibold text-gray-700">First Name</TableHead>
                         <TableHead className="font-semibold text-gray-700">Last Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">
+                          Job Role
+                        </TableHead>
                         <TableHead className="font-semibold text-gray-700">Employee ID</TableHead>
                         <TableHead className="font-semibold text-gray-700">Start Date</TableHead>
                         <TableHead className="font-semibold text-gray-700">End Date</TableHead>
@@ -1578,6 +1665,22 @@ export default function ContactUsDashboard() {
                           <TableCell className="font-medium text-gray-900">{user.username}</TableCell>
                           <TableCell className="text-gray-700">{user.first_name}</TableCell>
                           <TableCell className="text-gray-700">{user.last_name}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {user.roles?.length ? (
+                                user.roles.map((role: string, index: number) => (
+                                  <span
+                                    key={index}
+                                    className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs"
+                                  >
+                                    {role}
+                                  </span>
+                                ))
+                              ) : (
+                                "-"
+                              )}
+                            </div>
+                          </TableCell>
                           <TableCell className="text-gray-700">{user.employee_id}</TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                             {user.start_date ? formatDate(user.start_date) : "-"}
@@ -1642,7 +1745,7 @@ export default function ContactUsDashboard() {
 
       {/* View Contact/Referral/Job Application Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="sm:max-w-[550px]">
+        <DialogContent className="sm:max-w-[720px] p-0 overflow-hidden">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
@@ -2226,6 +2329,48 @@ export default function ContactUsDashboard() {
                   placeholder="Enter last name"
                 />
               </div>
+              <div className="space-y-2">
+                <Label>Job Roles</Label>
+
+                <div className="border rounded-lg p-3 max-h-48 overflow-y-auto">
+                  {roles.map((role: any) => (
+                    <div
+                      key={role.role_id}
+                      className="flex items-center space-x-2 mb-2"
+                    >
+                      <Checkbox
+                        checked={selectedRoles.includes(role.role_id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+
+                            if (selectedRoles.length >= 6) {
+                              alert("Maximum 6 roles allowed")
+                              return
+                            }
+
+                            setSelectedRoles([
+                              ...selectedRoles,
+                              role.role_id,
+                            ])
+                          } else {
+                            setSelectedRoles(
+                              selectedRoles.filter(
+                                (id) => id !== role.role_id
+                              )
+                            )
+                          }
+                        }}
+                      />
+
+                      <Label>{role.role_name}</Label>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-xs text-gray-500">
+                  Maximum 6 roles allowed
+                </p>
+              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -2443,7 +2588,7 @@ export default function ContactUsDashboard() {
 
       {/* View User Dialog */}
       <Dialog open={isViewUserDialogOpen} onOpenChange={setIsViewUserDialogOpen}>
-        <DialogContent className="sm:max-w-[550px]">
+        <DialogContent className="sm:max-w-[720px] p-0 overflow-hidden">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
