@@ -84,7 +84,7 @@ export default function ContactUsDashboard() {
   const [jobPostings, setJobPostings] = useState<JobOpening[]>([])
   const [jobPostingLoading, setJobPostingLoading] = useState(false)
   const [jobPostingDateSort, setJobPostingDateSort] = useState<"asc" | "desc">("desc")
-  
+
   // User Management States
   const [users, setUsers] = useState<UserManagement[]>([])
   const [usersLoading, setUsersLoading] = useState(false)
@@ -104,14 +104,17 @@ export default function ContactUsDashboard() {
     end_date: "",
   })
   const [isUserSubmitting, setIsUserSubmitting] = useState(false)
+  const [loggedInUsername, setLoggedInUsername] = useState("")
 
-  // Check authentication on mount
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
+    const username = localStorage.getItem("username")
+
     if (isLoggedIn !== "true") {
       router.push("/login")
     } else {
       setIsAuthenticated(true)
+      setLoggedInUsername(username || "Admin")
     }
   }, [router])
 
@@ -776,7 +779,7 @@ export default function ContactUsDashboard() {
           {/* Sidebar Footer */}
           <div className="p-4 border-t border-white/10">
             <div className="text-xs text-gray-400">
-              Logged in as Admin
+              Logged in as {loggedInUsername}
             </div>
           </div>
         </div>
@@ -2299,10 +2302,9 @@ export default function ContactUsDashboard() {
               <div className="space-y-2">
                 <Label htmlFor="edit_user_id">User ID</Label>
                 <Input
-                  id="edit_user_id"
                   value={userFormData.user_id}
-                  onChange={(e) => setUserFormData({ ...userFormData, user_id: e.target.value })}
-                  placeholder="Enter user ID"
+                  disabled
+                  className="bg-gray-100 cursor-not-allowed"
                 />
               </div>
               <div className="space-y-2">
@@ -2339,10 +2341,9 @@ export default function ContactUsDashboard() {
               <div className="space-y-2">
                 <Label htmlFor="edit_employee_id">Employee ID</Label>
                 <Input
-                  id="edit_employee_id"
                   value={userFormData.employee_id}
-                  onChange={(e) => setUserFormData({ ...userFormData, employee_id: e.target.value })}
-                  placeholder="Enter employee ID"
+                  disabled
+                  className="bg-gray-100 cursor-not-allowed"
                 />
               </div>
               <div className="space-y-2">
