@@ -72,21 +72,37 @@ export default function LoginPage() {
         console.error("Error fetching roles:", rolesError)
       }
 
-      // Step 4: Check if user has Admin role
-      const isAdmin = rolesData?.some(
+      // Step 4: Get role names from rolesData
+      const roleNames = rolesData?.map(
         (item: { role_id: number; roles: { role_name: string } | null }) => 
-          item.roles?.role_name === "Admin"
-      ) ?? false
+          item.roles?.role_name
+      ).filter(Boolean) ?? []
+
+      const isAdmin = roleNames.includes("Admin")
+      const isEmployee = roleNames.includes("Employee")
+
+      // Determine the primary role for localStorage (Admin takes precedence)
+      let primaryRole = ""
+      if (isAdmin) {
+        primaryRole = "Admin"
+      } else if (isEmployee) {
+        primaryRole = "Employee"
+      } else if (roleNames.length > 0) {
+        primaryRole = roleNames[0] as string
+      }
 
       // Store login state in localStorage
       localStorage.setItem("isLoggedIn", "true")
       localStorage.setItem("username", data.username)
       localStorage.setItem("userId", data.id)
       localStorage.setItem("isAdmin", isAdmin ? "true" : "false")
+      localStorage.setItem("userRole", primaryRole)
 
       // Redirect based on role
       if (isAdmin) {
         router.push("/contactusdashboard")
+      } else if (isEmployee) {
+        router.push("/userdashboard")
       } else {
         router.push("/")
       }

@@ -298,6 +298,8 @@ export default function ContactUsDashboard() {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn")
     localStorage.removeItem("username")
+    localStorage.removeItem("userId")
+    localStorage.removeItem("userRole")
     router.push("/login")
   }
 
