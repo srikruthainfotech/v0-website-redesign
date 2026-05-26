@@ -1588,8 +1588,8 @@ export default function ContactUsDashboard() {
                           <TableCell>
                             <span
                               className={`px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(user.end_date) === "Active"
-                                  ? "bg-green-100 text-green-700"
-                                  : "bg-red-100 text-red-700"
+                                ? "bg-green-100 text-green-700"
+                                : "bg-red-100 text-red-700"
                                 }`}
                             >
                               {getUserStatus(user.end_date)}
@@ -1616,7 +1616,7 @@ export default function ContactUsDashboard() {
                                 className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
                                 title="Edit user"
                               >
-                                n   <Pencil className="w-4 h-4" />
+                                <Pencil className="w-4 h-4" />
                               </Button>
                               <Button
                                 variant="ghost"
