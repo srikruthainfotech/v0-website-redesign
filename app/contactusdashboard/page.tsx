@@ -51,6 +51,7 @@ import {
   Pencil,
   UserCog,
   Hash,
+  ClipboardList,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -839,7 +840,7 @@ export default function ContactUsDashboard() {
                     : "hover:bg-white/5 text-white"
                     }`}
                 >
-                  <Briefcase className="w-4 h-4" />
+                  <ClipboardList className="w-4 h-4" />
                   <span className="font-medium">Job Postings</span>
                 </button>
                 <button
@@ -1546,8 +1547,20 @@ export default function ContactUsDashboard() {
                             </TableCell>
                             <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
                             <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
-                            <TableCell className="text-gray-700">
-                              {posting.status || "-"}
+                            <TableCell>
+                              {posting.status ? (
+                                <span
+                                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                    posting.status.toLowerCase() === "active"
+                                      ? "bg-green-100 text-green-700"
+                                      : "bg-red-100 text-red-700"
+                                  }`}
+                                >
+                                  {posting.status}
+                                </span>
+                              ) : (
+                                "-"
+                              )}
                             </TableCell>
                             <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                               {posting.posting_date ? formatDate(posting.posting_date) : "-"}
@@ -1668,14 +1681,31 @@ export default function ContactUsDashboard() {
                           <TableCell>
                             <div className="flex flex-wrap gap-1">
                               {user.roles?.length ? (
-                                user.roles.map((role: string, index: number) => (
-                                  <span
-                                    key={index}
-                                    className="px-2 py-1 rounded-full bg-blue-100 text-blue-700 text-xs"
-                                  >
-                                    {role}
-                                  </span>
-                                ))
+                                user.roles.map((role: string, index: number) => {
+                                  const roleLower = role.toLowerCase()
+                                  let badgeClass = "bg-gray-100 text-gray-700" // default for Viewer or unknown
+                                  
+                                  if (roleLower === "admin") {
+                                    badgeClass = "bg-purple-100 text-purple-700"
+                                  } else if (roleLower === "employee") {
+                                    badgeClass = "bg-blue-100 text-blue-700"
+                                  } else if (roleLower === "hr") {
+                                    badgeClass = "bg-pink-100 text-pink-700"
+                                  } else if (roleLower === "recruiter") {
+                                    badgeClass = "bg-cyan-100 text-cyan-700"
+                                  } else if (roleLower === "manager") {
+                                    badgeClass = "bg-orange-100 text-orange-700"
+                                  }
+                                  
+                                  return (
+                                    <span
+                                      key={index}
+                                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${badgeClass}`}
+                                    >
+                                      {role}
+                                    </span>
+                                  )
+                                })
                               ) : (
                                 "-"
                               )}
@@ -1690,7 +1720,7 @@ export default function ContactUsDashboard() {
                           </TableCell>
                           <TableCell>
                             <span
-                              className={`px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(user.end_date) === "Active"
+                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(user.end_date) === "Active"
                                 ? "bg-green-100 text-green-700"
                                 : "bg-red-100 text-red-700"
                                 }`}
