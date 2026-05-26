@@ -56,12 +56,40 @@ export default function LoginPage() {
         return
       }
 
+      // Step 3: Fetch user roles
+      const { data: rolesData, error: rolesError } = await supabase
+        .from("user_roles")
+        .select(`
+          role_id,
+          roles (
+            role_name
+          )
+        `)
+        .eq("user_id", data.id)
+
+      // Handle roles query error (but don't block login)
+      if (rolesError) {
+        console.error("Error fetching roles:", rolesError)
+      }
+
+      // Step 4: Check if user has Admin role
+      const isAdmin = rolesData?.some(
+        (item: { role_id: number; roles: { role_name: string } | null }) => 
+          item.roles?.role_name === "Admin"
+      ) ?? false
+
       // Store login state in localStorage
       localStorage.setItem("isLoggedIn", "true")
       localStorage.setItem("username", data.username)
+      localStorage.setItem("userId", data.id)
+      localStorage.setItem("isAdmin", isAdmin ? "true" : "false")
 
-      // Redirect to dashboard
-      router.push("/contactusdashboard")
+      // Redirect based on role
+      if (isAdmin) {
+        router.push("/contactusdashboard")
+      } else {
+        router.push("/")
+      }
     } catch (err) {
       console.error("Login error:", err)
       setError("An unexpected error occurred. Please try again.")
