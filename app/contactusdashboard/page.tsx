@@ -539,6 +539,17 @@ export default function ContactUsDashboard() {
   const toggleUsersDateSort = () => {
     setUsersDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
+  const getUserStatus = (endDate: string | null) => {
+    // If no end date, user is active
+    if (!endDate) {
+      return "Active"
+    }
+
+    const currentDate = new Date()
+    const userEndDate = new Date(endDate)
+
+    return userEndDate > currentDate ? "Active" : "Inactive"
+  }
 
   // Handle Add User
   const handleAddUser = async () => {
@@ -1530,6 +1541,9 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Employee ID</TableHead>
                         <TableHead className="font-semibold text-gray-700">Start Date</TableHead>
                         <TableHead className="font-semibold text-gray-700">End Date</TableHead>
+                        <TableHead className="font-semibold text-gray-700">
+                          Status
+                        </TableHead>
                         <TableHead
                           className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={toggleUsersDateSort}
@@ -1571,6 +1585,16 @@ export default function ContactUsDashboard() {
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                             {user.end_date ? formatDate(user.end_date) : "-"}
                           </TableCell>
+                          <TableCell>
+                            <span
+                              className={`px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(user.end_date) === "Active"
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-red-100 text-red-700"
+                                }`}
+                            >
+                              {getUserStatus(user.end_date)}
+                            </span>
+                          </TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
                             {formatDate(user.created_at)}
                           </TableCell>
@@ -1592,7 +1616,7 @@ export default function ContactUsDashboard() {
                                 className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
                                 title="Edit user"
                               >
-                                <Pencil className="w-4 h-4" />
+                                n   <Pencil className="w-4 h-4" />
                               </Button>
                               <Button
                                 variant="ghost"
