@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Lock, User, AlertCircle, Loader2 } from "lucide-react"
 import Link from "next/link"
+import bcrypt from "bcryptjs"
 
 export default function LoginPage() {
   const router = useRouter()
@@ -30,14 +31,26 @@ export default function LoginPage() {
     setError(null)
 
     try {
+      // Step 1: Fetch user by username only
       const { data, error: dbError } = await supabase
         .from("users")
         .select("*")
         .eq("username", formData.username)
-        .eq("password", formData.password)
         .single()
 
       if (dbError || !data) {
+        setError("Invalid username or password")
+        setIsLoading(false)
+        return
+      }
+
+      // Step 2: Compare password using bcrypt
+      const passwordMatch = await bcrypt.compare(
+        formData.password,
+        data.password
+      )
+
+      if (!passwordMatch) {
         setError("Invalid username or password")
         setIsLoading(false)
         return

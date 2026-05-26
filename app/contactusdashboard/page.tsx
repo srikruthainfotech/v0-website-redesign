@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { supabase, type ContactUs, type TalentReferral, type JobApplication, type JobOpening } from "@/lib/supabase"
+import { supabase, type ContactUs, type TalentReferral, type JobApplication, type JobOpening, type UserManagement } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -47,9 +47,16 @@ import {
   Download,
   Phone,
   FileCheck,
+  Plus,
+  Pencil,
+  UserCog,
+  Hash,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import Link from "next/link"
+import bcrypt from "bcryptjs"
 
 export default function ContactUsDashboard() {
   const router = useRouter()
@@ -66,7 +73,7 @@ export default function ContactUsDashboard() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
-  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs" | "jobpostings">("contact")
+  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs" | "jobpostings" | "users">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
   const [contactDateSort, setContactDateSort] = useState<"asc" | "desc">("desc")
@@ -78,13 +85,36 @@ export default function ContactUsDashboard() {
   const [jobPostingLoading, setJobPostingLoading] = useState(false)
   const [jobPostingDateSort, setJobPostingDateSort] = useState<"asc" | "desc">("desc")
 
-  // Check authentication on mount
+  // User Management States
+  const [users, setUsers] = useState<UserManagement[]>([])
+  const [usersLoading, setUsersLoading] = useState(false)
+  const [usersDateSort, setUsersDateSort] = useState<"asc" | "desc">("desc")
+  const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false)
+  const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false)
+  const [isViewUserDialogOpen, setIsViewUserDialogOpen] = useState(false)
+  const [selectedUser, setSelectedUser] = useState<UserManagement | null>(null)
+  const [userFormData, setUserFormData] = useState({
+    user_id: "",
+    username: "",
+    first_name: "",
+    last_name: "",
+    employee_id: "",
+    password: "",
+    start_date: "",
+    end_date: "",
+  })
+  const [isUserSubmitting, setIsUserSubmitting] = useState(false)
+  const [loggedInUsername, setLoggedInUsername] = useState("")
+
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
+    const username = localStorage.getItem("username")
+
     if (isLoggedIn !== "true") {
       router.push("/login")
     } else {
       setIsAuthenticated(true)
+      setLoggedInUsername(username || "Admin")
     }
   }, [router])
 
@@ -184,6 +214,30 @@ export default function ContactUsDashboard() {
     }
   }, [])
 
+  // Fetch users from Supabase
+  const fetchUsers = useCallback(async () => {
+    setUsersLoading(true)
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching users:", error)
+        setMessage({ type: "error", text: "Failed to fetch users" })
+        return
+      }
+
+      setUsers(data || [])
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setUsersLoading(false)
+    }
+  }, [])
+
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
@@ -195,9 +249,11 @@ export default function ContactUsDashboard() {
       fetchJobApplications()
     } else if (activeTab === "jobpostings") {
       fetchJobPostings()
+    } else if (activeTab === "users") {
+      fetchUsers()
     }
     setSelectedIds([])
-  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications, fetchJobPostings])
+  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications, fetchJobPostings, fetchUsers])
 
   // Handle logout
   const handleLogout = () => {
@@ -220,7 +276,7 @@ export default function ContactUsDashboard() {
 
   // Handle select all toggle
   const handleSelectAll = () => {
-    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : activeTab === "jobs" ? jobApplications : jobPostings
+    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : activeTab === "jobs" ? jobApplications : activeTab === "jobpostings" ? jobPostings : users
     if (selectedIds.length === currentData.length) {
       setSelectedIds([])
     } else {
@@ -242,8 +298,8 @@ export default function ContactUsDashboard() {
     if (selectedIds.length === 0) return
 
     setIsDeletingSelected(true)
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : "job_openings"
-    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : activeTab === "jobs" ? "application(s)" : "posting(s)"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : "users"
+    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : activeTab === "jobs" ? "application(s)" : activeTab === "jobpostings" ? "posting(s)" : "user(s)"
 
     try {
       // ✅ DELETE FILES FROM STORAGE (FOR REFERRALS)
@@ -297,8 +353,10 @@ export default function ContactUsDashboard() {
         fetchReferrals()
       } else if (activeTab === "jobs") {
         fetchJobApplications()
-      } else {
+      } else if (activeTab === "jobpostings") {
         fetchJobPostings()
+      } else if (activeTab === "users") {
+        fetchUsers()
       }
     } catch (err) {
       console.error("Error:", err)
@@ -314,8 +372,8 @@ export default function ContactUsDashboard() {
 
     setIsSubmitting(true)
 
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : "job_openings"
-    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : "posting"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : "users"
+    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : activeTab === "jobpostings" ? "posting" : "user"
 
     try {
       // ✅ STEP 1: DELETE FILE FROM STORAGE (FOR REFERRALS)
@@ -371,8 +429,10 @@ export default function ContactUsDashboard() {
         fetchReferrals()
       } else if (activeTab === "jobs") {
         fetchJobApplications()
-      } else {
+      } else if (activeTab === "jobpostings") {
         fetchJobPostings()
+      } else if (activeTab === "users") {
+        fetchUsers()
       }
 
     } catch (err) {
@@ -469,6 +529,140 @@ export default function ContactUsDashboard() {
     setJobPostingDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
 
+  // Sorted users based on date
+  const sortedUsers = [...users].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime()
+    const dateB = new Date(b.created_at).getTime()
+    return usersDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
+  const toggleUsersDateSort = () => {
+    setUsersDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  // Handle Add User
+  const handleAddUser = async () => {
+    setIsUserSubmitting(true)
+    try {
+      // Hash the password before saving
+      const hashedPassword = await bcrypt.hash(userFormData.password, 10)
+
+      const { error } = await supabase.from("users").insert([
+        {
+          user_id: userFormData.user_id,
+          username: userFormData.username,
+          first_name: userFormData.first_name,
+          last_name: userFormData.last_name,
+          employee_id: userFormData.employee_id,
+          password: hashedPassword,
+          start_date: userFormData.start_date || null,
+          end_date: userFormData.end_date || null,
+        },
+      ])
+
+      if (error) {
+        console.error("Error adding user:", error)
+        setMessage({ type: "error", text: "Failed to add user" })
+        return
+      }
+
+      setMessage({ type: "success", text: "User added successfully" })
+      setIsAddUserDialogOpen(false)
+      setUserFormData({
+        user_id: "",
+        username: "",
+        first_name: "",
+        last_name: "",
+        employee_id: "",
+        password: "",
+        start_date: "",
+        end_date: "",
+      })
+      fetchUsers()
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setIsUserSubmitting(false)
+    }
+  }
+
+  // Handle Edit User
+  const handleEditUser = async () => {
+    if (!selectedUser) return
+    setIsUserSubmitting(true)
+    try {
+      const updateData: Record<string, string | null> = {
+        user_id: userFormData.user_id,
+        username: userFormData.username,
+        first_name: userFormData.first_name,
+        last_name: userFormData.last_name,
+        employee_id: userFormData.employee_id,
+        start_date: userFormData.start_date || null,
+        end_date: userFormData.end_date || null,
+      }
+
+      // Only update password if a new one is provided
+      if (userFormData.password) {
+        const hashedPassword = await bcrypt.hash(userFormData.password, 10)
+        updateData.password = hashedPassword
+      }
+
+      const { error } = await supabase
+        .from("users")
+        .update(updateData)
+        .eq("id", selectedUser.id)
+
+      if (error) {
+        console.error("Error updating user:", error)
+        setMessage({ type: "error", text: "Failed to update user" })
+        return
+      }
+
+      setMessage({ type: "success", text: "User updated successfully" })
+      setIsEditUserDialogOpen(false)
+      setSelectedUser(null)
+      setUserFormData({
+        user_id: "",
+        username: "",
+        first_name: "",
+        last_name: "",
+        employee_id: "",
+        password: "",
+        start_date: "",
+        end_date: "",
+      })
+      fetchUsers()
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setIsUserSubmitting(false)
+    }
+  }
+
+  // Open Edit User Dialog
+  const openEditUserDialog = (user: UserManagement) => {
+    setSelectedUser(user)
+    setUserFormData({
+      user_id: user.user_id,
+      username: user.username,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      employee_id: user.employee_id,
+      password: "", // Don't pre-fill password
+      start_date: user.start_date ? user.start_date.split("T")[0] : "",
+      end_date: user.end_date ? user.end_date.split("T")[0] : "",
+    })
+    setIsEditUserDialogOpen(true)
+  }
+
+  // Open View User Dialog
+  const openViewUserDialog = (user: UserManagement) => {
+    setSelectedUser(user)
+    setIsViewUserDialogOpen(true)
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a1628]">
@@ -525,7 +719,7 @@ export default function ContactUsDashboard() {
 
               {/* Submenu with smooth animation */}
               <div
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-48 opacity-100" : "max-h-0 opacity-0"
+                className={`overflow-hidden transition-all duration-200 ease-in-out ${isDashboardExpanded ? "max-h-64 opacity-100" : "max-h-0 opacity-0"
                   }`}
               >
                 <button
@@ -568,6 +762,16 @@ export default function ContactUsDashboard() {
                   <Briefcase className="w-4 h-4" />
                   <span className="font-medium">Job Postings</span>
                 </button>
+                <button
+                  onClick={() => setActiveTab("users")}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "users"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
+                >
+                  <UserCog className="w-4 h-4" />
+                  <span className="font-medium">User Management</span>
+                </button>
               </div>
             </div>
           </nav>
@@ -575,7 +779,7 @@ export default function ContactUsDashboard() {
           {/* Sidebar Footer */}
           <div className="p-4 border-t border-white/10">
             <div className="text-xs text-gray-400">
-              Logged in as Admin
+              Logged in as {loggedInUsername}
             </div>
           </div>
         </div>
@@ -595,7 +799,7 @@ export default function ContactUsDashboard() {
               </button>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
-                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : activeTab === "jobs" ? "Job Openings Dashboard" : "Job Postings Dashboard"}
+                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : activeTab === "jobs" ? "Job Openings Dashboard" : activeTab === "jobpostings" ? "Job Postings Dashboard" : "User Management Dashboard"}
                 </h2>
               </div>
             </div>
@@ -650,20 +854,32 @@ export default function ContactUsDashboard() {
                     <FileCheck className="w-6 h-6 text-[#00d4ff]" />
                   ) : activeTab === "jobs" ? (
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
+                  ) : activeTab === "users" ? (
+                    <UserCog className="w-6 h-6 text-[#00d4ff]" />
                   ) : (
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   )}
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">
-                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : activeTab === "jobs" ? "Total Applications" : "Total Job Posts"}
+                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : activeTab === "jobs" ? "Total Applications" : activeTab === "jobpostings" ? "Total Job Posts" : "Total Users"}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : activeTab === "jobs" ? jobApplications.length : jobPostings.length}
+                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : activeTab === "jobs" ? jobApplications.length : activeTab === "jobpostings" ? jobPostings.length : users.length}
                   </p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                {activeTab === "users" && (
+                  <Button
+                    size="sm"
+                    onClick={() => setIsAddUserDialogOpen(true)}
+                    className="gap-2 bg-[#0066ff] hover:bg-[#0052cc]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add User
+                  </Button>
+                )}
                 <Button
                   variant="destructive"
                   size="sm"
@@ -677,11 +893,11 @@ export default function ContactUsDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : activeTab === "jobs" ? fetchJobApplications : fetchJobPostings}
-                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : jobPostingLoading}
+                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : activeTab === "jobs" ? fetchJobApplications : activeTab === "jobpostings" ? fetchJobPostings : fetchUsers}
+                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : usersLoading}
                   className="gap-2"
                 >
-                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : jobPostingLoading) ? "animate-spin" : ""}`} />
+                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : usersLoading) ? "animate-spin" : ""}`} />
                   Refresh
                 </Button>
               </div>
@@ -1273,6 +1489,130 @@ export default function ContactUsDashboard() {
               )}
             </div>
           )}
+
+          {/* Users Table Card */}
+          {activeTab === "users" && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">User Management</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  View and manage all users
+                </p>
+              </div>
+
+              {usersLoading ? (
+                <div className="p-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                  <p className="text-gray-500 mt-2">Loading users...</p>
+                </div>
+              ) : users.length === 0 ? (
+                <div className="p-12 text-center">
+                  <UserCog className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No users found</p>
+                </div>
+              ) : (
+                <div className="w-full overflow-x-auto scrollbar-thin">
+                  <Table className="min-w-max">
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={users.length > 0 && selectedIds.length === users.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < users.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">User ID</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Username</TableHead>
+                        <TableHead className="font-semibold text-gray-700">First Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Last Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Employee ID</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Start Date</TableHead>
+                        <TableHead className="font-semibold text-gray-700">End Date</TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleUsersDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Created Date
+                            {usersDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedUsers.map((user) => (
+                        <TableRow
+                          key={user.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(user.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(user.id)}
+                              onCheckedChange={() => handleSelectOne(user.id)}
+                              aria-label={`Select ${user.username}`}
+                            />
+                          </TableCell>
+                          <TableCell className="text-gray-700">{user.user_id}</TableCell>
+                          <TableCell className="font-medium text-gray-900">{user.username}</TableCell>
+                          <TableCell className="text-gray-700">{user.first_name}</TableCell>
+                          <TableCell className="text-gray-700">{user.last_name}</TableCell>
+                          <TableCell className="text-gray-700">{user.employee_id}</TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {user.start_date ? formatDate(user.start_date) : "-"}
+                          </TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {user.end_date ? formatDate(user.end_date) : "-"}
+                          </TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {formatDate(user.created_at)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openViewUserDialog(user)}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openEditUserDialog(user)}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="Edit user"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(user as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       </div>
 
@@ -1723,10 +2063,10 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Contact" : activeTab === "referrals" ? "Delete Referral" : activeTab === "jobs" ? "Delete Application" : "Delete Job Posting"}
+              {activeTab === "contact" ? "Delete Contact" : activeTab === "referrals" ? "Delete Referral" : activeTab === "jobs" ? "Delete Application" : activeTab === "jobpostings" ? "Delete Job Posting" : "Delete User"}
             </DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "job application" : "job posting"} from{" "}
+              Are you sure you want to delete this {activeTab === "contact" ? "contact submission" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "job application" : activeTab === "jobpostings" ? "job posting" : "user"} from{" "}
               <span className="font-medium text-gray-900">
                 {activeTab === "contact"
                   ? selectedContact?.name
@@ -1734,7 +2074,9 @@ export default function ContactUsDashboard() {
                     ? (selectedContact as unknown as TalentReferral)?.your_name
                     : activeTab === "jobs"
                       ? (selectedContact as unknown as JobApplication)?.name
-                      : (selectedContact as unknown as JobOpening)?.post_id}
+                      : activeTab === "jobpostings"
+                        ? (selectedContact as unknown as JobOpening)?.post_id
+                        : (selectedContact as unknown as UserManagement)?.username}
               </span>?
               This action cannot be undone.
             </DialogDescription>
@@ -1771,12 +2113,12 @@ export default function ContactUsDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-red-600">
               <Trash2 className="w-5 h-5" />
-              {activeTab === "contact" ? "Delete Selected Contacts" : activeTab === "referrals" ? "Delete Selected Referrals" : activeTab === "jobs" ? "Delete Selected Applications" : "Delete Selected Job Postings"}
+              {activeTab === "contact" ? "Delete Selected Contacts" : activeTab === "referrals" ? "Delete Selected Referrals" : activeTab === "jobs" ? "Delete Selected Applications" : activeTab === "jobpostings" ? "Delete Selected Job Postings" : "Delete Selected Users"}
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to delete{" "}
               <span className="font-semibold text-gray-900">{selectedIds.length}</span>{" "}
-              selected {activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : "job posting"}{selectedIds.length > 1 ? "s" : ""}?
+              selected {activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : activeTab === "jobpostings" ? "job posting" : "user"}{selectedIds.length > 1 ? "s" : ""}?
               This action cannot be undone.
             </DialogDescription>
           </DialogHeader>
@@ -1799,8 +2141,382 @@ export default function ContactUsDashboard() {
                   Deleting...
                 </>
               ) : (
-                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : activeTab === "referrals" ? "Referral" : activeTab === "jobs" ? "Application" : "Job Posting"}${selectedIds.length > 1 ? "s" : ""}`
+                `Delete ${selectedIds.length} ${activeTab === "contact" ? "Contact" : activeTab === "referrals" ? "Referral" : activeTab === "jobs" ? "Application" : activeTab === "jobpostings" ? "Job Posting" : "User"}${selectedIds.length > 1 ? "s" : ""}`
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add User Dialog */}
+      <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                <Plus className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              Add New User
+            </DialogTitle>
+            <DialogDescription>
+              Create a new user account. Password will be securely encrypted.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="user_id">User ID</Label>
+                <Input
+                  id="user_id"
+                  value={userFormData.user_id}
+                  onChange={(e) => setUserFormData({ ...userFormData, user_id: e.target.value })}
+                  placeholder="Enter user ID"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
+                  value={userFormData.username}
+                  onChange={(e) => setUserFormData({ ...userFormData, username: e.target.value })}
+                  placeholder="Enter username"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="first_name">First Name</Label>
+                <Input
+                  id="first_name"
+                  value={userFormData.first_name}
+                  onChange={(e) => setUserFormData({ ...userFormData, first_name: e.target.value })}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="last_name">Last Name</Label>
+                <Input
+                  id="last_name"
+                  value={userFormData.last_name}
+                  onChange={(e) => setUserFormData({ ...userFormData, last_name: e.target.value })}
+                  placeholder="Enter last name"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="employee_id">Employee ID</Label>
+                <Input
+                  id="employee_id"
+                  value={userFormData.employee_id}
+                  onChange={(e) => setUserFormData({ ...userFormData, employee_id: e.target.value })}
+                  placeholder="Enter employee ID"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={userFormData.password}
+                  onChange={(e) => setUserFormData({ ...userFormData, password: e.target.value })}
+                  placeholder="Enter password"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="start_date">Start Date</Label>
+                <Input
+                  id="start_date"
+                  type="date"
+                  value={userFormData.start_date}
+                  onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="end_date">End Date</Label>
+                <Input
+                  id="end_date"
+                  type="date"
+                  value={userFormData.end_date}
+                  onChange={(e) => setUserFormData({ ...userFormData, end_date: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsAddUserDialogOpen(false)
+                setUserFormData({
+                  user_id: "",
+                  username: "",
+                  first_name: "",
+                  last_name: "",
+                  employee_id: "",
+                  password: "",
+                  start_date: "",
+                  end_date: "",
+                })
+              }}
+              disabled={isUserSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddUser}
+              disabled={isUserSubmitting || !userFormData.user_id || !userFormData.username || !userFormData.password}
+              className="bg-[#0066ff] hover:bg-[#0052cc]"
+            >
+              {isUserSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                "Add User"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit User Dialog */}
+      <Dialog open={isEditUserDialogOpen} onOpenChange={setIsEditUserDialogOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                <Pencil className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              Edit User
+            </DialogTitle>
+            <DialogDescription>
+              Update user details. Leave password empty to keep the existing password.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit_user_id">User ID</Label>
+                <Input
+                  value={userFormData.user_id}
+                  disabled
+                  className="bg-gray-100 cursor-not-allowed"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit_username">Username</Label>
+                <Input
+                  id="edit_username"
+                  value={userFormData.username}
+                  onChange={(e) => setUserFormData({ ...userFormData, username: e.target.value })}
+                  placeholder="Enter username"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit_first_name">First Name</Label>
+                <Input
+                  id="edit_first_name"
+                  value={userFormData.first_name}
+                  onChange={(e) => setUserFormData({ ...userFormData, first_name: e.target.value })}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit_last_name">Last Name</Label>
+                <Input
+                  id="edit_last_name"
+                  value={userFormData.last_name}
+                  onChange={(e) => setUserFormData({ ...userFormData, last_name: e.target.value })}
+                  placeholder="Enter last name"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit_employee_id">Employee ID</Label>
+                <Input
+                  value={userFormData.employee_id}
+                  disabled
+                  className="bg-gray-100 cursor-not-allowed"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit_password">New Password (optional)</Label>
+                <Input
+                  id="edit_password"
+                  type="password"
+                  value={userFormData.password}
+                  onChange={(e) => setUserFormData({ ...userFormData, password: e.target.value })}
+                  placeholder="Leave empty to keep existing"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="edit_start_date">Start Date</Label>
+                <Input
+                  id="edit_start_date"
+                  type="date"
+                  value={userFormData.start_date}
+                  onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit_end_date">End Date</Label>
+                <Input
+                  id="edit_end_date"
+                  type="date"
+                  value={userFormData.end_date}
+                  onChange={(e) => setUserFormData({ ...userFormData, end_date: e.target.value })}
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsEditUserDialogOpen(false)
+                setSelectedUser(null)
+                setUserFormData({
+                  user_id: "",
+                  username: "",
+                  first_name: "",
+                  last_name: "",
+                  employee_id: "",
+                  password: "",
+                  start_date: "",
+                  end_date: "",
+                })
+              }}
+              disabled={isUserSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleEditUser}
+              disabled={isUserSubmitting || !userFormData.user_id || !userFormData.username}
+              className="bg-[#0066ff] hover:bg-[#0052cc]"
+            >
+              {isUserSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Updating...
+                </>
+              ) : (
+                "Update User"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View User Dialog */}
+      <Dialog open={isViewUserDialogOpen} onOpenChange={setIsViewUserDialogOpen}>
+        <DialogContent className="sm:max-w-[550px]">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                <UserCog className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              User Details
+            </DialogTitle>
+            <DialogDescription>
+              Full details of the user
+            </DialogDescription>
+          </DialogHeader>
+
+          {selectedUser && (
+            <div className="space-y-4 py-4">
+              {/* User ID */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Hash className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">User ID</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.user_id}</p>
+                </div>
+              </div>
+
+              {/* Username */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Username</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.username}</p>
+                </div>
+              </div>
+
+              {/* First Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">First Name</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.first_name}</p>
+                </div>
+              </div>
+
+              {/* Last Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Last Name</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.last_name}</p>
+                </div>
+              </div>
+
+              {/* Employee ID */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Building2 className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Employee ID</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.employee_id}</p>
+                </div>
+              </div>
+
+              {/* Start Date */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Start Date</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.start_date ? formatDate(selectedUser.start_date) : "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* End Date */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">End Date</p>
+                  <p className="text-gray-900 mt-1">{selectedUser.end_date ? formatDate(selectedUser.end_date) : "Not specified"}</p>
+                </div>
+              </div>
+
+              {/* Created At */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Created At</p>
+                  <p className="text-gray-900 mt-1">{formatDate(selectedUser.created_at)}</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsViewUserDialogOpen(false)
+                setSelectedUser(null)
+              }}
+            >
+              Close
             </Button>
           </DialogFooter>
         </DialogContent>

@@ -61,3 +61,16 @@ export type JobApplication = {
   post_id: string | null
   created_at: string
 }
+
+export type UserManagement = {
+  id: number
+  user_id: string
+  username: string
+  first_name: string
+  last_name: string
+  employee_id: string
+  password: string
+  start_date: string
+  end_date: string | null
+  created_at: string
+}
