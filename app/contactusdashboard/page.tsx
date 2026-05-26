@@ -657,6 +657,7 @@ export default function ContactUsDashboard() {
         start_date: "",
         end_date: "",
       })
+      setSelectedRoles([])
       fetchUsers()
     } catch (err) {
       console.error("Error:", err)
@@ -952,7 +953,22 @@ export default function ContactUsDashboard() {
                 {activeTab === "users" && (
                   <Button
                     size="sm"
-                    onClick={() => setIsAddUserDialogOpen(true)}
+                    onClick={() => {
+                      setSelectedRoles([])
+
+                      setUserFormData({
+                        user_id: "",
+                        username: "",
+                        first_name: "",
+                        last_name: "",
+                        employee_id: "",
+                        password: "",
+                        start_date: "",
+                        end_date: "",
+                      })
+
+                      setIsAddUserDialogOpen(true)
+                    }}
                     className="gap-2 bg-[#0066ff] hover:bg-[#0052cc]"
                   >
                     <Plus className="w-4 h-4" />
@@ -1729,7 +1745,7 @@ export default function ContactUsDashboard() {
 
       {/* View Contact/Referral/Job Application Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className="sm:max-w-[550px]">
+        <DialogContent className="sm:max-w-[720px] p-0 overflow-hidden">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
@@ -2572,7 +2588,7 @@ export default function ContactUsDashboard() {
 
       {/* View User Dialog */}
       <Dialog open={isViewUserDialogOpen} onOpenChange={setIsViewUserDialogOpen}>
-        <DialogContent className="sm:max-w-[550px]">
+        <DialogContent className="sm:max-w-[720px] p-0 overflow-hidden">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
