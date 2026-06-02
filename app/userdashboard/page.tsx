@@ -346,7 +346,7 @@ export default function UserDashboard() {
                 <button
                   className="w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm bg-[#00d4ff]/10 text-[#00d4ff]"
                 >
-                  <UserCog className="w-4 h-4" />
+                  <User className="w-4 h-4" />
                   <span className="font-medium">Profile</span>
                 </button>
               </div>
