@@ -376,7 +376,7 @@ export default function UserDashboard() {
               </button>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
-                  User Dashboard
+                  Profile
                 </h2>
               </div>
             </div>
