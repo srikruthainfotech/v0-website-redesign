@@ -34,7 +34,6 @@ import {
   Menu,
   X,
   ChevronDown,
-  LayoutDashboard,
   ArrowUp,
   ArrowDown,
   Pencil,
@@ -332,8 +331,8 @@ export default function UserDashboard() {
                 className="w-full flex items-center justify-between px-3 py-2 rounded-md hover:bg-white/5 text-white transition-colors"
               >
                 <div className="flex items-center gap-2.5">
-                  <LayoutDashboard className="w-4 h-4" />
-                  <span className="text-sm font-medium">Dashboard</span>
+                  <User className="w-4 h-4" />
+                  <span className="text-sm font-medium">Profile</span>
                 </div>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isDashboardExpanded ? "rotate-180" : ""}`} />
               </button>
