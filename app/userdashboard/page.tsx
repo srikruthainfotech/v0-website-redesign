@@ -38,7 +38,6 @@ import {
   ArrowUp,
   ArrowDown,
   Pencil,
-  UserCog,
   Hash,
   Building2,
 } from "lucide-react"
@@ -346,7 +345,7 @@ export default function UserDashboard() {
                 <button
                   className="w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm bg-[#00d4ff]/10 text-[#00d4ff]"
                 >
-                  <UserCog className="w-4 h-4" />
+                  <User className="w-4 h-4" />
                   <span className="font-medium">Profile</span>
                 </button>
               </div>
@@ -425,7 +424,7 @@ export default function UserDashboard() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
-                  <UserCog className="w-6 h-6 text-[#00d4ff]" />
+                  <User className="w-6 h-6 text-[#00d4ff]" />
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">Your Profile</p>
@@ -463,7 +462,7 @@ export default function UserDashboard() {
               </div>
             ) : !userData ? (
               <div className="p-12 text-center">
-                <UserCog className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                <User className="w-12 h-12 text-gray-300 mx-auto mb-3" />
                 <p className="text-gray-500">No user data found</p>
               </div>
             ) : (
