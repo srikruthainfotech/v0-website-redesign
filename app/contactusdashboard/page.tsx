@@ -21,6 +21,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   LogOut,
   Eye,
   Trash2,
@@ -107,7 +114,7 @@ export default function ContactUsDashboard() {
   const [isUserSubmitting, setIsUserSubmitting] = useState(false)
   const [loggedInUsername, setLoggedInUsername] = useState("")
   const [roles, setRoles] = useState<any[]>([])
-  const [selectedRoles, setSelectedRoles] = useState<number[]>([])
+  const [selectedRole, setSelectedRole] = useState<number | "">("")
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
@@ -632,19 +639,19 @@ export default function ContactUsDashboard() {
         return
       }
 
-      // INSERT USER ROLES
-      if (insertedUser && selectedRoles.length > 0) {
-        const roleRows = selectedRoles.map((roleId) => ({
-          user_id: insertedUser.id,
-          role_id: roleId,
-        }))
-
+      // INSERT USER ROLE - Only one role
+      if (insertedUser && selectedRole) {
         const { error: roleError } = await supabase
           .from("user_roles")
-          .insert(roleRows)
+          .insert([
+            {
+              user_id: insertedUser.id,
+              role_id: selectedRole,
+            },
+          ])
 
         if (roleError) {
-          console.error("Error inserting roles:", roleError)
+          console.error("Error inserting role:", roleError)
         }
       }
 
@@ -660,7 +667,7 @@ export default function ContactUsDashboard() {
         start_date: "",
         end_date: "",
       })
-      setSelectedRoles([])
+      setSelectedRole("")
       fetchUsers()
     } catch (err) {
       console.error("Error:", err)
@@ -702,6 +709,33 @@ export default function ContactUsDashboard() {
         return
       }
 
+      // Update user role if changed
+      if (selectedRole) {
+        // Delete old role mapping
+        const { error: deleteError } = await supabase
+          .from("user_roles")
+          .delete()
+          .eq("user_id", selectedUser.id)
+
+        if (deleteError) {
+          console.error("Error deleting old role:", deleteError)
+        }
+
+        // Insert new role mapping
+        const { error: insertError } = await supabase
+          .from("user_roles")
+          .insert([
+            {
+              user_id: selectedUser.id,
+              role_id: selectedRole,
+            },
+          ])
+
+        if (insertError) {
+          console.error("Error inserting new role:", insertError)
+        }
+      }
+
       setMessage({ type: "success", text: "User updated successfully" })
       setIsEditUserDialogOpen(false)
       setSelectedUser(null)
@@ -715,6 +749,7 @@ export default function ContactUsDashboard() {
         start_date: "",
         end_date: "",
       })
+      setSelectedRole("")
       fetchUsers()
     } catch (err) {
       console.error("Error:", err)
@@ -737,6 +772,11 @@ export default function ContactUsDashboard() {
       start_date: user.start_date ? user.start_date.split("T")[0] : "",
       end_date: user.end_date ? user.end_date.split("T")[0] : "",
     })
+    
+    // Load current user's role
+    const currentRole = user.user_roles?.[0]?.role_id || ""
+    setSelectedRole(currentRole)
+    
     setIsEditUserDialogOpen(true)
   }
 
@@ -957,7 +997,7 @@ export default function ContactUsDashboard() {
                   <Button
                     size="sm"
                     onClick={() => {
-                      setSelectedRoles([])
+                      setSelectedRole("")
 
                       setUserFormData({
                         user_id: "",
@@ -1681,37 +1721,25 @@ export default function ContactUsDashboard() {
                           <TableCell className="text-gray-700">{user.first_name}</TableCell>
                           <TableCell className="text-gray-700">{user.last_name}</TableCell>
                           <TableCell>
-                            <div className="flex flex-wrap gap-1">
-                              {user.roles?.length ? (
-                                user.roles.map((role: string, index: number) => {
-                                  const roleLower = role.toLowerCase()
-                                  let badgeClass = "bg-gray-100 text-gray-700" // default for Viewer or unknown
-                                  
-                                  if (roleLower === "admin") {
-                                    badgeClass = "bg-purple-100 text-purple-700"
-                                  } else if (roleLower === "employee") {
-                                    badgeClass = "bg-blue-100 text-blue-700"
-                                  } else if (roleLower === "hr") {
-                                    badgeClass = "bg-pink-100 text-pink-700"
-                                  } else if (roleLower === "recruiter") {
-                                    badgeClass = "bg-cyan-100 text-cyan-700"
-                                  } else if (roleLower === "manager") {
-                                    badgeClass = "bg-orange-100 text-orange-700"
-                                  }
-                                  
-                                  return (
-                                    <span
-                                      key={index}
-                                      className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${badgeClass}`}
-                                    >
-                                      {role}
-                                    </span>
-                                  )
-                                })
-                              ) : (
-                                "-"
-                              )}
-                            </div>
+                            {user.roles?.length ? (
+                              <span
+                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                                  (() => {
+                                    const roleLower = user.roles[0].toLowerCase()
+                                    if (roleLower === "admin") return "bg-purple-100 text-purple-700"
+                                    if (roleLower === "employee") return "bg-blue-100 text-blue-700"
+                                    if (roleLower === "hr") return "bg-pink-100 text-pink-700"
+                                    if (roleLower === "recruiter") return "bg-cyan-100 text-cyan-700"
+                                    if (roleLower === "manager") return "bg-orange-100 text-orange-700"
+                                    return "bg-gray-100 text-gray-700"
+                                  })()
+                                }`}
+                              >
+                                {user.roles[0]}
+                              </span>
+                            ) : (
+                              "-"
+                            )}
                           </TableCell>
                           <TableCell className="text-gray-700">{user.employee_id}</TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
@@ -2361,48 +2389,6 @@ export default function ContactUsDashboard() {
                   placeholder="Enter last name"
                 />
               </div>
-              <div className="space-y-2">
-                <Label>Job Roles</Label>
-
-                <div className="border rounded-lg p-3 max-h-48 overflow-y-auto">
-                  {roles.map((role: any) => (
-                    <div
-                      key={role.role_id}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <Checkbox
-                        checked={selectedRoles.includes(role.role_id)}
-                        onCheckedChange={(checked) => {
-                          if (checked) {
-
-                            if (selectedRoles.length >= 6) {
-                              alert("Maximum 6 roles allowed")
-                              return
-                            }
-
-                            setSelectedRoles([
-                              ...selectedRoles,
-                              role.role_id,
-                            ])
-                          } else {
-                            setSelectedRoles(
-                              selectedRoles.filter(
-                                (id) => id !== role.role_id
-                              )
-                            )
-                          }
-                        }}
-                      />
-
-                      <Label>{role.role_name}</Label>
-                    </div>
-                  ))}
-                </div>
-
-                <p className="text-xs text-gray-500">
-                  Maximum 6 roles allowed
-                </p>
-              </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
@@ -2415,6 +2401,23 @@ export default function ContactUsDashboard() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="job_role">Job Role</Label>
+                <Select value={String(selectedRole)} onValueChange={(value) => setSelectedRole(Number(value) || "")}>
+                  <SelectTrigger id="job_role">
+                    <SelectValue placeholder="Select a Job Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roles.map((role) => (
+                      <SelectItem key={role.role_id} value={String(role.role_id)}>
+                        {role.role_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
@@ -2424,8 +2427,6 @@ export default function ContactUsDashboard() {
                   placeholder="Enter password"
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="start_date">Start Date</Label>
                 <Input
@@ -2435,6 +2436,8 @@ export default function ContactUsDashboard() {
                   onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
                 />
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="end_date">End Date</Label>
                 <Input
@@ -2461,6 +2464,7 @@ export default function ContactUsDashboard() {
                   start_date: "",
                   end_date: "",
                 })
+                setSelectedRole("")
               }}
               disabled={isUserSubmitting}
             >
@@ -2548,6 +2552,23 @@ export default function ContactUsDashboard() {
                 />
               </div>
               <div className="space-y-2">
+                <Label htmlFor="edit_job_role">Job Role</Label>
+                <Select value={String(selectedRole)} onValueChange={(value) => setSelectedRole(Number(value) || "")}>
+                  <SelectTrigger id="edit_job_role">
+                    <SelectValue placeholder="Select a Job Role" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {roles.map((role) => (
+                      <SelectItem key={role.role_id} value={String(role.role_id)}>
+                        {role.role_name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
                 <Label htmlFor="edit_password">New Password (optional)</Label>
                 <Input
                   id="edit_password"
@@ -2557,8 +2578,6 @@ export default function ContactUsDashboard() {
                   placeholder="Leave empty to keep existing"
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit_start_date">Start Date</Label>
                 <Input
@@ -2568,6 +2587,8 @@ export default function ContactUsDashboard() {
                   onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
                 />
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="edit_end_date">End Date</Label>
                 <Input
@@ -2595,6 +2616,7 @@ export default function ContactUsDashboard() {
                   start_date: "",
                   end_date: "",
                 })
+                setSelectedRole("")
               }}
               disabled={isUserSubmitting}
             >
