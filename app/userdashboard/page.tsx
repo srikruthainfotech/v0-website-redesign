@@ -775,7 +775,7 @@ export default function UserDashboard() {
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
-                <UserCog className="w-4 h-4 text-[#00d4ff]" />
+                <UserCircle className="w-4 h-4 text-[#00d4ff]" />
               </div>
               User Details
             </DialogTitle>
