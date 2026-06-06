@@ -1733,25 +1733,8 @@ export default function ContactUsDashboard() {
                           <TableCell className="font-medium text-gray-900">{user.username}</TableCell>
                           <TableCell className="text-gray-700">{user.first_name}</TableCell>
                           <TableCell className="text-gray-700">{user.last_name}</TableCell>
-                          <TableCell>
-                            {user.roles?.length ? (
-                              <span
-                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${(() => {
-                                  const roleLower = user.roles[0].toLowerCase()
-                                  if (roleLower === "admin") return "bg-purple-100 text-purple-700"
-                                  if (roleLower === "employee") return "bg-blue-100 text-blue-700"
-                                  if (roleLower === "hr") return "bg-pink-100 text-pink-700"
-                                  if (roleLower === "recruiter") return "bg-cyan-100 text-cyan-700"
-                                  if (roleLower === "manager") return "bg-orange-100 text-orange-700"
-                                  return "bg-gray-100 text-gray-700"
-                                })()
-                                  }`}
-                              >
-                                {user.roles[0]}
-                              </span>
-                            ) : (
-                              "-"
-                            )}
+                          <TableCell className="text-gray-700">
+                            {user.roles?.length ? user.roles[0] : "-"}
                           </TableCell>
                           <TableCell className="text-gray-700">{user.employee_id}</TableCell>
                           <TableCell className="text-gray-500 text-sm whitespace-nowrap">
