@@ -587,6 +587,19 @@ export default function ContactUsDashboard() {
   const toggleUsersDateSort = () => {
     setUsersDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
+  const generateEmployeeId = () => {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+    let result = ""
+
+    for (let i = 0; i < 8; i++) {
+      result += chars.charAt(
+        Math.floor(Math.random() * chars.length)
+      )
+    }
+
+    return result
+  }
   const getUserStatus = (endDate: string | null) => {
     // If no end date, user is active
     if (!endDate) {
@@ -605,6 +618,7 @@ export default function ContactUsDashboard() {
     try {
       // Hash the password before saving
       const hashedPassword = await bcrypt.hash(userFormData.password, 10)
+      const employeeId = generateEmployeeId()
 
       const {
         data: insertedUser,
@@ -620,7 +634,7 @@ export default function ContactUsDashboard() {
             username: userFormData.username,
             first_name: userFormData.first_name,
             last_name: userFormData.last_name,
-            employee_id: userFormData.employee_id,
+            employee_id: employeeId,
             password: hashedPassword,
             start_date: userFormData.start_date || null,
             end_date: userFormData.end_date || null,
@@ -772,11 +786,11 @@ export default function ContactUsDashboard() {
       start_date: user.start_date ? user.start_date.split("T")[0] : "",
       end_date: user.end_date ? user.end_date.split("T")[0] : "",
     })
-    
+
     // Load current user's role
     const currentRole = user.user_roles?.[0]?.role_id || ""
     setSelectedRole(currentRole)
-    
+
     setIsEditUserDialogOpen(true)
   }
 
@@ -1592,11 +1606,10 @@ export default function ContactUsDashboard() {
                             <TableCell>
                               {posting.status ? (
                                 <span
-                                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                    posting.status.toLowerCase() === "active"
-                                      ? "bg-green-100 text-green-700"
-                                      : "bg-red-100 text-red-700"
-                                  }`}
+                                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${posting.status.toLowerCase() === "active"
+                                    ? "bg-green-100 text-green-700"
+                                    : "bg-red-100 text-red-700"
+                                    }`}
                                 >
                                   {posting.status}
                                 </span>
@@ -1723,17 +1736,16 @@ export default function ContactUsDashboard() {
                           <TableCell>
                             {user.roles?.length ? (
                               <span
-                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                  (() => {
-                                    const roleLower = user.roles[0].toLowerCase()
-                                    if (roleLower === "admin") return "bg-purple-100 text-purple-700"
-                                    if (roleLower === "employee") return "bg-blue-100 text-blue-700"
-                                    if (roleLower === "hr") return "bg-pink-100 text-pink-700"
-                                    if (roleLower === "recruiter") return "bg-cyan-100 text-cyan-700"
-                                    if (roleLower === "manager") return "bg-orange-100 text-orange-700"
-                                    return "bg-gray-100 text-gray-700"
-                                  })()
-                                }`}
+                                className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${(() => {
+                                  const roleLower = user.roles[0].toLowerCase()
+                                  if (roleLower === "admin") return "bg-purple-100 text-purple-700"
+                                  if (roleLower === "employee") return "bg-blue-100 text-blue-700"
+                                  if (roleLower === "hr") return "bg-pink-100 text-pink-700"
+                                  if (roleLower === "recruiter") return "bg-cyan-100 text-cyan-700"
+                                  if (roleLower === "manager") return "bg-orange-100 text-orange-700"
+                                  return "bg-gray-100 text-gray-700"
+                                })()
+                                  }`}
                               >
                                 {user.roles[0]}
                               </span>
@@ -2391,15 +2403,7 @@ export default function ContactUsDashboard() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="employee_id">Employee ID</Label>
-                <Input
-                  id="employee_id"
-                  value={userFormData.employee_id}
-                  onChange={(e) => setUserFormData({ ...userFormData, employee_id: e.target.value })}
-                  placeholder="Enter employee ID"
-                />
-              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="job_role">Job Role</Label>
                 <Select value={String(selectedRole)} onValueChange={(value) => setSelectedRole(Number(value) || "")}>
