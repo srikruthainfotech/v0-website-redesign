@@ -1745,9 +1745,9 @@ export default function ContactUsDashboard() {
                           </TableCell>
                           <TableCell>
                             <span
-                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(user.end_date) === "Active"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-red-100 text-red-700"
+                              className={`inline-flex items-center justify-center min-w-[54px] h-6 rounded-md text-xs font-medium ${getUserStatus(user.end_date) === "Active"
+                                ? "bg-[#0A1628] text-white"
+                                : "bg-[#F1F5F9] text-[#334155]"
                                 }`}
                             >
                               {getUserStatus(user.end_date)}
