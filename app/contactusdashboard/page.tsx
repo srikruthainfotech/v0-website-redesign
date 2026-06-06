@@ -2403,7 +2403,6 @@ export default function ContactUsDashboard() {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-
               <div className="space-y-2">
                 <Label htmlFor="job_role">Job Role</Label>
                 <Select value={String(selectedRole)} onValueChange={(value) => setSelectedRole(Number(value) || "")}>
@@ -2419,8 +2418,6 @@ export default function ContactUsDashboard() {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -2431,6 +2428,8 @@ export default function ContactUsDashboard() {
                   placeholder="Enter password"
                 />
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="start_date">Start Date</Label>
                 <Input
@@ -2440,8 +2439,6 @@ export default function ContactUsDashboard() {
                   onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="end_date">End Date</Label>
                 <Input
