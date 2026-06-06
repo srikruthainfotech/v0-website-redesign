@@ -502,38 +502,10 @@ export default function UserDashboard() {
                       <TableCell className="font-medium text-gray-900">{userData.username}</TableCell>
                       <TableCell className="text-gray-700">{userData.first_name}</TableCell>
                       <TableCell className="text-gray-700">{userData.last_name}</TableCell>
-                      <TableCell>
-                        <div className="flex flex-wrap gap-1">
-                          {userData.roles?.length ? (
-                            userData.roles.map((role: string, index: number) => {
-                              const roleLower = role.toLowerCase()
-                              let badgeClass = "bg-gray-100 text-gray-700"
-
-                              if (roleLower === "admin") {
-                                badgeClass = "bg-purple-100 text-purple-700"
-                              } else if (roleLower === "employee") {
-                                badgeClass = "bg-blue-100 text-blue-700"
-                              } else if (roleLower === "hr") {
-                                badgeClass = "bg-pink-100 text-pink-700"
-                              } else if (roleLower === "recruiter") {
-                                badgeClass = "bg-cyan-100 text-cyan-700"
-                              } else if (roleLower === "manager") {
-                                badgeClass = "bg-orange-100 text-orange-700"
-                              }
-
-                              return (
-                                <span
-                                  key={index}
-                                  className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${badgeClass}`}
-                                >
-                                  {role}
-                                </span>
-                              )
-                            })
-                          ) : (
-                            "-"
-                          )}
-                        </div>
+                      <TableCell className="text-gray-700">
+                        {userData.roles?.length
+                          ? userData.roles.join(", ")
+                          : "-"}
                       </TableCell>
                       <TableCell className="text-gray-700">{userData.employee_id}</TableCell>
                       <TableCell className="text-gray-500 text-sm whitespace-nowrap">
@@ -544,9 +516,9 @@ export default function UserDashboard() {
                       </TableCell>
                       <TableCell>
                         <span
-                          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${getUserStatus(userData.end_date) === "Active"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-red-100 text-red-700"
+                          className={`inline-flex items-center justify-center min-w-[54px] h-6 rounded-md text-xs font-medium ${getUserStatus(userData.end_date) === "Active"
+                              ? "bg-[#0A1628] text-white"
+                              : "bg-[#F1F5F9] text-[#334155]"
                             }`}
                         >
                           {getUserStatus(userData.end_date)}
