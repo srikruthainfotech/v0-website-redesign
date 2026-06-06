@@ -2349,7 +2349,7 @@ export default function ContactUsDashboard() {
 
       {/* Add User Dialog */}
       <Dialog open={isAddUserDialogOpen} onOpenChange={setIsAddUserDialogOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[700px]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
@@ -2361,7 +2361,7 @@ export default function ContactUsDashboard() {
               Create a new user account. Password will be securely encrypted.
             </DialogDescription>
           </DialogHeader>
-          <div className="space-y-4 py-4">
+          <div className="mt-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="user_id">User ID</Label>
@@ -2382,7 +2382,7 @@ export default function ContactUsDashboard() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="first_name">First Name</Label>
                 <Input
@@ -2402,8 +2402,7 @@ export default function ContactUsDashboard() {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-
+            <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="job_role">Job Role</Label>
                 <Select value={String(selectedRole)} onValueChange={(value) => setSelectedRole(Number(value) || "")}>
@@ -2419,8 +2418,6 @@ export default function ContactUsDashboard() {
                   </SelectContent>
                 </Select>
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="password">Password</Label>
                 <Input
@@ -2431,6 +2428,8 @@ export default function ContactUsDashboard() {
                   placeholder="Enter password"
                 />
               </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4 mt-4">
               <div className="space-y-2">
                 <Label htmlFor="start_date">Start Date</Label>
                 <Input
@@ -2440,8 +2439,6 @@ export default function ContactUsDashboard() {
                   onChange={(e) => setUserFormData({ ...userFormData, start_date: e.target.value })}
                 />
               </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="end_date">End Date</Label>
                 <Input
