@@ -4,6 +4,7 @@ import { useState } from "react"
 import { X, Briefcase, MapPin, Calendar } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { JobApplicationForm } from "./job-application-form"
+import { PrintJobNotice } from "./print-job-notice"
 
 interface QuickApplyModalProps {
   job: Job
@@ -13,6 +14,7 @@ interface QuickApplyModalProps {
 
 export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false)
+  const [isPrintOpen, setIsPrintOpen] = useState(false)
 
   if (!isOpen) return null
 
@@ -100,9 +102,17 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
           {/* Job Posting Notice */}
           <div className="mb-6">
 
-            <h3 className="text-2xl font-bold text-center text-black mb-8">
-              JOB POSTING NOTICE
-            </h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-2xl font-bold text-center text-black flex-1">
+                JOB POSTING NOTICE
+              </h3>
+              <button
+                onClick={() => setIsPrintOpen(true)}
+                className="px-3 py-1 bg-[#0066ff] hover:bg-[#0052cc] text-white text-xs font-medium rounded-md transition-colors whitespace-nowrap ml-2"
+              >
+                Print Job Notice
+              </button>
+            </div>
 
             <div className="border border-gray-300 p-6 text-sm text-black space-y-6">
 
@@ -168,6 +178,13 @@ export function QuickApplyModal({ job, isOpen, onClose }: QuickApplyModalProps) 
           </div>
         </div>
       </div>
+
+      {/* Print Job Notice Modal */}
+      <PrintJobNotice
+        job={job}
+        isOpen={isPrintOpen}
+        onClose={() => setIsPrintOpen(false)}
+      />
     </div>
   )
 }

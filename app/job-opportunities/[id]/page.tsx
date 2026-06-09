@@ -3,6 +3,7 @@ import { Briefcase, MapPin, Calendar } from "lucide-react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { JobApplicationForm } from "@/components/job-opportunities/job-application-form"
+import { JobDetailClient } from "@/components/job-opportunities/job-detail-client"
 import { supabase, type JobOpening } from "@/lib/supabase"
 
 interface JobDetailPageProps {
@@ -55,43 +56,9 @@ export default async function JobDetailPage({
                 <span>Posted {job.posting_date}</span>
               </div>
             </div>
-            {/* Job Posting Notice */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-center text-black mb-8">
-                JOB POSTING NOTICE
-              </h3>
-              <div className="border border-gray-300 p-6 text-sm text-black space-y-6">
-                {[
-                  ["POSITION", job.position],
-                  ["NUMBER OF OPENINGS", job.number_of_openings],
-                  ["LOCATION", job.location],
-                  ["JOB DUTIES", job.job_duties],
-                  ["EDUCATION", job.education],
-                  ["EXPERIENCE", job.experience],
-                  ["POSTED BY", job.posted_by],
-                  ["DESIGNATION", job.designation],
-                ].map(([label, value], index) => (
-                  <div
-                    key={index}
-                    className="grid grid-cols-[220px_20px_1fr] gap-4"
-                  >
-                    {/* Left Label */}
-                    <div className="font-bold uppercase whitespace-pre-line">
-                      {label}
-                    </div>
-                    {/* Colon */}
-                    <div className="font-bold text-center">
-                      :
-                    </div>
 
-                    {/* Right Value */}
-                    <div className="leading-7 break-words whitespace-pre-line">
-                      {value || ""}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+            {/* Client Component with Print Button */}
+            <JobDetailClient job={job} />
 
             {/* Application Form */}
             <div className="border-t border-gray-200 pt-6">

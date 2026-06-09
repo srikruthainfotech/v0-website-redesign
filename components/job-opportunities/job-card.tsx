@@ -5,6 +5,7 @@ import Link from "next/link"
 import { Briefcase, MapPin, Calendar } from "lucide-react"
 import type { Job } from "@/lib/job-data"
 import { QuickApplyModal } from "./quick-apply-modal"
+import { PrintJobNotice } from "./print-job-notice"
 
 interface JobCardProps {
   job: Job
@@ -12,6 +13,7 @@ interface JobCardProps {
 
 export function JobCard({ job }: JobCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isPrintOpen, setIsPrintOpen] = useState(false)
 
   return (
     <>
@@ -59,6 +61,12 @@ export function JobCard({ job }: JobCardProps) {
           >
             Read More
           </Link>
+          <button
+            onClick={() => setIsPrintOpen(true)}
+            className="px-5 py-2 bg-[#0066ff] hover:bg-[#0052cc] text-white text-sm font-medium rounded-md transition-colors"
+          >
+            Print Job Notice
+          </button>
         </div>
       </div>
 
@@ -67,6 +75,13 @@ export function JobCard({ job }: JobCardProps) {
         job={job}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      {/* Print Job Notice Modal */}
+      <PrintJobNotice
+        job={job}
+        isOpen={isPrintOpen}
+        onClose={() => setIsPrintOpen(false)}
       />
     </>
   )
