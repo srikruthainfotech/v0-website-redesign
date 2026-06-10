@@ -31,12 +31,14 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      // Step 1: Fetch user by username only
+      // Step 1: Fetch user by username onlyt 
       const { data, error: dbError } = await supabase
         .from("users")
         .select("*")
         .eq("username", formData.username)
         .single()
+      console.log("USER =", data)
+      console.log("DB ERROR =", dbError)
 
       if (dbError || !data) {
         setError("Invalid username or password")
@@ -57,26 +59,21 @@ export default function LoginPage() {
       }
 
       // Step 3: Fetch user roles
-      const { data: rolesData, error: rolesError } = await supabase
+      const { data: rolesData } = await supabase
         .from("user_roles")
         .select(`
-          role_id,
-          roles (
-            role_name
-          )
-        `)
+    role_id,
+    roles (
+      role_name
+    )
+  `)
         .eq("user_id", data.id)
 
-      // Handle roles query error (but don't block login)
-      if (rolesError) {
-        console.error("Error fetching roles:", rolesError)
-      }
-
-      // Step 4: Get role names from rolesData
-      const roleNames = rolesData?.map(
-        (item: { role_id: number; roles: { role_name: string } | null }) => 
-          item.roles?.role_name
-      ).filter(Boolean) ?? []
+      const roleNames =
+        (rolesData as any[])
+          ?.flatMap((item) =>
+            item.roles?.map((r: any) => r.role_name) || []
+          ) ?? []
 
       const isAdmin = roleNames.includes("Admin")
       const isEmployee = roleNames.includes("Employee")
