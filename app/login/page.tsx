@@ -73,10 +73,7 @@ export default function LoginPage() {
       }
 
       // Step 4: Get role names from rolesData
-      const roleNames = rolesData?.map(
-        (item: { role_id: number; roles: { role_name: string } | null }) => 
-          item.roles?.role_name
-      ).filter(Boolean) ?? []
+      const roleNames = (rolesData ?? []).map((item: any) => item.roles?.role_name).filter(Boolean) as string[]
 
       const isAdmin = roleNames.includes("Admin")
       const isEmployee = roleNames.includes("Employee")
