@@ -72,7 +72,14 @@ export default function LoginPage() {
         console.error("Error fetching roles:", rolesError)
       }
 
-      // Step 4: Get role names from rolesData
+      // Step 4: Check if user must change password
+      if (data.must_change_password) {
+        localStorage.setItem("pendingUserId", data.id)
+        router.push("/reset-password")
+        return
+      }
+
+      // Step 5: Get role names from rolesData
       const roleNames = rolesData?.map(
         (item: { role_id: number; roles: { role_name: string } | null }) => 
           item.roles?.role_name

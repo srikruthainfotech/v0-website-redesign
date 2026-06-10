@@ -119,13 +119,38 @@ export default function ContactUsDashboard() {
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
     const username = localStorage.getItem("username")
+    const userId = localStorage.getItem("userId")
 
     if (isLoggedIn !== "true") {
       router.push("/login")
-    } else {
+      return
+    }
+
+    // Check if user must change password
+    const checkPasswordReset = async () => {
+      if (!userId) return
+
+      try {
+        const { data, error } = await supabase
+          .from("users")
+          .select("must_change_password")
+          .eq("id", userId)
+          .single()
+
+        if (!error && data?.must_change_password) {
+          localStorage.setItem("pendingUserId", userId)
+          router.push("/reset-password")
+          return
+        }
+      } catch (err) {
+        console.error("Error checking password reset status:", err)
+      }
+
       setIsAuthenticated(true)
       setLoggedInUsername(username || "Admin")
     }
+
+    checkPasswordReset()
   }, [router])
 
   // Fetch contacts from Supabase
@@ -638,6 +663,7 @@ export default function ContactUsDashboard() {
             password: hashedPassword,
             start_date: userFormData.start_date || null,
             end_date: userFormData.end_date || null,
+            must_change_password: true,
           },
         ])
         .select()
