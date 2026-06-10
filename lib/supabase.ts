@@ -1,9 +1,11 @@
 import { createClient } from "@supabase/supabase-js"
 
-export const supabase = createClient(
-  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_URL!,
-  process.env.NEXT_PUBLIC_immense_immenseSUPABASE_ANON_KEY!
-)
+const supabaseUrl = process.env.NEXT_PUBLIC_immense_immenseSUPABASE_URL || ""
+const supabaseAnonKey = process.env.NEXT_PUBLIC_immense_immenseSUPABASE_ANON_KEY || ""
+
+export const supabase = supabaseUrl && supabaseAnonKey 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : createClient("https://placeholder.supabase.co", "placeholder-key")
 
 export type ContactUs = {
   id: number

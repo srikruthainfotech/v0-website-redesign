@@ -15,6 +15,10 @@ export default async function JobDetailPage({
 
   const { id } = await params
 
+  if (!process.env.NEXT_PUBLIC_immense_immenseSUPABASE_URL) {
+    notFound()
+  }
+
   // FETCH SINGLE JOB FROM DB
   const { data, error } = await supabase
     .from("job_openings")
