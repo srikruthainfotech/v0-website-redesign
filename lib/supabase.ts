@@ -74,4 +74,5 @@ export type UserManagement = {
   end_date: string | null
   created_at: string
   roles?: string[]
+  must_change_password?: boolean
 }
