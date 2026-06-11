@@ -115,16 +115,19 @@ export default function ContactUsDashboard() {
   const [loggedInUsername, setLoggedInUsername] = useState("")
   const [roles, setRoles] = useState<any[]>([])
   const [selectedRole, setSelectedRole] = useState<number | "">("")
+  const [tenantId, setTenantId] = useState<string | null>(null)
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
     const username = localStorage.getItem("username")
+    const storedTenantId = localStorage.getItem("tenantId")
 
     if (isLoggedIn !== "true") {
       router.push("/login")
     } else {
       setIsAuthenticated(true)
       setLoggedInUsername(username || "Admin")
+      setTenantId(storedTenantId)
     }
   }, [router])
 
@@ -247,17 +250,20 @@ export default function ContactUsDashboard() {
   const fetchUsers = useCallback(async () => {
     setUsersLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
       const { data, error } = await supabase
         .from("users")
         .select(`
-  *,
-  user_roles (
-    role_id,
-    roles (
-      role_name
+    *,
+    user_roles (
+      role_id,
+      roles (
+        role_name
+      )
     )
-  )
-`)
+  `)
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -457,11 +463,13 @@ export default function ContactUsDashboard() {
       }
 
       // ✅ STEP 2: DELETE FROM DATABASE
+      const currentTenantId =
+        localStorage.getItem("tenantId")
       const { error } = await supabase
-        .from(tableName)
+        .from("users")
         .delete()
         .eq("id", selectedContact.id)
-
+        .eq("tenant_id", currentTenantId)
       if (error) {
         setMessage({ type: "error", text: `Failed to delete ${itemType}` })
         return
@@ -619,7 +627,8 @@ export default function ContactUsDashboard() {
       // Hash the password before saving
       const hashedPassword = await bcrypt.hash(userFormData.password, 10)
       const employeeId = generateEmployeeId()
-
+      const currentTenantId =
+        localStorage.getItem("tenantId")
       const {
         data: insertedUser,
         error,
@@ -638,6 +647,7 @@ export default function ContactUsDashboard() {
             password: hashedPassword,
             start_date: userFormData.start_date || null,
             end_date: userFormData.end_date || null,
+            tenant_id: currentTenantId,
           },
         ])
         .select()
@@ -711,12 +721,13 @@ export default function ContactUsDashboard() {
         const hashedPassword = await bcrypt.hash(userFormData.password, 10)
         updateData.password = hashedPassword
       }
-
+      const currentTenantId =
+        localStorage.getItem("tenantId")
       const { error } = await supabase
         .from("users")
         .update(updateData)
         .eq("id", selectedUser.id)
-
+        .eq("tenant_id", currentTenantId)
       if (error) {
         console.error("Error updating user:", error)
         setMessage({ type: "error", text: "Failed to update user" })

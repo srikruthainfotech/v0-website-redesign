@@ -13,6 +13,7 @@ import bcrypt from "bcryptjs"
 export default function LoginPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
+    tenantCode: "",
     username: "",
     password: "",
   })
@@ -32,10 +33,22 @@ export default function LoginPage() {
 
     try {
       // Step 1: Fetch user by username only
+      const { data: tenant, error: tenantError } = await supabase
+        .from("tenants")
+        .select("*")
+        .eq("tenant_code", formData.tenantCode)
+        .single()
+
+      if (tenantError || !tenant) {
+        setError("Invalid Tenant Id")
+        setIsLoading(false)
+        return
+      }
       const { data, error: dbError } = await supabase
         .from("users")
         .select("*")
         .eq("username", formData.username)
+        .eq("tenant_id", tenant.id)
         .single()
 
       if (dbError || !data) {
@@ -60,11 +73,11 @@ export default function LoginPage() {
       const { data: rolesData, error: rolesError } = await supabase
         .from("user_roles")
         .select(`
-          role_id,
-          roles (
-            role_name
-          )
-        `)
+    role_id,
+    roles!inner (
+      role_name
+    )
+  `)
         .eq("user_id", data.id)
 
       // Handle roles query error (but don't block login)
@@ -73,10 +86,9 @@ export default function LoginPage() {
       }
 
       // Step 4: Get role names from rolesData
-      const roleNames = rolesData?.map(
-        (item: { role_id: number; roles: { role_name: string } | null }) => 
-          item.roles?.role_name
-      ).filter(Boolean) ?? []
+      const roleNames =
+        rolesData?.map((item: any) => item.roles?.role_name)
+          .filter(Boolean) ?? []
 
       const isAdmin = roleNames.includes("Admin")
       const isEmployee = roleNames.includes("Employee")
@@ -97,6 +109,17 @@ export default function LoginPage() {
       localStorage.setItem("userId", data.id)
       localStorage.setItem("isAdmin", isAdmin ? "true" : "false")
       localStorage.setItem("userRole", primaryRole)
+      localStorage.setItem("tenantId", tenant.id)
+
+      localStorage.setItem(
+        "tenantCode",
+        tenant.tenant_code
+      )
+
+      localStorage.setItem(
+        "companyName",
+        tenant.company_name
+      )
 
       // Redirect based on role
       if (isAdmin) {
@@ -129,7 +152,7 @@ export default function LoginPage() {
           {/* Logo/Brand */}
           <div className="text-center mb-8">
             <Link href="/" className="inline-block">
-              <h1 className="text-2xl font-bold text-white">Immense Brains</h1>
+              <h1 className="text-2xl font-bold text-white">Srikrutha Cloud</h1>
             </Link>
             <p className="text-gray-400 mt-2">Admin Dashboard Login</p>
           </div>
@@ -140,7 +163,7 @@ export default function LoginPage() {
               <div className="w-16 h-16 bg-[#00d4ff]/20 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Lock className="w-8 h-8 text-[#00d4ff]" />
               </div>
-              <h2 className="text-xl font-semibold text-white">Immense Brains Dashboard</h2>
+              <h2 className="text-xl font-semibold text-white">Srikrutha Cloud Dashboard</h2>
               <p className="text-gray-400 text-sm mt-1">Sign in to access your dashboard</p>
             </div>
 
@@ -152,6 +175,22 @@ export default function LoginPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              <div className="space-y-2">
+                <Label htmlFor="tenantCode" className="text-gray-300">
+                  Tenant Id
+                </Label>
+
+                <Input
+                  id="tenantCode"
+                  name="tenantCode"
+                  type="text"
+                  required
+                  value={formData.tenantCode}
+                  onChange={handleChange}
+                  placeholder="Enter your Tenant Id"
+                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:border-[#00d4ff] focus-visible:ring-[#00d4ff]/20"
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-gray-300">
                   Username
