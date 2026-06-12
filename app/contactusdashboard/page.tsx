@@ -135,9 +135,13 @@ export default function ContactUsDashboard() {
   const fetchContacts = useCallback(async () => {
     setIsLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("contact_us")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -159,9 +163,13 @@ export default function ContactUsDashboard() {
   const fetchReferrals = useCallback(async () => {
     setReferralLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("talent_referrals")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -183,9 +191,13 @@ export default function ContactUsDashboard() {
   const fetchJobApplications = useCallback(async () => {
     setJobLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("job_applications")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -207,9 +219,13 @@ export default function ContactUsDashboard() {
   const fetchJobPostings = useCallback(async () => {
     setJobPostingLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("job_openings")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -392,13 +408,18 @@ export default function ContactUsDashboard() {
         .delete()
         .in("id", selectedIds)
 
-      if (activeTab === "users") {
+      if (
+        activeTab === "users" ||
+        activeTab === "contact" ||
+        activeTab === "referrals" ||
+        activeTab === "jobs" ||
+        activeTab === "jobpostings"
+      ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
 
         query = query.eq("tenant_id", currentTenantId)
       }
-
       const { error } = await query
 
       if (error) {
@@ -475,9 +496,15 @@ export default function ContactUsDashboard() {
       let query = supabase
         .from(tableName)
         .delete()
-        .eq("id", selectedContact.id)
+        .in("id", selectedIds)
 
-      if (activeTab === "users") {
+      if (
+        activeTab === "users" ||
+        activeTab === "contact" ||
+        activeTab === "referrals" ||
+        activeTab === "jobs" ||
+        activeTab === "jobpostings"
+      ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
 
