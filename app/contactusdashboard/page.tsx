@@ -163,9 +163,13 @@ export default function ContactUsDashboard() {
   const fetchReferrals = useCallback(async () => {
     setReferralLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("talent_referrals")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -187,9 +191,13 @@ export default function ContactUsDashboard() {
   const fetchJobApplications = useCallback(async () => {
     setJobLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("job_applications")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -211,9 +219,13 @@ export default function ContactUsDashboard() {
   const fetchJobPostings = useCallback(async () => {
     setJobPostingLoading(true)
     try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
       const { data, error } = await supabase
         .from("job_openings")
         .select("*")
+        .eq("tenant_id", currentTenantId)
         .order("created_at", { ascending: false })
 
       if (error) {
@@ -398,7 +410,10 @@ export default function ContactUsDashboard() {
 
       if (
         activeTab === "users" ||
-        activeTab === "contact"
+        activeTab === "contact" ||
+        activeTab === "referrals" ||
+        activeTab === "jobs" ||
+        activeTab === "jobpostings"
       ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
@@ -485,7 +500,10 @@ export default function ContactUsDashboard() {
 
       if (
         activeTab === "users" ||
-        activeTab === "contact"
+        activeTab === "contact" ||
+        activeTab === "referrals" ||
+        activeTab === "jobs" ||
+        activeTab === "jobpostings"
       ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
