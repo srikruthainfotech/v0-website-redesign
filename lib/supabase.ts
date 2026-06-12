@@ -73,10 +73,5 @@ export type UserManagement = {
   start_date: string
   end_date: string | null
   created_at: string
-  user_roles?: {
-    role_id: number
-    roles?: {
-      role_name: string
-    }
-  }[]
+  roles?: string[]
 }

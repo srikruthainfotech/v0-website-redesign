@@ -13,7 +13,6 @@ import bcrypt from "bcryptjs"
 export default function LoginPage() {
   const router = useRouter()
   const [formData, setFormData] = useState({
-    tenantCode: "",
     username: "",
     password: "",
   })
@@ -32,23 +31,11 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      const { data: tenant, error: tenantError } = await supabase
-        .from("tenants")
-        .select("*")
-        .eq("tenant_code", formData.tenantCode)
-        .single()
-
-      if (tenantError || !tenant) {
-        setError("Invalid company code")
-        setIsLoading(false)
-        return
-      }
       // Step 1: Fetch user by username only
       const { data, error: dbError } = await supabase
         .from("users")
         .select("*")
         .eq("username", formData.username)
-        .eq("tenant_id", tenant.id)
         .single()
 
       if (dbError || !data) {
@@ -79,7 +66,6 @@ export default function LoginPage() {
           )
         `)
         .eq("user_id", data.id)
-      console.log("rolesData", rolesData)
 
       // Handle roles query error (but don't block login)
       if (rolesError) {
@@ -87,13 +73,10 @@ export default function LoginPage() {
       }
 
       // Step 4: Get role names from rolesData
-      const roleNames =
-        rolesData?.map((item: any) => {
-          if (Array.isArray(item.roles)) {
-            return item.roles[0]?.role_name
-          }
-          return item.roles?.role_name
-        }).filter(Boolean) ?? []
+      const roleNames = rolesData?.map(
+        (item: { role_id: number; roles: { role_name: string } | null }) => 
+          item.roles?.role_name
+      ).filter(Boolean) ?? []
 
       const isAdmin = roleNames.includes("Admin")
       const isEmployee = roleNames.includes("Employee")
@@ -114,17 +97,6 @@ export default function LoginPage() {
       localStorage.setItem("userId", data.id)
       localStorage.setItem("isAdmin", isAdmin ? "true" : "false")
       localStorage.setItem("userRole", primaryRole)
-      localStorage.setItem("tenantId", tenant.id)
-
-      localStorage.setItem(
-        "tenantCode",
-        tenant.tenant_code
-      )
-
-      localStorage.setItem(
-        "companyName",
-        tenant.company_name
-      )
 
       // Redirect based on role
       if (isAdmin) {
@@ -180,22 +152,6 @@ export default function LoginPage() {
             )}
 
             <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="space-y-2">
-                <Label htmlFor="tenantCode" className="text-gray-300">
-                  Tenant Id
-                </Label>
-
-                <Input
-                  id="tenantCode"
-                  name="tenantCode"
-                  type="text"
-                  required
-                  value={formData.tenantCode}
-                  onChange={handleChange}
-                  placeholder="Enter your Tenant Id"
-                  className="bg-white/5 border-white/10 text-white placeholder:text-gray-500 focus-visible:border-[#00d4ff] focus-visible:ring-[#00d4ff]/20"
-                />
-              </div>
               <div className="space-y-2">
                 <Label htmlFor="username" className="text-gray-300">
                   Username

@@ -115,19 +115,16 @@ export default function ContactUsDashboard() {
   const [loggedInUsername, setLoggedInUsername] = useState("")
   const [roles, setRoles] = useState<any[]>([])
   const [selectedRole, setSelectedRole] = useState<number | "">("")
-  const [tenantId, setTenantId] = useState<string | null>(null)
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
     const username = localStorage.getItem("username")
-    const storedTenantId = localStorage.getItem("tenantId")
 
     if (isLoggedIn !== "true") {
       router.push("/login")
     } else {
       setIsAuthenticated(true)
       setLoggedInUsername(username || "Admin")
-      setTenantId(storedTenantId)
     }
   }, [router])
 
@@ -248,47 +245,44 @@ export default function ContactUsDashboard() {
 
   // Fetch users from Supabase
   const fetchUsers = useCallback(async () => {
-    if (!tenantId) return
-
     setUsersLoading(true)
-
     try {
       const { data, error } = await supabase
         .from("users")
         .select(`
-        *,
-        user_roles (
-          role_id,
-          roles (
-            role_name
-          )
-        )
-      `)
-        .eq("tenant_id", tenantId)
+  *,
+  user_roles (
+    role_id,
+    roles (
+      role_name
+    )
+  )
+`)
         .order("created_at", { ascending: false })
 
       if (error) {
-        console.error(error)
+        console.error("Error fetching users:", error)
+        setMessage({ type: "error", text: "Failed to fetch users" })
         return
       }
 
       const formattedUsers = (data || []).map((user: any) => ({
         ...user,
-        // KEEP ROLE MAPPING
-        user_roles: user.user_roles,
-
-        // ROLE NAMES FOR DISPLAY
         roles:
           user.user_roles?.map(
-            (item: any) => item.roles?.role_name
+            (item: any) => item.roles.role_name
           ) || [],
       }))
 
       setUsers(formattedUsers)
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
     } finally {
       setUsersLoading(false)
     }
-  }, [tenantId])
+  }, [])
+
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
@@ -463,34 +457,10 @@ export default function ContactUsDashboard() {
       }
 
       // ✅ STEP 2: DELETE FROM DATABASE
-
-      let deleteQuery
-
-      if (activeTab === "users") {
-        const currentTenantId =
-          localStorage.getItem("tenantId")
-
-        deleteQuery = supabase
-          .from("users")
-          .delete()
-          .eq("id", selectedContact.id)
-          .eq("tenant_id", currentTenantId)
-      } else {
-        deleteQuery = supabase
-          .from(tableName)
-          .delete()
-          .eq("id", selectedContact.id)
-      }
-
-      const { error } = await deleteQuery
-
-      if (error) {
-        setMessage({
-          type: "error",
-          text: `Failed to delete ${itemType}`,
-        })
-        return
-      }
+      const { error } = await supabase
+        .from(tableName)
+        .delete()
+        .eq("id", selectedContact.id)
 
       if (error) {
         setMessage({ type: "error", text: `Failed to delete ${itemType}` })
@@ -649,8 +619,7 @@ export default function ContactUsDashboard() {
       // Hash the password before saving
       const hashedPassword = await bcrypt.hash(userFormData.password, 10)
       const employeeId = generateEmployeeId()
-      const currentTenantId =
-        localStorage.getItem("tenantId")
+
       const {
         data: insertedUser,
         error,
@@ -669,7 +638,6 @@ export default function ContactUsDashboard() {
             password: hashedPassword,
             start_date: userFormData.start_date || null,
             end_date: userFormData.end_date || null,
-            tenant_id: currentTenantId, // ADD THIS
           },
         ])
         .select()
