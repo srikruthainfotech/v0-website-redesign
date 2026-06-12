@@ -387,10 +387,19 @@ export default function ContactUsDashboard() {
           }
         }
       }
-      const { error } = await supabase
+      let query = supabase
         .from(tableName)
         .delete()
         .in("id", selectedIds)
+
+      if (activeTab === "users") {
+        const currentTenantId =
+          localStorage.getItem("tenantId")
+
+        query = query.eq("tenant_id", currentTenantId)
+      }
+
+      const { error } = await query
 
       if (error) {
         console.error(`Error deleting ${itemType}:`, error)
@@ -463,13 +472,19 @@ export default function ContactUsDashboard() {
       }
 
       // ✅ STEP 2: DELETE FROM DATABASE
-      const currentTenantId =
-        localStorage.getItem("tenantId")
-      const { error } = await supabase
-        .from("users")
+      let query = supabase
+        .from(tableName)
         .delete()
         .eq("id", selectedContact.id)
-        .eq("tenant_id", currentTenantId)
+
+      if (activeTab === "users") {
+        const currentTenantId =
+          localStorage.getItem("tenantId")
+
+        query = query.eq("tenant_id", currentTenantId)
+      }
+
+      const { error } = await query
       if (error) {
         setMessage({ type: "error", text: `Failed to delete ${itemType}` })
         return
