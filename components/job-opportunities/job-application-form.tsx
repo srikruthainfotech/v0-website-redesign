@@ -5,6 +5,7 @@ import PhoneInput from "react-phone-input-2"
 import "react-phone-input-2/lib/style.css"
 import { supabase } from "@/lib/supabase"
 import { Loader2 } from "lucide-react"
+import { getCurrentTenantId } from "@/lib/tenant"
 
 interface JobApplicationFormProps {
   postId?: string
@@ -99,6 +100,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
       const resumeUrl = publicUrlData.publicUrl
 
       // Step 3: Insert into database
+      const tenantId = await getCurrentTenantId()
       const { error: insertError } = await supabase
         .from("job_applications")
         .insert([
@@ -109,6 +111,7 @@ export function JobApplicationForm({ postId, onClose, onCloseAttempt, showCloseB
             cover_letter: formData.coverLetter.trim() || null,
             resume_url: resumeUrl,
             post_id: postId || null,
+            tenant_id: tenantId,
           },
         ])
 
