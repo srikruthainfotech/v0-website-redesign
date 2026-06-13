@@ -5,6 +5,7 @@ import { Header } from "@/components/header"
 import { supabase } from "@/lib/supabase"
 import { Footer } from "@/components/footer"
 import { Mail, MapPin, Clock, Building2, Send } from "lucide-react"
+import { getCurrentTenantId } from "@/lib/tenant"
 
 const officeLocations = [
   {
@@ -46,6 +47,7 @@ export default function ContactPage() {
     setIsSubmitting(true)
 
     try {
+      const tenantId = await getCurrentTenantId()
       const { error } = await supabase.from("contact_us").insert([
         {
           name: formData.name,
@@ -53,6 +55,7 @@ export default function ContactPage() {
           company: formData.company,
           subject: formData.subject,
           message: formData.message,
+          tenant_id: tenantId,
         },
       ])
 
