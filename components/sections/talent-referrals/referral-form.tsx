@@ -2,6 +2,7 @@
 
 import { useState, useRef } from "react"
 import { supabase } from "@/lib/supabase"
+import { getCurrentTenantId } from "@/lib/tenant"
 export function ReferralForm() {
   const [formData, setFormData] = useState({
     yourName: "",
@@ -83,6 +84,7 @@ export function ReferralForm() {
       }
 
       // ✅ STEP 3: Insert into DB (WITH resume_url)
+      const tenantId = await getCurrentTenantId()
       const { error } = await supabase
         .from("talent_referrals")
         .insert([
@@ -94,6 +96,7 @@ export function ReferralForm() {
             position: formData.positionOfInterest,
             location: formData.candidateLocation,
             resume_url: resumeUrl, // ⭐ IMPORTANT
+            tenant_id: tenantId,
           },
         ])
 
