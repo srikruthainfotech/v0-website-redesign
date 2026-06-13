@@ -90,12 +90,15 @@ export default function LoginPage() {
         rolesData?.map((item: any) => item.roles?.role_name)
           .filter(Boolean) ?? []
 
+      const isSuperAdmin = roleNames.includes("Super Admin")
       const isAdmin = roleNames.includes("Admin")
       const isEmployee = roleNames.includes("Employee")
 
-      // Determine the primary role for localStorage (Admin takes precedence)
+      // Determine the primary role for localStorage (Super Admin > Admin > Employee)
       let primaryRole = ""
-      if (isAdmin) {
+      if (isSuperAdmin) {
+        primaryRole = "Super Admin"
+      } else if (isAdmin) {
         primaryRole = "Admin"
       } else if (isEmployee) {
         primaryRole = "Employee"
@@ -122,7 +125,9 @@ export default function LoginPage() {
       )
 
       // Redirect based on role
-      if (isAdmin) {
+      if (isSuperAdmin) {
+        router.push("/superadmindashboard")
+      } else if (isAdmin) {
         router.push("/contactusdashboard")
       } else if (isEmployee) {
         router.push("/userdashboard")

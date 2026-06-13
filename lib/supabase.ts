@@ -82,3 +82,13 @@ export type UserManagement = {
     } | null
   }[]
 }
+
+export type Tenant = {
+  id: string
+  tenant_code: string
+  company_name: string
+  domain: string
+  status: string
+  created_at: string
+  updated_at: string
+}
