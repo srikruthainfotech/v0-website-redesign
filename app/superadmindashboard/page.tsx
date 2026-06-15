@@ -76,7 +76,8 @@ export default function SuperAdminDashboard() {
     tenant_code: "",
     company_name: "",
     domain: "",
-    status: "ACTIVE",
+    start_date: "",
+    end_date: "",
   })
 
   // Check authentication and role
@@ -233,7 +234,7 @@ export default function SuperAdminDashboard() {
 
   // Handle add tenant
   const handleAddTenant = async () => {
-    if (!formData.tenant_code || !formData.company_name || !formData.domain) {
+    if (!formData.tenant_code || !formData.company_name || !formData.domain || !formData.start_date) {
       setMessage({ type: "error", text: "Please fill all required fields" })
       return
     }
@@ -247,7 +248,8 @@ export default function SuperAdminDashboard() {
           tenant_code: formData.tenant_code,
           company_name: formData.company_name,
           domain: formData.domain,
-          status: formData.status,
+          start_date: formData.start_date,
+          end_date: formData.end_date || null,
         }])
 
       if (error) {
@@ -262,7 +264,8 @@ export default function SuperAdminDashboard() {
         tenant_code: "",
         company_name: "",
         domain: "",
-        status: "ACTIVE",
+        start_date: "",
+        end_date: "",
       })
       fetchTenants()
     } catch (err) {
@@ -277,7 +280,7 @@ export default function SuperAdminDashboard() {
   const handleEditTenant = async () => {
     if (!selectedTenant) return
 
-    if (!formData.tenant_code || !formData.company_name || !formData.domain) {
+    if (!formData.tenant_code || !formData.company_name || !formData.domain || !formData.start_date) {
       setMessage({ type: "error", text: "Please fill all required fields" })
       return
     }
@@ -291,7 +294,8 @@ export default function SuperAdminDashboard() {
           tenant_code: formData.tenant_code,
           company_name: formData.company_name,
           domain: formData.domain,
-          status: formData.status,
+          start_date: formData.start_date,
+          end_date: formData.end_date || null,
         })
         .eq("id", selectedTenant.id)
 
@@ -307,7 +311,8 @@ export default function SuperAdminDashboard() {
         tenant_code: "",
         company_name: "",
         domain: "",
-        status: "ACTIVE",
+        start_date: "",
+        end_date: "",
       })
       fetchTenants()
     } catch (err) {
@@ -325,7 +330,8 @@ export default function SuperAdminDashboard() {
       tenant_code: tenant.tenant_code,
       company_name: tenant.company_name,
       domain: tenant.domain,
-      status: tenant.status,
+      start_date: tenant.start_date ? tenant.start_date.split("T")[0] : "",
+      end_date: tenant.end_date ? tenant.end_date.split("T")[0] : "",
     })
     setIsEditDialogOpen(true)
   }
@@ -339,6 +345,18 @@ export default function SuperAdminDashboard() {
       hour: "2-digit",
       minute: "2-digit",
     })
+  }
+
+  // Get tenant status based on end date
+  const getTenantStatus = (endDate: string | null) => {
+    if (!endDate) {
+      return "Active"
+    }
+
+    const currentDate = new Date()
+    const tenantEndDate = new Date(endDate)
+
+    return tenantEndDate > currentDate ? "Active" : "Inactive"
   }
 
   // Clear message after 5 seconds
@@ -534,7 +552,8 @@ export default function SuperAdminDashboard() {
                       tenant_code: "",
                       company_name: "",
                       domain: "",
-                      status: "ACTIVE",
+                      start_date: "",
+                      end_date: "",
                     })
                     setIsAddDialogOpen(true)
                   }}
@@ -594,6 +613,8 @@ export default function SuperAdminDashboard() {
                       <TableHead className="font-semibold text-gray-700">Tenant Code</TableHead>
                       <TableHead className="font-semibold text-gray-700">Company Name</TableHead>
                       <TableHead className="font-semibold text-gray-700">Domain</TableHead>
+                      <TableHead className="font-semibold text-gray-700">Start Date</TableHead>
+                      <TableHead className="font-semibold text-gray-700">End Date</TableHead>
                       <TableHead className="font-semibold text-gray-700">Status</TableHead>
                       <TableHead
                         className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
@@ -631,14 +652,20 @@ export default function SuperAdminDashboard() {
                         <TableCell className="font-medium text-gray-900">{tenant.tenant_code}</TableCell>
                         <TableCell className="text-gray-700">{tenant.company_name}</TableCell>
                         <TableCell className="text-gray-700">{tenant.domain}</TableCell>
+                        <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                          {formatDate(tenant.start_date)}
+                        </TableCell>
+                        <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                          {tenant.end_date ? formatDate(tenant.end_date) : "N/A"}
+                        </TableCell>
                         <TableCell>
                           <span
-                            className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${tenant.status === "ACTIVE"
+                            className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${getTenantStatus(tenant.end_date) === "Active"
                               ? "bg-[#0A1628] text-white"
                               : "bg-[#F1F5F9] text-[#334155]"
                             }`}
                           >
-                            {tenant.status}
+                            {getTenantStatus(tenant.end_date)}
                           </span>
                         </TableCell>
                         <TableCell className="text-gray-500 text-sm whitespace-nowrap">
@@ -738,18 +765,28 @@ export default function SuperAdminDashboard() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status" className="text-sm font-medium">
-                Status <span className="text-red-500">*</span>
+              <Label htmlFor="start_date" className="text-sm font-medium">
+                Start Date <span className="text-red-500">*</span>
               </Label>
-              <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                <SelectTrigger className="border-gray-300">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                  <SelectItem value="INACTIVE">INACTIVE</SelectItem>
-                </SelectContent>
-              </Select>
+              <Input
+                id="start_date"
+                type="date"
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                className="border-gray-300"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="end_date" className="text-sm font-medium">
+                End Date
+              </Label>
+              <Input
+                id="end_date"
+                type="date"
+                value={formData.end_date}
+                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                className="border-gray-300"
+              />
             </div>
           </div>
           <DialogFooter>
@@ -829,17 +866,29 @@ export default function SuperAdminDashboard() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="edit_status" className="text-sm font-medium">
-                Status <span className="text-red-500">*</span>
+              <Label htmlFor="edit_start_date" className="text-sm font-medium">
+                Start Date <span className="text-red-500">*</span>
               </Label>
-              <Select value={formData.status} onValueChange={(value) => setFormData({ ...formData, status: value })}>
-                <SelectTrigger className="border-gray-300">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="ACTIVE">ACTIVE</SelectItem>
-                  <SelectItem value="INACTIVE">INACTIVE</SelectItem>
-                </SelectContent>
+              <Input
+                id="edit_start_date"
+                type="date"
+                value={formData.start_date}
+                onChange={(e) => setFormData({ ...formData, start_date: e.target.value })}
+                className="border-gray-300"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="edit_end_date" className="text-sm font-medium">
+                End Date
+              </Label>
+              <Input
+                id="edit_end_date"
+                type="date"
+                value={formData.end_date}
+                onChange={(e) => setFormData({ ...formData, end_date: e.target.value })}
+                className="border-gray-300"
+              />
+            </div>
               </Select>
             </div>
           </div>
@@ -889,12 +938,12 @@ export default function SuperAdminDashboard() {
                 <div className="space-y-1">
                   <p className="text-sm text-gray-500">Status</p>
                   <span
-                    className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${selectedTenant.status === "ACTIVE"
+                    className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${getTenantStatus(selectedTenant.end_date) === "Active"
                       ? "bg-[#0A1628] text-white"
                       : "bg-[#F1F5F9] text-[#334155]"
                     }`}
                   >
-                    {selectedTenant.status}
+                    {getTenantStatus(selectedTenant.end_date)}
                   </span>
                 </div>
               </div>
@@ -905,6 +954,16 @@ export default function SuperAdminDashboard() {
               <div className="space-y-1">
                 <p className="text-sm text-gray-500">Domain</p>
                 <p className="font-medium text-gray-900">{selectedTenant.domain}</p>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <p className="text-sm text-gray-500">Start Date</p>
+                  <p className="font-medium text-gray-900 text-sm">{formatDate(selectedTenant.start_date)}</p>
+                </div>
+                <div className="space-y-1">
+                  <p className="text-sm text-gray-500">End Date</p>
+                  <p className="font-medium text-gray-900 text-sm">{selectedTenant.end_date ? formatDate(selectedTenant.end_date) : "N/A"}</p>
+                </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">

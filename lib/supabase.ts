@@ -88,7 +88,8 @@ export type Tenant = {
   tenant_code: string
   company_name: string
   domain: string
-  status: string
+  start_date: string
+  end_date: string | null
   created_at: string
   updated_at: string
 }
