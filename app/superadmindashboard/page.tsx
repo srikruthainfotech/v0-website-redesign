@@ -21,13 +21,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import {
   LogOut,
   Eye,
   Trash2,
@@ -45,7 +38,6 @@ import {
   ArrowDown,
   Plus,
   Pencil,
-  Hash,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -656,7 +648,7 @@ export default function SuperAdminDashboard() {
                           {formatDate(tenant.start_date)}
                         </TableCell>
                         <TableCell className="text-gray-500 text-sm whitespace-nowrap">
-                          {tenant.end_date ? formatDate(tenant.end_date) : "N/A"}
+                          {tenant.end_date ? formatDate(tenant.end_date) : "-"}
                         </TableCell>
                         <TableCell>
                           <span
@@ -962,7 +954,7 @@ export default function SuperAdminDashboard() {
                 </div>
                 <div className="space-y-1">
                   <p className="text-sm text-gray-500">End Date</p>
-                  <p className="font-medium text-gray-900 text-sm">{selectedTenant.end_date ? formatDate(selectedTenant.end_date) : "N/A"}</p>
+                  <p className="font-medium text-gray-900 text-sm">{selectedTenant.end_date ? formatDate(selectedTenant.end_date) : "-"}</p>
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-4">
