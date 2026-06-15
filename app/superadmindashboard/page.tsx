@@ -442,7 +442,7 @@ export default function SuperAdminDashboard() {
                   className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "tenants"
                     ? "bg-[#00d4ff]/10 text-[#00d4ff]"
                     : "text-gray-400 hover:text-white hover:bg-white/5"
-                  }`}
+                    }`}
                   onClick={() => {
                     setActiveTab("tenants")
                     setIsSidebarOpen(false)
@@ -663,7 +663,7 @@ export default function SuperAdminDashboard() {
                             className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${getTenantStatus(tenant.end_date) === "Active"
                               ? "bg-[#0A1628] text-white"
                               : "bg-[#F1F5F9] text-[#334155]"
-                            }`}
+                              }`}
                           >
                             {getTenantStatus(tenant.end_date)}
                           </span>
@@ -889,9 +889,9 @@ export default function SuperAdminDashboard() {
                 className="border-gray-300"
               />
             </div>
-              </Select>
-            </div>
+
           </div>
+
           <DialogFooter>
             <Button
               type="button"
@@ -941,7 +941,7 @@ export default function SuperAdminDashboard() {
                     className={`inline-flex items-center justify-center min-w-[70px] h-6 rounded-md text-xs font-medium ${getTenantStatus(selectedTenant.end_date) === "Active"
                       ? "bg-[#0A1628] text-white"
                       : "bg-[#F1F5F9] text-[#334155]"
-                    }`}
+                      }`}
                   >
                     {getTenantStatus(selectedTenant.end_date)}
                   </span>
