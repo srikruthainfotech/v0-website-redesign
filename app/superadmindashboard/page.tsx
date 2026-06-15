@@ -168,6 +168,7 @@ export default function SuperAdminDashboard() {
   // Handle delete
   const handleDelete = async () => {
     if (!selectedTenant) return
+    const tenantToDelete = selectedTenant
 
     setIsSubmitting(true)
 
@@ -181,6 +182,21 @@ export default function SuperAdminDashboard() {
         console.error("Error deleting tenant:", error)
         setMessage({ type: "error", text: "Failed to delete tenant" })
         return
+      }
+
+      const { error: historyError } = await supabase
+        .from("tenant_history_tracking")
+        .insert({
+          tenant_id: tenantToDelete.id,
+          tenant_code: tenantToDelete.tenant_code,
+          action_type: "DELETE",
+          old_data: tenantToDelete,
+          new_data: null,
+          changed_by: loggedInUsername,
+        })
+
+      if (historyError) {
+        console.error("History Error:", historyError)
       }
 
       setMessage({ type: "success", text: "Tenant deleted successfully" })
@@ -201,6 +217,9 @@ export default function SuperAdminDashboard() {
     setIsDeletingSelected(true)
 
     try {
+      const tenantsToDelete = tenants.filter(
+        tenant => selectedIds.includes(tenant.id)
+      )
       const { error } = await supabase
         .from("tenants")
         .delete()
@@ -210,6 +229,22 @@ export default function SuperAdminDashboard() {
         console.error("Error deleting tenants:", error)
         setMessage({ type: "error", text: "Failed to delete selected tenants" })
         return
+      }
+      const { error: historyError } = await supabase
+        .from("tenant_history_tracking")
+        .insert(
+          tenantsToDelete.map((tenant) => ({
+            tenant_id: tenant.id,
+            tenant_code: tenant.tenant_code,
+            action_type: "DELETE",
+            old_data: tenant,
+            new_data: null,
+            changed_by: loggedInUsername,
+          }))
+        )
+
+      if (historyError) {
+        console.error("History Error:", historyError)
       }
 
       setMessage({ type: "success", text: `${selectedIds.length} tenant(s) deleted successfully` })
@@ -234,15 +269,19 @@ export default function SuperAdminDashboard() {
     setIsSubmitting(true)
 
     try {
-      const { error } = await supabase
+      const { data: insertedTenant, error } = await supabase
         .from("tenants")
-        .insert([{
-          tenant_code: formData.tenant_code,
-          company_name: formData.company_name,
-          domain: formData.domain,
-          start_date: formData.start_date,
-          end_date: formData.end_date || null,
-        }])
+        .insert([
+          {
+            tenant_code: formData.tenant_code,
+            company_name: formData.company_name,
+            domain: formData.domain,
+            start_date: formData.start_date,
+            end_date: formData.end_date || null,
+          }
+        ])
+        .select()
+        .single()
 
       if (error) {
         console.error("Error adding tenant:", error)
@@ -250,6 +289,20 @@ export default function SuperAdminDashboard() {
         return
       }
 
+      const { error: historyError } = await supabase
+        .from("tenant_history_tracking")
+        .insert({
+          tenant_id: insertedTenant.id,
+          tenant_code: insertedTenant.tenant_code,
+          action_type: "CREATE",
+          old_data: null,
+          new_data: insertedTenant,
+          changed_by: loggedInUsername,
+        })
+
+      if (historyError) {
+        console.error("History Error:", historyError)
+      }
       setMessage({ type: "success", text: "Tenant added successfully" })
       setIsAddDialogOpen(false)
       setFormData({
@@ -271,6 +324,7 @@ export default function SuperAdminDashboard() {
   // Handle edit tenant
   const handleEditTenant = async () => {
     if (!selectedTenant) return
+    const oldTenant = selectedTenant
 
     if (!formData.tenant_code || !formData.company_name || !formData.domain || !formData.start_date) {
       setMessage({ type: "error", text: "Please fill all required fields" })
@@ -297,6 +351,26 @@ export default function SuperAdminDashboard() {
         return
       }
 
+      const { error: historyError } = await supabase
+        .from("tenant_history_tracking")
+        .insert({
+          tenant_id: oldTenant.id,
+          tenant_code: oldTenant.tenant_code,
+          action_type: "UPDATE",
+          old_data: oldTenant,
+          new_data: {
+            tenant_code: formData.tenant_code,
+            company_name: formData.company_name,
+            domain: formData.domain,
+            start_date: formData.start_date,
+            end_date: formData.end_date || null,
+          },
+          changed_by: loggedInUsername,
+        })
+
+      if (historyError) {
+        console.error("History Error:", historyError)
+      }
       setMessage({ type: "success", text: "Tenant updated successfully" })
       setIsEditDialogOpen(false)
       setFormData({
