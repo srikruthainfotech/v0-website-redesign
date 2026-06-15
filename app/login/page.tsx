@@ -32,7 +32,7 @@ export default function LoginPage() {
     setError(null)
 
     try {
-      // Step 1: Fetch user by username only
+      // Step 1: Fetch tenant and validate
       const { data: tenant, error: tenantError } = await supabase
         .from("tenants")
         .select("*")
@@ -44,6 +44,18 @@ export default function LoginPage() {
         setIsLoading(false)
         return
       }
+
+      // Step 1B: Check tenant validity based on end_date
+      const currentDate = new Date()
+      const tenantEndDate = tenant.end_date ? new Date(tenant.end_date) : null
+
+      // If tenant has an end_date and it's in the past, block login
+      if (tenantEndDate && tenantEndDate < currentDate) {
+        setError("Tenant subscription has expired. Please contact administrator.")
+        setIsLoading(false)
+        return
+      }
+
       const { data, error: dbError } = await supabase
         .from("users")
         .select("*")
