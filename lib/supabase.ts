@@ -93,3 +93,14 @@ export type Tenant = {
   created_at: string
   updated_at: string
 }
+
+export type TenantHistory = {
+  id: string
+  tenant_id: string
+  tenant_code: string
+  action_type: string
+  old_data: any
+  new_data: any
+  changed_by: string
+  changed_at: string
+}
