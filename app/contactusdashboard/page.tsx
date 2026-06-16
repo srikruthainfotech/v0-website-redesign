@@ -1359,7 +1359,7 @@ export default function ContactUsDashboard() {
                   <p className="text-gray-500">No referrals found</p>
                 </div>
               ) : (
-                <div className="w-full overflow-x-auto scrollbar-thin">
+                <div className="w-full overflow-x-auto">
                   <Table className="min-w-max">
                     <TableHeader>
                       <TableRow className="bg-gray-50 hover:bg-gray-50">
@@ -1830,7 +1830,7 @@ export default function ContactUsDashboard() {
                   <p className="text-gray-500">No users found</p>
                 </div>
               ) : (
-                <div className="w-full overflow-x-auto scrollbar-thin">
+                <div className="w-full overflow-x-auto">
                   <Table className="min-w-max">
                     <TableHeader>
                       <TableRow className="bg-gray-50 hover:bg-gray-50">
