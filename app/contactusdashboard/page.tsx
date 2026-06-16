@@ -125,7 +125,6 @@ export default function ContactUsDashboard() {
     posting_date: "",
     position: "",
     number_of_openings: "",
-    job_role: "",
     job_type: "",
     job_description: "",
     location: "",
@@ -861,7 +860,6 @@ export default function ContactUsDashboard() {
             posting_date: jobPostingFormData.posting_date,
             position: jobPostingFormData.position,
             number_of_openings: Number(jobPostingFormData.number_of_openings),
-            job_role: jobPostingFormData.job_role,
             job_type: jobPostingFormData.job_type,
             job_description: jobPostingFormData.job_description,
             location: jobPostingFormData.location,
@@ -889,7 +887,6 @@ export default function ContactUsDashboard() {
         posting_date: "",
         position: "",
         number_of_openings: "",
-        job_role: "",
         job_type: "",
         job_description: "",
         location: "",
@@ -1177,7 +1174,6 @@ export default function ContactUsDashboard() {
                         posting_date: "",
                         position: "",
                         number_of_openings: "",
-                        job_role: "",
                         job_type: "",
                         job_description: "",
                         location: "",
@@ -2954,15 +2950,6 @@ export default function ContactUsDashboard() {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="job_role">Job Role</Label>
-                <Input
-                  id="job_role"
-                  value={jobPostingFormData.job_role}
-                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, job_role: e.target.value })}
-                  placeholder="Enter job role"
-                />
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="location">Location</Label>
                 <Input
                   id="location"
@@ -2971,29 +2958,6 @@ export default function ContactUsDashboard() {
                   placeholder="Enter location"
                 />
               </div>
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="education">Education</Label>
-              <Input
-                id="education"
-                value={jobPostingFormData.education}
-                onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, education: e.target.value })}
-                placeholder="Enter education requirements"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="posted_by">Posted By</Label>
-              <Input
-                id="posted_by"
-                value={jobPostingFormData.posted_by}
-                onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, posted_by: e.target.value })}
-                placeholder="Enter name of person posting"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="job_type">Job Type</Label>
                 <Select value={jobPostingFormData.job_type} onValueChange={(value) => setJobPostingFormData({ ...jobPostingFormData, job_type: value })}>
@@ -3008,15 +2972,6 @@ export default function ContactUsDashboard() {
                     <SelectItem value="Remote">Remote</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="designation">Designation</Label>
-                <Input
-                  id="designation"
-                  value={jobPostingFormData.designation}
-                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, designation: e.target.value })}
-                  placeholder="Enter designation"
-                />
               </div>
             </div>
 
@@ -3074,7 +3029,6 @@ export default function ContactUsDashboard() {
                   posting_date: "",
                   position: "",
                   number_of_openings: "",
-                  job_role: "",
                   job_type: "",
                   job_description: "",
                   location: "",
