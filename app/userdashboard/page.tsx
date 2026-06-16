@@ -314,7 +314,7 @@ export default function UserDashboard() {
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-            <span className="font-bold text-lg text-white">Immense Brains</span>
+            <span className="font-bold text-lg text-white">Srikrutha Cloud</span>
             <button
               onClick={() => setIsSidebarOpen(false)}
               className="lg:hidden p-1 hover:bg-white/10 rounded"
@@ -517,8 +517,8 @@ export default function UserDashboard() {
                       <TableCell>
                         <span
                           className={`inline-flex items-center justify-center min-w-[54px] h-6 rounded-md text-xs font-medium ${getUserStatus(userData.end_date) === "Active"
-                              ? "bg-[#0A1628] text-white"
-                              : "bg-[#F1F5F9] text-[#334155]"
+                            ? "bg-[#0A1628] text-white"
+                            : "bg-[#F1F5F9] text-[#334155]"
                             }`}
                         >
                           {getUserStatus(userData.end_date)}

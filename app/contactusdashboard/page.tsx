@@ -883,7 +883,7 @@ export default function ContactUsDashboard() {
         <div className="flex flex-col h-full">
           {/* Sidebar Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-white/10">
-            <span className="font-bold text-lg text-white">Immense Brains</span>
+            <span className="font-bold text-lg text-white">Srikrutha Cloud</span>
             <button
               onClick={() => setIsSidebarOpen(false)}
               className="lg:hidden p-1 hover:bg-white/10 rounded"
