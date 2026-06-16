@@ -1655,154 +1655,152 @@ export default function ContactUsDashboard() {
                   <p className="text-gray-500">No job postings found</p>
                 </div>
               ) : (
-                <div className="w-full overflow-x-auto">
-                  <div className="min-w-[2200px]">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="bg-gray-50 hover:bg-gray-50">
-                          <TableHead className="w-12">
+                <div className="w-full overflow-x-auto scrollbar-thin">
+                  <Table className="min-w-max">
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={jobPostings.length > 0 && selectedIds.length === jobPostings.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < jobPostings.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Post ID</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Position</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Job Type</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Location</TableHead>
+                        <TableHead className="font-semibold text-gray-700">No Of Openings</TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Job Description
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Job Duties
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Education
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 max-w-[220px]">
+                          Experience
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Posted By</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead className="font-semibold text-gray-700">
+                          Status
+                        </TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={toggleJobPostingDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Posted Date
+                            {jobPostingDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedJobPostings.map((posting) => (
+                        <TableRow
+                          key={posting.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(posting.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
                             <Checkbox
-                              checked={jobPostings.length > 0 && selectedIds.length === jobPostings.length}
-                              onCheckedChange={handleSelectAll}
-                              aria-label="Select all"
-                              className={selectedIds.length > 0 && selectedIds.length < jobPostings.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                              checked={selectedIds.includes(posting.id)}
+                              onCheckedChange={() => handleSelectOne(posting.id)}
+                              aria-label={`Select ${posting.post_id}`}
                             />
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700">Post ID</TableHead>
-                          <TableHead className="font-semibold text-gray-700">Position</TableHead>
-                          <TableHead className="font-semibold text-gray-700">Job Type</TableHead>
-                          <TableHead className="font-semibold text-gray-700">Location</TableHead>
-                          <TableHead className="font-semibold text-gray-700">No Of Openings</TableHead>
-                          <TableHead className="font-semibold text-gray-700 max-w-[220px]">
-                            Job Description
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700 max-w-[220px]">
-                            Job Duties
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700 max-w-[220px]">
-                            Education
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700 max-w-[220px]">
-                            Experience
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700">Posted By</TableHead>
-                          <TableHead className="font-semibold text-gray-700">Designation</TableHead>
-                          <TableHead className="font-semibold text-gray-700">
-                            Status
-                          </TableHead>
-                          <TableHead
-                            className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
-                            onClick={toggleJobPostingDateSort}
-                          >
+                          </TableCell>
+                          <TableCell className="font-medium text-gray-900">{posting.post_id}</TableCell>
+                          <TableCell className="text-gray-700">{posting.position || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{posting.job_type || "-"}</TableCell>
+                          <TableCell className="text-gray-500">
                             <div className="flex items-center gap-1">
-                              Posted Date
-                              {jobPostingDateSort === "asc" ? (
-                                <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
-                              ) : (
-                                <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
-                              )}
+                              <MapPin className="w-3 h-3" />
+                              {posting.location || "-"}
                             </div>
-                          </TableHead>
-                          <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {sortedJobPostings.map((posting) => (
-                          <TableRow
-                            key={posting.id}
-                            className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(posting.id) ? "bg-blue-50" : ""
-                              }`}
+                          </TableCell>
+                          <TableCell className="text-gray-700">{posting.number_of_openings || "-"}</TableCell>
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.job_description || ""}
                           >
-                            <TableCell>
-                              <Checkbox
-                                checked={selectedIds.includes(posting.id)}
-                                onCheckedChange={() => handleSelectOne(posting.id)}
-                                aria-label={`Select ${posting.post_id}`}
-                              />
-                            </TableCell>
-                            <TableCell className="font-medium text-gray-900">{posting.post_id}</TableCell>
-                            <TableCell className="text-gray-700">{posting.position || "-"}</TableCell>
-                            <TableCell className="text-gray-700">{posting.job_type || "-"}</TableCell>
-                            <TableCell className="text-gray-500">
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {posting.location || "-"}
-                              </div>
-                            </TableCell>
-                            <TableCell className="text-gray-700">{posting.number_of_openings || "-"}</TableCell>
-                            <TableCell
-                              className="max-w-[220px] truncate text-gray-500"
-                              title={posting.job_description || ""}
-                            >
-                              {posting.job_description || "-"}
-                            </TableCell>
+                            {posting.job_description || "-"}
+                          </TableCell>
 
-                            <TableCell
-                              className="max-w-[220px] truncate text-gray-500"
-                              title={posting.job_duties || ""}
-                            >
-                              {posting.job_duties || "-"}
-                            </TableCell>
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.job_duties || ""}
+                          >
+                            {posting.job_duties || "-"}
+                          </TableCell>
 
-                            <TableCell
-                              className="max-w-[220px] truncate text-gray-500"
-                              title={posting.education || ""}
-                            >
-                              {posting.education || "-"}
-                            </TableCell>
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.education || ""}
+                          >
+                            {posting.education || "-"}
+                          </TableCell>
 
-                            <TableCell
-                              className="max-w-[220px] truncate text-gray-500"
-                              title={posting.experience || ""}
-                            >
-                              {posting.experience || "-"}
-                            </TableCell>
-                            <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
-                            <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
-                            <TableCell>
-                              {posting.status ? (
-                                <span
-                                  className={`inline-flex items-center justify-center min-w-[54px] h-6 rounded-md text-xs font-medium ${posting.status.toLowerCase() === "active"
-                                    ? "bg-[#0A1628] text-white"
-                                    : "bg-[#F1F5F9] text-[#334155]"
-                                    }`}
-                                >
-                                  {posting.status}
-                                </span>
-                              ) : (
-                                "-"
-                              )}
-                            </TableCell>
-                            <TableCell className="text-gray-500 text-sm whitespace-nowrap">
-                              {posting.posting_date ? formatDate(posting.posting_date) : "-"}
-                            </TableCell>
-                            <TableCell className="text-right">
-                              <div className="flex items-center justify-end gap-1">
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  onClick={() => openViewDialog(posting as unknown as ContactUs)}
-                                  className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                                  title="View details"
-                                >
-                                  <Eye className="w-4 h-4" />
-                                </Button>
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  onClick={() => openDeleteDialog(posting as unknown as ContactUs)}
-                                  className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
-                                  title="Delete"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </Button>
-                              </div>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </div>
+                          <TableCell
+                            className="max-w-[220px] truncate text-gray-500"
+                            title={posting.experience || ""}
+                          >
+                            {posting.experience || "-"}
+                          </TableCell>
+                          <TableCell className="text-gray-700">{posting.posted_by || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{posting.designation || "-"}</TableCell>
+                          <TableCell>
+                            {posting.status ? (
+                              <span
+                                className={`inline-flex items-center justify-center min-w-[54px] h-6 rounded-md text-xs font-medium ${posting.status.toLowerCase() === "active"
+                                  ? "bg-[#0A1628] text-white"
+                                  : "bg-[#F1F5F9] text-[#334155]"
+                                  }`}
+                              >
+                                {posting.status}
+                              </span>
+                            ) : (
+                              "-"
+                            )}
+                          </TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {posting.posting_date ? formatDate(posting.posting_date) : "-"}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openViewDialog(posting as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => openDeleteDialog(posting as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </div>
 
               )}
