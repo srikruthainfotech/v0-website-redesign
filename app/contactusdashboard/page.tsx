@@ -513,7 +513,7 @@ export default function ContactUsDashboard() {
       let query = supabase
         .from(tableName)
         .delete()
-        .in("id", selectedIds)
+        .eq("id", selectedContact.id)
 
       if (
         activeTab === "users" ||
