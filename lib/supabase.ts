@@ -38,7 +38,6 @@ export type JobOpening = {
   posting_date: string
   position: string | null
   number_of_openings: number | null
-  job_role: string | null
   job_type: string | null
   job_description: string | null
   location: string | null
