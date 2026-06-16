@@ -1656,7 +1656,7 @@ export default function ContactUsDashboard() {
                 </div>
               ) : (
                 <div className="w-full overflow-x-auto scrollbar-thin">
-                  <Table className="min-w-max">
+                  <Table className="w-max min-w-full">
                     <TableHeader>
                       <TableRow className="bg-gray-50 hover:bg-gray-50">
                         <TableHead className="w-12">
