@@ -2169,7 +2169,7 @@ export default function ContactUsDashboard() {
               <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
                 <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Job Role</p>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">POSITION</p>
                   <p className="text-gray-900 mt-1">
                     {(selectedContact as unknown as JobOpening).position || "Not specified"}
                   </p>
