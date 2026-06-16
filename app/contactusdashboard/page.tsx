@@ -100,6 +100,7 @@ export default function ContactUsDashboard() {
   const [isAddUserDialogOpen, setIsAddUserDialogOpen] = useState(false)
   const [isEditUserDialogOpen, setIsEditUserDialogOpen] = useState(false)
   const [isViewUserDialogOpen, setIsViewUserDialogOpen] = useState(false)
+  const [isAddJobPostingDialogOpen, setIsAddJobPostingDialogOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserManagement | null>(null)
   const [userFormData, setUserFormData] = useState({
     user_id: "",
@@ -116,6 +117,22 @@ export default function ContactUsDashboard() {
   const [roles, setRoles] = useState<any[]>([])
   const [selectedRole, setSelectedRole] = useState<number | "">("")
   const [tenantId, setTenantId] = useState<string | null>(null)
+  const [jobPostingFormData, setJobPostingFormData] = useState({
+    post_id: "",
+    posting_date: "",
+    position: "",
+    number_of_openings: "",
+    job_type: "",
+    job_description: "",
+    location: "",
+    job_duties: "",
+    education: "",
+    experience: "",
+    posted_by: "",
+    designation: "",
+    status: "Active",
+  })
+  const [isJobPostingSubmitting, setIsJobPostingSubmitting] = useState(false)
 
   useEffect(() => {
     const isLoggedIn = localStorage.getItem("isLoggedIn")
@@ -853,6 +870,65 @@ export default function ContactUsDashboard() {
     setIsViewUserDialogOpen(true)
   }
 
+  // Handle Add Job Posting
+  const handleAddJobPosting = async () => {
+    setIsJobPostingSubmitting(true)
+    try {
+      const currentTenantId = localStorage.getItem("tenantId")
+
+      const { error } = await supabase
+        .from("job_openings")
+        .insert([
+          {
+            tenant_id: currentTenantId,
+            post_id: jobPostingFormData.post_id,
+            posting_date: jobPostingFormData.posting_date,
+            position: jobPostingFormData.position,
+            number_of_openings: Number(jobPostingFormData.number_of_openings),
+            job_type: jobPostingFormData.job_type,
+            job_description: jobPostingFormData.job_description,
+            location: jobPostingFormData.location,
+            job_duties: jobPostingFormData.job_duties,
+            education: jobPostingFormData.education,
+            experience: jobPostingFormData.experience,
+            posted_by: jobPostingFormData.posted_by,
+            designation: jobPostingFormData.designation,
+            status: jobPostingFormData.status,
+          },
+        ])
+
+      if (error) {
+        console.error("Error adding job posting:", error)
+        setMessage({ type: "error", text: "Failed to add job posting" })
+        return
+      }
+
+      setMessage({ type: "success", text: "Job posting added successfully" })
+      setIsAddJobPostingDialogOpen(false)
+      setJobPostingFormData({
+        post_id: "",
+        posting_date: "",
+        position: "",
+        number_of_openings: "",
+        job_type: "",
+        job_description: "",
+        location: "",
+        job_duties: "",
+        education: "",
+        experience: "",
+        posted_by: "",
+        designation: "",
+        status: "Active",
+      })
+      fetchJobPostings()
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setIsJobPostingSubmitting(false)
+    }
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a1628]">
@@ -1083,6 +1159,33 @@ export default function ContactUsDashboard() {
                   >
                     <Plus className="w-4 h-4" />
                     Add User
+                  </Button>
+                )}
+                {activeTab === "jobpostings" && (
+                  <Button
+                    size="sm"
+                    onClick={() => {
+                      setJobPostingFormData({
+                        post_id: "",
+                        posting_date: "",
+                        position: "",
+                        number_of_openings: "",
+                        job_type: "",
+                        job_description: "",
+                        location: "",
+                        job_duties: "",
+                        education: "",
+                        experience: "",
+                        posted_by: "",
+                        designation: "",
+                        status: "Active",
+                      })
+                      setIsAddJobPostingDialogOpen(true)
+                    }}
+                    className="gap-2 bg-[#0066ff] hover:bg-[#0052cc]"
+                  >
+                    <Plus className="w-4 h-4" />
+                    Add Job Posting
                   </Button>
                 )}
                 <Button
@@ -2781,6 +2884,223 @@ export default function ContactUsDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Add Job Posting Dialog */}
+      <Dialog open={isAddJobPostingDialogOpen} onOpenChange={setIsAddJobPostingDialogOpen}>
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                <Plus className="w-4 h-4 text-[#00d4ff]" />
+              </div>
+              Add New Job Posting
+            </DialogTitle>
+            <DialogDescription>
+              Create a new job posting and publish it to the Careers page.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {/* Left Column */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="jp_post_id">Post ID *</Label>
+                <Input
+                  id="jp_post_id"
+                  value={jobPostingFormData.post_id}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, post_id: e.target.value })}
+                  placeholder="Enter post ID"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="jp_posting_date">Posting Date *</Label>
+                <Input
+                  id="jp_posting_date"
+                  type="date"
+                  value={jobPostingFormData.posting_date}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, posting_date: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="jp_position">Position *</Label>
+                <Input
+                  id="jp_position"
+                  value={jobPostingFormData.position}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, position: e.target.value })}
+                  placeholder="Enter position"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="jp_number_of_openings">Number Of Openings *</Label>
+                <Input
+                  id="jp_number_of_openings"
+                  type="number"
+                  value={jobPostingFormData.number_of_openings}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, number_of_openings: e.target.value })}
+                  placeholder="Enter number of openings"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="jp_location">Location *</Label>
+                <Input
+                  id="jp_location"
+                  value={jobPostingFormData.location}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, location: e.target.value })}
+                  placeholder="Enter location"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="jp_job_type">Job Type *</Label>
+                <Select value={jobPostingFormData.job_type} onValueChange={(value) => setJobPostingFormData({ ...jobPostingFormData, job_type: value })}>
+                  <SelectTrigger id="jp_job_type">
+                    <SelectValue placeholder="Select job type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Full-time">Full-time</SelectItem>
+                    <SelectItem value="Part-time">Part-time</SelectItem>
+                    <SelectItem value="Contract">Contract</SelectItem>
+                    <SelectItem value="Internship">Internship</SelectItem>
+                    <SelectItem value="Remote">Remote</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="jp_education">Education</Label>
+                <textarea
+                  id="jp_education"
+                  value={jobPostingFormData.education}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, education: e.target.value })}
+                  placeholder="Enter education requirements"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                  rows={3}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="jp_posted_by">Posted By</Label>
+                <Input
+                  id="jp_posted_by"
+                  value={jobPostingFormData.posted_by}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, posted_by: e.target.value })}
+                  placeholder="Enter who posted"
+                />
+              </div>
+            </div>
+
+            {/* Right Column */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="jp_designation">Designation</Label>
+                <Input
+                  id="jp_designation"
+                  value={jobPostingFormData.designation}
+                  onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, designation: e.target.value })}
+                  placeholder="Enter designation"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="jp_status">Status *</Label>
+                <Select value={jobPostingFormData.status} onValueChange={(value) => setJobPostingFormData({ ...jobPostingFormData, status: value })}>
+                  <SelectTrigger id="jp_status">
+                    <SelectValue placeholder="Select status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Active">Active</SelectItem>
+                    <SelectItem value="Inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="jp_experience">Experience</Label>
+              <textarea
+                id="jp_experience"
+                value={jobPostingFormData.experience}
+                onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, experience: e.target.value })}
+                placeholder="Enter experience requirements"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="jp_job_description">Job Description</Label>
+              <textarea
+                id="jp_job_description"
+                value={jobPostingFormData.job_description}
+                onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, job_description: e.target.value })}
+                placeholder="Enter job description"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                rows={3}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="jp_job_duties">Job Duties</Label>
+              <textarea
+                id="jp_job_duties"
+                value={jobPostingFormData.job_duties}
+                onChange={(e) => setJobPostingFormData({ ...jobPostingFormData, job_duties: e.target.value })}
+                placeholder="Enter job duties"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
+                rows={3}
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => {
+                setIsAddJobPostingDialogOpen(false)
+                setJobPostingFormData({
+                  post_id: "",
+                  posting_date: "",
+                  position: "",
+                  number_of_openings: "",
+                  job_type: "",
+                  job_description: "",
+                  location: "",
+                  job_duties: "",
+                  education: "",
+                  experience: "",
+                  posted_by: "",
+                  designation: "",
+                  status: "Active",
+                })
+              }}
+              disabled={isJobPostingSubmitting}
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleAddJobPosting}
+              disabled={
+                isJobPostingSubmitting ||
+                !jobPostingFormData.post_id ||
+                !jobPostingFormData.posting_date ||
+                !jobPostingFormData.position ||
+                !jobPostingFormData.number_of_openings ||
+                !jobPostingFormData.job_type ||
+                !jobPostingFormData.location ||
+                !jobPostingFormData.status
+              }
+              className="bg-[#0066ff] hover:bg-[#0052cc]"
+            >
+              {isJobPostingSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Adding...
+                </>
+              ) : (
+                "Add Job Posting"
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
+
