@@ -1340,7 +1340,7 @@ export default function ContactUsDashboard() {
 
           {/* Referrals Table Card */}
           {activeTab === "referrals" && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">Talent Referral Submissions</h2>
                 <p className="text-sm text-gray-500 mt-1">
@@ -1811,7 +1811,7 @@ export default function ContactUsDashboard() {
 
           {/* Users Table Card */}
           {activeTab === "users" && (
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200">
               <div className="p-6 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">User Management</h2>
                 <p className="text-sm text-gray-500 mt-1">
