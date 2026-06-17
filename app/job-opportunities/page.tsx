@@ -7,11 +7,13 @@ import { JobSearchFilter } from "@/components/job-opportunities/job-search-filte
 import { JobCard } from "@/components/job-opportunities/job-card"
 import { jobs, type Job } from "@/lib/job-data"
 import { supabase, type JobOpening } from "@/lib/supabase"
+import { getCurrentTenantId } from "@/lib/tenant"
 import { Users, TrendingUp, Globe, Award } from "lucide-react"
 
 export default function CareersPage() {
   const [filteredJobs, setFilteredJobs] = useState(jobs)
   const [isLoading, setIsLoading] = useState(true)
+  const [tenantId, setTenantId] = useState<string | null>(null)
 
   useEffect(() => {
 
@@ -19,61 +21,73 @@ export default function CareersPage() {
 
       setIsLoading(true)
 
-      const { data, error } = await supabase
-        .from("job_openings")
-        .select("*")
-        .eq("status", "Active")
-        .order("posting_date", { ascending: false })
+      try {
+        // Get the tenant ID from the current domain
+        const currentTenantId = await getCurrentTenantId()
+        setTenantId(currentTenantId)
 
-      if (error || !data) {
-        console.error(error)
+        const { data, error } = await supabase
+          .from("job_openings")
+          .select("*")
+          .eq("tenant_id", currentTenantId)
+          .eq("status", "Active")
+          .order("posting_date", { ascending: false })
+
+        if (error || !data) {
+          console.error(error)
+          setFilteredJobs([])
+          setIsLoading(false)
+          return
+        }
+
+        const formattedJobs: Job[] = data.map((job: JobOpening) => ({
+          id: String(job.id),
+
+          postId: job.post_id,
+
+          // DB VALUES
+          postedDate: job.posting_date,
+
+          // DYNAMIC VALUES FROM DB
+          title: job.position || "",
+
+          type: job.job_type || "",
+
+          location: job.location || "",
+
+          category: "Engineering",
+
+          description: job.job_description || "",
+
+          qualifications: [
+
+            `POSITION: ${job.position || ""}`,
+
+            `NUMBER OF OPENINGS: ${job.number_of_openings || ""}`,
+
+            `LOCATION: ${job.location || ""}`,
+
+            `JOB DUTIES: ${job.job_duties || ""}`,
+
+            `EDUCATION: ${job.education || ""}`,
+
+            `EXPERIENCE: ${job.experience || ""}`,
+
+            `POSTED BY: ${job.posted_by || ""}`,
+
+            `DESIGNATION: ${job.designation || ""}`,
+
+          ],
+        }))
+
+        setFilteredJobs(formattedJobs)
+
+      } catch (error) {
+        console.error("Error fetching jobs:", error)
+        setFilteredJobs([])
+      } finally {
         setIsLoading(false)
-        return
       }
-
-      const formattedJobs: Job[] = data.map((job: JobOpening) => ({
-        id: String(job.id),
-
-        postId: job.post_id,
-
-        // DB VALUES
-        postedDate: job.posting_date,
-
-        // DYNAMIC VALUES FROM DB
-        title: job.position || "",
-
-        type: job.job_type || "",
-
-        location: job.location || "",
-
-        category: "Engineering",
-
-        description: job.job_description || "",
-
-        qualifications: [
-
-          `POSITION: ${job.position || ""}`,
-
-          `NUMBER OF OPENINGS: ${job.number_of_openings || ""}`,
-
-          `LOCATION: ${job.location || ""}`,
-
-          `JOB DUTIES: ${job.job_duties || ""}`,
-
-          `EDUCATION: ${job.education || ""}`,
-
-          `EXPERIENCE: ${job.experience || ""}`,
-
-          `POSTED BY: ${job.posted_by || ""}`,
-
-          `DESIGNATION: ${job.designation || ""}`,
-
-        ],
-      }))
-
-      setFilteredJobs(formattedJobs)
-
-      setIsLoading(false)
     }
 
     fetchJobs()
