@@ -19,61 +19,93 @@ export default function CareersPage() {
 
       setIsLoading(true)
 
-      const { data, error } = await supabase
-        .from("job_openings")
-        .select("*")
-        .eq("status", "Active")
-        .order("posting_date", { ascending: false })
+      try {
+        // Get hostname from current domain
+        const hostname = typeof window !== 'undefined' 
+          ? window.location.hostname
+              .replace("www.", "")
+              .toLowerCase()
+          : ""
 
-      if (error || !data) {
-        console.error(error)
+        if (!hostname) {
+          setIsLoading(false)
+          return
+        }
+
+        // Fetch tenant based on domain
+        const { data: tenantData, error: tenantError } = await supabase
+          .from("tenants")
+          .select("*")
+          .eq("domain", hostname)
+          .single()
+
+        if (tenantError || !tenantData) {
+          console.error("Tenant not found for domain:", hostname)
+          setFilteredJobs([])
+          setIsLoading(false)
+          return
+        }
+
+        // Fetch jobs only for this tenant
+        const { data, error } = await supabase
+          .from("job_openings")
+          .select("*")
+          .eq("tenant_id", tenantData.id)
+          .eq("status", "Active")
+          .order("posting_date", { ascending: false })
+
+        if (error || !data) {
+          console.error(error)
+          setIsLoading(false)
+          return
+        }
+
+        const formattedJobs: Job[] = data.map((job: JobOpening) => ({
+          id: String(job.id),
+
+          postId: job.post_id,
+
+          // DB VALUES
+          postedDate: job.posting_date,
+
+          // DYNAMIC VALUES FROM DB
+          title: job.position || "",
+
+          type: job.job_type || "",
+
+          location: job.location || "",
+
+          category: "Engineering",
+
+          description: job.job_description || "",
+
+          qualifications: [
+
+            `POSITION: ${job.position || ""}`,
+
+            `NUMBER OF OPENINGS: ${job.number_of_openings || ""}`,
+
+            `LOCATION: ${job.location || ""}`,
+
+            `JOB DUTIES: ${job.job_duties || ""}`,
+
+            `EDUCATION: ${job.education || ""}`,
+
+            `EXPERIENCE: ${job.experience || ""}`,
+
+            `POSTED BY: ${job.posted_by || ""}`,
+
+            `DESIGNATION: ${job.designation || ""}`,
+
+          ],
+        }))
+
+        setFilteredJobs(formattedJobs)
+      } catch (err) {
+        console.error("Error fetching jobs:", err)
+      } finally {
         setIsLoading(false)
-        return
       }
-
-      const formattedJobs: Job[] = data.map((job: JobOpening) => ({
-        id: String(job.id),
-
-        postId: job.post_id,
-
-        // DB VALUES
-        postedDate: job.posting_date,
-
-        // DYNAMIC VALUES FROM DB
-        title: job.position || "",
-
-        type: job.job_type || "",
-
-        location: job.location || "",
-
-        category: "Engineering",
-
-        description: job.job_description || "",
-
-        qualifications: [
-
-          `POSITION: ${job.position || ""}`,
-
-          `NUMBER OF OPENINGS: ${job.number_of_openings || ""}`,
-
-          `LOCATION: ${job.location || ""}`,
-
-          `JOB DUTIES: ${job.job_duties || ""}`,
-
-          `EDUCATION: ${job.education || ""}`,
-
-          `EXPERIENCE: ${job.experience || ""}`,
-
-          `POSTED BY: ${job.posted_by || ""}`,
-
-          `DESIGNATION: ${job.designation || ""}`,
-
-        ],
-      }))
-
-      setFilteredJobs(formattedJobs)
-
-      setIsLoading(false)
     }
 
     fetchJobs()
