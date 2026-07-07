@@ -147,10 +147,10 @@ export default function StaffAugmentationPage() {
               Staff Augmentation
             </h1>
             <p className="text-lg md:text-xl text-gray-200 mb-4">
-              Enhance your workforce with skilled professionals, aligned to your business goals.
+              Empower your workforce with skilled experts aligned to your business objectives.
             </p>
             <p className="text-base text-gray-300 leading-relaxed mb-8">
-              Our Staff Augmentation services enable organizations to quickly scale their teams with highly qualified talent, without the complexities of traditional hiring.
+              Our Staff Augmentation services enable organizations to rapidly scale teams with skilled professionals while simplifying hiring challenges.
             </p>
             <Link
               href="/contact"
@@ -170,7 +170,7 @@ export default function StaffAugmentationPage() {
             Staff Augmentation
           </h2>
           <p className="text-lg text-gray-700 leading-relaxed">
-            Enhance your workforce with skilled professionals, aligned to your business goals. Our Staff Augmentation services enable organizations to quickly scale their teams with highly qualified talent, without the complexities of traditional hiring. We provide experienced professionals who seamlessly integrate with your existing teams, ensuring continuity, productivity, and faster delivery. Whether you need specialized expertise for a critical project or additional capacity to meet deadlines, we offer flexible engagement models tailored to your requirements.
+            Strengthen your workforce with skilled professionals aligned to your business objectives. Our Staff Augmentation services help organizations quickly scale their teams with highly qualified talent while eliminating the challenges of traditional hiring. We provide experienced experts who seamlessly collaborate with your existing teams, ensuring operational continuity, improved productivity, and faster project delivery. Whether you require specialized skills for complex initiatives or additional resources to accelerate timelines, our flexible engagement models are designed to meet your unique business needs.
           </p>
         </div>
       </section>
