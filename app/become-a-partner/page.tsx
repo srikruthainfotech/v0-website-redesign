@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useRef } from "react"
+import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { supabase } from "@/lib/supabase"
@@ -644,7 +645,9 @@ export default function BecomeAPartnerPage() {
                           className="mt-1 w-4 h-4 accent-[#00d4ff]"
                         />
                         <span className="text-sm text-gray-600">
-                          I agree to Terms & Conditions
+                          I agree to <Link href="/terms-of-use" className="hover:text-[#00d4ff] transition-colors">
+                            Terms & Conditions
+                          </Link>
                         </span>
                       </label>
                       <label className="flex items-start gap-3 cursor-pointer">
@@ -656,7 +659,9 @@ export default function BecomeAPartnerPage() {
                           className="mt-1 w-4 h-4 accent-[#00d4ff]"
                         />
                         <span className="text-sm text-gray-600">
-                          I agree to Privacy Policy
+                          I agree to <Link href="/privacy-policy" className="hover:text-[#00d4ff] transition-colors">
+                            Privacy Policy
+                          </Link>
                         </span>
                       </label>
                     </div>
