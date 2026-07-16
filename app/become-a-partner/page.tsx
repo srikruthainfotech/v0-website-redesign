@@ -717,17 +717,6 @@ export default function BecomeAPartnerPage() {
                           info@immensebrains.com
                         </a>
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                          Phone
-                        </p>
-                        <a
-                          href="tel:+18889691666"
-                          className="text-[#00d4ff] hover:underline text-sm font-medium"
-                        >
-                          +1 (888) 969-1666
-                        </a>
-                      </div>
                     </div>
                     <a
                       href="/contact"
