@@ -196,11 +196,6 @@ export default function BecomeAPartnerPage() {
                 <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
                   Become A Partner
                 </h1>
-                <p className="text-lg text-white/90">
-                  Partner with Immense Brains to build long-term business
-                  relationships through technology, staffing, consulting, and
-                  digital transformation.
-                </p>
               </div>
             </div>
           </div>
