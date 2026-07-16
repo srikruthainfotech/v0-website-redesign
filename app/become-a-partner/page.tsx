@@ -598,7 +598,7 @@ export default function BecomeAPartnerPage() {
                     {/* Company Profile Upload */}
                     <div className="mb-8">
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
-                        Company Profile
+                        Company Profile (Optional)
                       </h3>
                       <div className="relative">
                         <input
@@ -715,17 +715,6 @@ export default function BecomeAPartnerPage() {
                           className="text-[#00d4ff] hover:underline text-sm font-medium"
                         >
                           info@immensebrains.com
-                        </a>
-                      </div>
-                      <div>
-                        <p className="text-xs text-gray-500 uppercase tracking-wide mb-1">
-                          Phone
-                        </p>
-                        <a
-                          href="tel:+18889691666"
-                          className="text-[#00d4ff] hover:underline text-sm font-medium"
-                        >
-                          +1 (888) 969-1666
                         </a>
                       </div>
                     </div>
