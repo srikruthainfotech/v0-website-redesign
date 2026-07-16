@@ -1,5 +1,6 @@
 import { ArrowRight } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
 export function ClientsSection() {
   // Original clients for first row (Arrow Right)
@@ -160,10 +161,12 @@ export function ClientsSection() {
           </div>
         </div>
 
-        <button className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
-          Become A Partner
-          <ArrowRight className="w-4 h-4" />
-        </button>
+        <Link href="/become-a-partner">
+          <button className="bg-[#0066ff] hover:bg-[#0052cc] text-white px-6 py-3 rounded-md font-medium inline-flex items-center gap-2 transition-colors">
+            Become A Partner
+            <ArrowRight className="w-4 h-4" />
+          </button>
+        </Link>
       </div>
     </section>
   )
