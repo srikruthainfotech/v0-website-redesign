@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 import { supabase } from "@/lib/supabase"
@@ -84,12 +84,14 @@ export default function BecomeAPartnerPage() {
     servicesOffered: "",
     companyDescription: "",
     partnershipReason: "",
+    companyProfile: null as File | null,
     agreeTerms: false,
     agreePrivacy: false,
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -105,6 +107,47 @@ export default function BecomeAPartnerPage() {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    // ✅ Allow only PDF, DOC, DOCX
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ]
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only PDF, DOC, and DOCX files are allowed")
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    // ✅ Max file size = 10MB
+    const maxSize = 10 * 1024 * 1024
+
+    if (file.size > maxSize) {
+      alert("Please upload a file up to 10MB")
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      companyProfile: file,
+    }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -165,9 +208,14 @@ export default function BecomeAPartnerPage() {
         servicesOffered: "",
         companyDescription: "",
         partnershipReason: "",
+        companyProfile: null,
         agreeTerms: false,
         agreePrivacy: false,
       })
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""
+      }
     } catch (err) {
       console.error("Error submitting form:", err)
       alert("An unexpected error occurred. Please try again.")
@@ -354,14 +402,30 @@ export default function BecomeAPartnerPage() {
                         </select>
                       </div>
                       <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
+                        <select
                           name="industry"
                           value={formData.industry}
                           onChange={handleChange}
-                          placeholder="Industry"
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
+                        >
+                          <option value="">Industry</option>
+                          <option value="Information Technology">Information Technology</option>
+                          <option value="Software Development">Software Development</option>
+                          <option value="Cloud Computing">Cloud Computing</option>
+                          <option value="Artificial Intelligence">Artificial Intelligence</option>
+                          <option value="Machine Learning">Machine Learning</option>
+                          <option value="Cyber Security">Cyber Security</option>
+                          <option value="Staffing">Staffing</option>
+                          <option value="Consulting">Consulting</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Finance">Finance</option>
+                          <option value="Retail">Retail</option>
+                          <option value="Manufacturing">Manufacturing</option>
+                          <option value="Education">Education</option>
+                          <option value="Telecommunications">Telecommunications</option>
+                          <option value="Government">Government</option>
+                          <option value="Other">Other</option>
+                        </select>
                         <input
                           type="text"
                           name="address"
@@ -459,7 +523,7 @@ export default function BecomeAPartnerPage() {
                           name="partnershipType"
                           value={formData.partnershipType}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent appearance-none"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
                         >
                           <option value="">Partnership Type</option>
                           <option value="Technology Partner">
@@ -483,14 +547,31 @@ export default function BecomeAPartnerPage() {
                         </select>
                       </div>
                       <div className="mb-4">
-                        <input
-                          type="text"
+                        <select
                           name="servicesOffered"
                           value={formData.servicesOffered}
                           onChange={handleChange}
-                          placeholder="Services Offered"
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
+                        >
+                          <option value="">Services Offered</option>
+                          <option value="AI Development">AI Development</option>
+                          <option value="Custom Application Development">Custom Application Development</option>
+                          <option value="Cloud Services">Cloud Services</option>
+                          <option value="Digital Transformation">Digital Transformation</option>
+                          <option value="ERP Development">ERP Development</option>
+                          <option value="Oracle Cloud Applications">Oracle Cloud Applications</option>
+                          <option value="QA Testing & Automation">QA Testing & Automation</option>
+                          <option value="UI/UX Design">UI/UX Design</option>
+                          <option value="Staff Augmentation">Staff Augmentation</option>
+                          <option value="Dedicated Teams">Dedicated Teams</option>
+                          <option value="Software Outsourcing">Software Outsourcing</option>
+                          <option value="Business Consulting">Business Consulting</option>
+                          <option value="IT Support">IT Support</option>
+                          <option value="Other">Other</option>
+                        </select>
+                        <p className="text-xs text-gray-500 mt-2">
+                          You can select multiple services.
+                        </p>
                       </div>
                       <div className="mb-4">
                         <textarea
@@ -511,6 +592,44 @@ export default function BecomeAPartnerPage() {
                           placeholder="Why do you want to partner with us?"
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                         />
+                      </div>
+                    </div>
+
+                    {/* Company Profile Upload */}
+                    <div className="mb-8">
+                      <h3 className="text-[#0a1628] font-medium text-lg mb-6">
+                        Company Profile
+                      </h3>
+                      <div className="relative">
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          name="companyProfile"
+                          onChange={handleFileChange}
+                          accept=".pdf,.doc,.docx"
+                          className="hidden"
+                        />
+                        <div
+                          onClick={() => fileInputRef.current?.click()}
+                          className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-[#00d4ff] hover:bg-[#f5f7fa] transition-colors bg-white"
+                        >
+                          <div className="flex justify-center mb-4">
+                            <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                              <Upload className="w-6 h-6 text-[#00d4ff]" />
+                            </div>
+                          </div>
+                          <p className="text-[#0a1628] font-medium mb-2">
+                            Click to upload or drag and drop
+                          </p>
+                          <p className="text-gray-500 text-sm">
+                            PDF, DOC, DOCX (Max. 10MB)
+                          </p>
+                          {formData.companyProfile && (
+                            <p className="text-[#00d4ff] text-sm font-medium mt-4">
+                              ✓ {formData.companyProfile.name}
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </div>
 
