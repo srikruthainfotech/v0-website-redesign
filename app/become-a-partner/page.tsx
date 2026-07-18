@@ -351,112 +351,154 @@ export default function BecomeAPartnerPage() {
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
                         Company Information
                       </h3>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="companyName"
-                          required
-                          value={formData.companyName}
-                          onChange={handleChange}
-                          placeholder="Company Name *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <input
-                          type="url"
-                          name="companyWebsite"
-                          value={formData.companyWebsite}
-                          onChange={handleChange}
-                          placeholder="Company Website"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="email"
-                          name="companyEmail"
-                          required
-                          value={formData.companyEmail}
-                          onChange={handleChange}
-                          placeholder="Company Email *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <input
-                          type="tel"
-                          name="phoneNumber"
-                          required
-                          value={formData.phoneNumber}
-                          onChange={handleChange}
-                          placeholder="Phone Number *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="country"
-                          required
-                          value={formData.country}
-                          onChange={handleChange}
-                          placeholder="Country *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <select
-                          name="companySize"
-                          value={formData.companySize}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Company Size</option>
-                          <option value="1-10">1-10 Employees</option>
-                          <option value="11-50">11-50 Employees</option>
-                          <option value="51-200">51-200 Employees</option>
-                          <option value="201-500">201-500 Employees</option>
-                          <option value="500+">500+ Employees</option>
-                        </select>
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <select
-                          name="industry"
-                          value={formData.industry}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Industry</option>
-                          <option value="Information Technology">Information Technology</option>
-                          <option value="Software Development">Software Development</option>
-                          <option value="Cloud Computing">Cloud Computing</option>
-                          <option value="Artificial Intelligence">Artificial Intelligence</option>
-                          <option value="Machine Learning">Machine Learning</option>
-                          <option value="Cyber Security">Cyber Security</option>
-                          <option value="Staffing">Staffing</option>
-                          <option value="Consulting">Consulting</option>
-                          <option value="Healthcare">Healthcare</option>
-                          <option value="Finance">Finance</option>
-                          <option value="Retail">Retail</option>
-                          <option value="Manufacturing">Manufacturing</option>
-                          <option value="Education">Education</option>
-                          <option value="Telecommunications">Telecommunications</option>
-                          <option value="Government">Government</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        <input
-                          type="text"
-                          name="address"
-                          value={formData.address}
-                          onChange={handleChange}
-                          placeholder="Address"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <input
-                          type="text"
-                          name="city"
-                          value={formData.city}
-                          onChange={handleChange}
-                          placeholder="City"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {/* Column 1 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="companyName"
+                            required
+                            value={formData.companyName}
+                            onChange={handleChange}
+                            placeholder="Enter company name"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Email <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            name="companyEmail"
+                            required
+                            value={formData.companyEmail}
+                            onChange={handleChange}
+                            placeholder="Enter email address"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Industry
+                          </label>
+                          <select
+                            name="industry"
+                            value={formData.industry}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select industry</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Software Development">Software Development</option>
+                            <option value="Cloud Computing">Cloud Computing</option>
+                            <option value="Artificial Intelligence">Artificial Intelligence</option>
+                            <option value="Machine Learning">Machine Learning</option>
+                            <option value="Cyber Security">Cyber Security</option>
+                            <option value="Staffing">Staffing</option>
+                            <option value="Consulting">Consulting</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Retail">Retail</option>
+                            <option value="Manufacturing">Manufacturing</option>
+                            <option value="Education">Education</option>
+                            <option value="Telecommunications">Telecommunications</option>
+                            <option value="Government">Government</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+
+                        {/* Column 2 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Website
+                          </label>
+                          <input
+                            type="url"
+                            name="companyWebsite"
+                            value={formData.companyWebsite}
+                            onChange={handleChange}
+                            placeholder="Enter website URL"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Phone Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="tel"
+                            name="phoneNumber"
+                            required
+                            value={formData.phoneNumber}
+                            onChange={handleChange}
+                            placeholder="Enter phone number"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            placeholder="Enter full address"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+
+                        {/* Column 3 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            City
+                          </label>
+                          <input
+                            type="text"
+                            name="city"
+                            value={formData.city}
+                            onChange={handleChange}
+                            placeholder="Enter city"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Country <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="country"
+                            required
+                            value={formData.country}
+                            onChange={handleChange}
+                            placeholder="Enter country"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Size
+                          </label>
+                          <select
+                            name="companySize"
+                            value={formData.companySize}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select company size</option>
+                            <option value="1-10">1-10 Employees</option>
+                            <option value="11-50">11-50 Employees</option>
+                            <option value="51-200">51-200 Employees</option>
+                            <option value="201-500">201-500 Employees</option>
+                            <option value="500+">500+ Employees</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
 
@@ -465,64 +507,95 @@ export default function BecomeAPartnerPage() {
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
                         Primary Contact Person
                       </h3>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="firstName"
-                          required
-                          value={formData.firstName}
-                          onChange={handleChange}
-                          placeholder="First Name *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <input
-                          type="text"
-                          name="lastName"
-                          required
-                          value={formData.lastName}
-                          onChange={handleChange}
-                          placeholder="Last Name *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="designation"
-                          required
-                          value={formData.designation}
-                          onChange={handleChange}
-                          placeholder="Designation *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <input
-                          type="email"
-                          name="businessEmail"
-                          required
-                          value={formData.businessEmail}
-                          onChange={handleChange}
-                          placeholder="Business Email *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                      </div>
-                      <div className="grid md:grid-cols-2 gap-4">
-                        <input
-                          type="tel"
-                          name="mobileNumber"
-                          required
-                          value={formData.mobileNumber}
-                          onChange={handleChange}
-                          placeholder="Mobile Number *"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
-                        <input
-                          type="url"
-                          name="linkedinProfile"
-                          value={formData.linkedinProfile}
-                          onChange={handleChange}
-                          placeholder="LinkedIn Profile"
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        />
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {/* Column 1 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            First Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="firstName"
+                            required
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            placeholder="Enter first name"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Business Email <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            name="businessEmail"
+                            required
+                            value={formData.businessEmail}
+                            onChange={handleChange}
+                            placeholder="Enter business email"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+
+                        {/* Column 2 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Last Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="lastName"
+                            required
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            placeholder="Enter last name"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Mobile Number <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="tel"
+                            name="mobileNumber"
+                            required
+                            value={formData.mobileNumber}
+                            onChange={handleChange}
+                            placeholder="Enter mobile number"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+
+                        {/* Column 3 */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Designation <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="designation"
+                            required
+                            value={formData.designation}
+                            onChange={handleChange}
+                            placeholder="Enter designation"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            LinkedIn Profile
+                          </label>
+                          <input
+                            type="url"
+                            name="linkedinProfile"
+                            value={formData.linkedinProfile}
+                            onChange={handleChange}
+                            placeholder="https://www.linkedin.com/in/username"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          />
+                        </div>
                       </div>
                     </div>
 
@@ -531,93 +604,115 @@ export default function BecomeAPartnerPage() {
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
                         Partnership Details
                       </h3>
-                      <div className="grid md:grid-cols-1 gap-4 mb-4">
-                        <select
-                          name="partnershipType"
-                          value={formData.partnershipType}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Partnership Type</option>
-                          <option value="Technology Partner">
-                            Technology Partner
-                          </option>
-                          <option value="Consulting Partner">
-                            Consulting Partner
-                          </option>
-                          <option value="Referral Partner">
-                            Referral Partner
-                          </option>
-                          <option value="Staffing Partner">
-                            Staffing Partner
-                          </option>
-                          <option value="Implementation Partner">
-                            Implementation Partner
-                          </option>
-                          <option value="Strategic Alliance">
-                            Strategic Alliance
-                          </option>
-                        </select>
-                      </div>
-                      <div className="mb-4">
-                        <select
-                          name="servicesOffered"
-                          value={formData.servicesOffered}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Services Offered</option>
-                          <option value="AI Development">AI Development</option>
-                          <option value="Custom Application Development">Custom Application Development</option>
-                          <option value="Cloud Services">Cloud Services</option>
-                          <option value="Digital Transformation">Digital Transformation</option>
-                          <option value="ERP Development">ERP Development</option>
-                          <option value="Oracle Cloud Applications">Oracle Cloud Applications</option>
-                          <option value="QA Testing & Automation">QA Testing & Automation</option>
-                          <option value="UI/UX Design">UI/UX Design</option>
-                          <option value="Staff Augmentation">Staff Augmentation</option>
-                          <option value="Dedicated Teams">Dedicated Teams</option>
-                          <option value="Software Outsourcing">Software Outsourcing</option>
-                          <option value="Business Consulting">Business Consulting</option>
-                          <option value="IT Support">IT Support</option>
-                          <option value="Other">Other</option>
-                        </select>
-                        <p className="text-xs text-gray-500 mt-2">
-                          You can select multiple services.
-                        </p>
-                      </div>
-                      <div className="grid md:grid-cols-3 gap-4 mb-4">
-                        <select
-                          name="yearsInBusiness"
-                          value={formData.yearsInBusiness}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Select years</option>
-                          <option value="Less than 1 year">Less than 1 year</option>
-                          <option value="1–3 Years">1–3 Years</option>
-                          <option value="4–7 Years">4–7 Years</option>
-                          <option value="8–10 Years">8–10 Years</option>
-                          <option value="11–15 Years">11–15 Years</option>
-                          <option value="16–20 Years">16–20 Years</option>
-                          <option value="20+ Years">20+ Years</option>
-                        </select>
-                        <select
-                          name="numberOfEmployees"
-                          value={formData.numberOfEmployees}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                        >
-                          <option value="">Select number of employees</option>
-                          <option value="1–10">1–10</option>
-                          <option value="11–50">11–50</option>
-                          <option value="51–100">51–100</option>
-                          <option value="101–250">101–250</option>
-                          <option value="251–500">251–500</option>
-                          <option value="501–1000">501–1000</option>
-                          <option value="1000+">1000+</option>
-                        </select>
+                      
+                      {/* Row 1 - Two columns */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Partnership Type <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="partnershipType"
+                            value={formData.partnershipType}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select partnership type</option>
+                            <option value="Technology Partner">
+                              Technology Partner
+                            </option>
+                            <option value="Consulting Partner">
+                              Consulting Partner
+                            </option>
+                            <option value="Referral Partner">
+                              Referral Partner
+                            </option>
+                            <option value="Staffing Partner">
+                              Staffing Partner
+                            </option>
+                            <option value="Implementation Partner">
+                              Implementation Partner
+                            </option>
+                            <option value="Strategic Alliance">
+                              Strategic Alliance
+                            </option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Services Offered <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="servicesOffered"
+                            value={formData.servicesOffered}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select services offered</option>
+                            <option value="AI Development">AI Development</option>
+                            <option value="Custom Application Development">Custom Application Development</option>
+                            <option value="Cloud Services">Cloud Services</option>
+                            <option value="Digital Transformation">Digital Transformation</option>
+                            <option value="ERP Development">ERP Development</option>
+                            <option value="Oracle Cloud Applications">Oracle Cloud Applications</option>
+                            <option value="QA Testing & Automation">QA Testing & Automation</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Staff Augmentation">Staff Augmentation</option>
+                            <option value="Dedicated Teams">Dedicated Teams</option>
+                            <option value="Software Outsourcing">Software Outsourcing</option>
+                            <option value="Business Consulting">Business Consulting</option>
+                            <option value="IT Support">IT Support</option>
+                            <option value="Other">Other</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      {/* Row 2 - Three columns */}
+                      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Years in Business <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="yearsInBusiness"
+                            value={formData.yearsInBusiness}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select years in business</option>
+                            <option value="Less than 1 year">Less than 1 year</option>
+                            <option value="1–3 Years">1–3 Years</option>
+                            <option value="4–7 Years">4–7 Years</option>
+                            <option value="8–10 Years">8–10 Years</option>
+                            <option value="11–15 Years">11–15 Years</option>
+                            <option value="16–20 Years">16–20 Years</option>
+                            <option value="20+ Years">20+ Years</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Number of Employees <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            name="numberOfEmployees"
+                            value={formData.numberOfEmployees}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select number of employees</option>
+                            <option value="1–10">1–10</option>
+                            <option value="11–50">11–50</option>
+                            <option value="51–100">51–100</option>
+                            <option value="101–250">101–250</option>
+                            <option value="251–500">251–500</option>
+                            <option value="501–1000">501–1000</option>
+                            <option value="1000+">1000+</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Countries Served <span className="text-red-500">*</span>
+                          </label>
                           <select
                             name="countriesServed"
                             value={formData.countriesServed}
@@ -642,7 +737,12 @@ export default function BecomeAPartnerPage() {
                           </p>
                         </div>
                       </div>
-                      <div className="mb-4">
+
+                      {/* Row 3 - Full width textarea */}
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-800 mb-2">
+                          Tell us about your major clients
+                        </label>
                         <textarea
                           name="majorClients"
                           rows={4}
@@ -652,23 +752,33 @@ export default function BecomeAPartnerPage() {
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                         />
                       </div>
-                      <div className="mb-4">
+
+                      {/* Row 4 - Full width textarea */}
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-800 mb-2">
+                          Company Description
+                        </label>
                         <textarea
                           name="companyDescription"
                           rows={4}
                           value={formData.companyDescription}
                           onChange={handleChange}
-                          placeholder="Company Description"
+                          placeholder="Briefly describe your company, your expertise and core services."
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                         />
                       </div>
+
+                      {/* Row 5 - Full width textarea */}
                       <div>
+                        <label className="block text-sm font-medium text-gray-800 mb-2">
+                          Why do you want to partner with us?
+                        </label>
                         <textarea
                           name="partnershipReason"
                           rows={4}
                           value={formData.partnershipReason}
                           onChange={handleChange}
-                          placeholder="Why do you want to partner with us?"
+                          placeholder="Tell us why you want to partner with us."
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                         />
                       </div>
