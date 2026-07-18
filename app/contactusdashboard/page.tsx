@@ -3416,7 +3416,7 @@ export default function ContactUsDashboard() {
                               })
                               setIsEditPartnerDialogOpen(true)
                             }}
-                            className="h-8 w-8 text-gray-500 hover:text-blue-600 hover:bg-blue-50"
+                            className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
                             title="Edit"
                           >
                             <Pencil className="w-4 h-4" />
