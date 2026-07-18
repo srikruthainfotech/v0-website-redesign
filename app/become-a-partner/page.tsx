@@ -86,7 +86,6 @@ export default function BecomeAPartnerPage() {
     yearsInBusiness: "",
     numberOfEmployees: "",
     countriesServed: "",
-    companyDescription: "",
     majorClients: "",
     partnershipReason: "",
     companyProfile: null as File | null,
@@ -226,33 +225,86 @@ export default function BecomeAPartnerPage() {
     setIsSubmitting(true)
 
     try {
+      let companyProfileUrl = null
+      let companyBrochureUrl = null
+
+      // ✅ STEP 1: Upload Company Profile to Supabase Storage
+      if (formData.companyProfile) {
+        const fileName = `${Date.now()}-${formData.companyProfile.name}`
+
+        const { error: uploadError } = await supabase.storage
+          .from("partnership-files")
+          .upload(fileName, formData.companyProfile)
+
+        if (uploadError) {
+          console.error("Error uploading company profile:", uploadError)
+          alert("Failed to upload company profile")
+          return
+        }
+
+        // ✅ STEP 2: Get public URL for Company Profile
+        const { data: publicUrlData } = supabase.storage
+          .from("partnership-files")
+          .getPublicUrl(fileName)
+
+        companyProfileUrl = publicUrlData.publicUrl
+      }
+
+      // ✅ STEP 3: Upload Company Brochure to Supabase Storage
+      if (formData.companyBrochure) {
+        const fileName = `${Date.now()}-${formData.companyBrochure.name}`
+
+        const { error: uploadError } = await supabase.storage
+          .from("partnership-files")
+          .upload(fileName, formData.companyBrochure)
+
+        if (uploadError) {
+          console.error("Error uploading company brochure:", uploadError)
+          alert("Failed to upload company brochure")
+          return
+        }
+
+        // ✅ STEP 4: Get public URL for Company Brochure
+        const { data: publicUrlData } = supabase.storage
+          .from("partnership-files")
+          .getPublicUrl(fileName)
+
+        companyBrochureUrl = publicUrlData.publicUrl
+      }
+
+      // ✅ STEP 5: Insert into database with file URLs
       const tenantId = await getCurrentTenantId()
-      const { error } = await supabase.from("partnership_requests").insert([
+      const { error } = await supabase.from("partnership_registration").insert([
         {
+          tenant_id: tenantId,
           company_name: formData.companyName,
-          company_website: formData.companyWebsite,
           company_email: formData.companyEmail,
+          company_website: formData.companyWebsite,
           phone_number: formData.phoneNumber,
           country: formData.country,
           company_size: formData.companySize,
           industry: formData.industry,
           address: formData.address,
           city: formData.city,
-          contact_first_name: formData.firstName,
-          contact_last_name: formData.lastName,
-          contact_designation: formData.designation,
-          contact_business_email: formData.businessEmail,
-          contact_mobile: formData.mobileNumber,
+          first_name: formData.firstName,
+          last_name: formData.lastName,
+          business_email: formData.businessEmail,
+          designation: formData.designation,
+          mobile_number: formData.mobileNumber,
           linkedin_profile: formData.linkedinProfile,
           partnership_type: formData.partnershipType,
           services_offered: formData.servicesOffered,
           years_in_business: formData.yearsInBusiness,
           number_of_employees: formData.numberOfEmployees,
           countries_served: formData.countriesServed,
-          company_description: formData.companyDescription,
           major_clients: formData.majorClients,
+          certifications: formData.certifications,
+          company_profile_url: companyProfileUrl,
+          company_brochure_url: companyBrochureUrl,
           partnership_reason: formData.partnershipReason,
-          tenant_id: tenantId,
+          additional_notes: formData.additionalNotes,
+          agree_terms: formData.agreeTerms,
+          agree_privacy: formData.agreePrivacy,
         },
       ])
 
@@ -284,16 +336,32 @@ export default function BecomeAPartnerPage() {
         yearsInBusiness: "",
         numberOfEmployees: "",
         countriesServed: "",
-        companyDescription: "",
         majorClients: "",
         partnershipReason: "",
         companyProfile: null,
+        companyBrochure: null,
+        certifications: {
+          iso9001: false,
+          iso27001: false,
+          cmmi: false,
+          microsoftPartner: false,
+          awsPartner: false,
+          googlePartner: false,
+          oraclePartner: false,
+          sapPartner: false,
+          other: false,
+        },
+        additionalNotes: "",
         agreeTerms: false,
         agreePrivacy: false,
       })
 
       if (fileInputRef.current) {
         fileInputRef.current.value = ""
+      }
+
+      if (brochureInputRef.current) {
+        brochureInputRef.current.value = ""
       }
     } catch (err) {
       console.error("Error submitting form:", err)
