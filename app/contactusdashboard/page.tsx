@@ -3482,14 +3482,14 @@ export default function ContactUsDashboard() {
               <div>
                 <h3 className="font-semibold text-gray-900 mb-3">Business Information</h3>
                 <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-gray-500">Partnership Type:</span> <span className="font-medium">{selectedPartner.partnership_type || "-"}</span></div>
-                  <div><span className="text-gray-500">Services Offered:</span> <span className="font-medium">{selectedPartner.services_offered || "-"}</span></div>
-                  <div><span className="text-gray-500">Years in Business:</span> <span className="font-medium">{selectedPartner.years_in_business || "-"}</span></div>
-                  <div><span className="text-gray-500">Number of Employees:</span> <span className="font-medium">{selectedPartner.number_of_employees || "-"}</span></div>
-                  <div><span className="text-gray-500">Countries Served:</span> <span className="font-medium">{selectedPartner.countries_served || "-"}</span></div>
-                  <div><span className="text-gray-500">Major Clients:</span> <span className="font-medium">{selectedPartner.major_clients || "-"}</span></div>
+                  <div><span className="text-gray-500">Partnership Type:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_type)}</span></div>
+                  <div><span className="text-gray-500">Services Offered:</span> <span className="font-medium">{renderFieldValue(selectedPartner.services_offered)}</span></div>
+                  <div><span className="text-gray-500">Years in Business:</span> <span className="font-medium">{renderFieldValue(selectedPartner.years_in_business)}</span></div>
+                  <div><span className="text-gray-500">Number of Employees:</span> <span className="font-medium">{renderFieldValue(selectedPartner.number_of_employees)}</span></div>
+                  <div><span className="text-gray-500">Countries Served:</span> <span className="font-medium">{renderFieldValue(selectedPartner.countries_served)}</span></div>
+                  <div><span className="text-gray-500">Major Clients:</span> <span className="font-medium">{renderFieldValue(selectedPartner.major_clients)}</span></div>
                   <div><span className="text-gray-500">Certifications:</span> <span className="font-medium">{renderFieldValue(selectedPartner.certifications)}</span></div>
-                  <div><span className="text-gray-500">Partnership Reason:</span> <span className="font-medium">{selectedPartner.partnership_reason || "-"}</span></div>
+                  <div><span className="text-gray-500">Partnership Reason:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_reason)}</span></div>
                 </div>
               </div>
 
