@@ -83,7 +83,11 @@ export default function BecomeAPartnerPage() {
     linkedinProfile: "",
     partnershipType: "",
     servicesOffered: "",
+    yearsInBusiness: "",
+    numberOfEmployees: "",
+    countriesServed: "",
     companyDescription: "",
+    majorClients: "",
     partnershipReason: "",
     companyProfile: null as File | null,
     agreeTerms: false,
@@ -176,7 +180,11 @@ export default function BecomeAPartnerPage() {
           linkedin_profile: formData.linkedinProfile,
           partnership_type: formData.partnershipType,
           services_offered: formData.servicesOffered,
+          years_in_business: formData.yearsInBusiness,
+          number_of_employees: formData.numberOfEmployees,
+          countries_served: formData.countriesServed,
           company_description: formData.companyDescription,
+          major_clients: formData.majorClients,
           partnership_reason: formData.partnershipReason,
           tenant_id: tenantId,
         },
@@ -207,7 +215,11 @@ export default function BecomeAPartnerPage() {
         linkedinProfile: "",
         partnershipType: "",
         servicesOffered: "",
+        yearsInBusiness: "",
+        numberOfEmployees: "",
+        countriesServed: "",
         companyDescription: "",
+        majorClients: "",
         partnershipReason: "",
         companyProfile: null,
         agreeTerms: false,
@@ -573,6 +585,72 @@ export default function BecomeAPartnerPage() {
                         <p className="text-xs text-gray-500 mt-2">
                           You can select multiple services.
                         </p>
+                      </div>
+                      <div className="grid md:grid-cols-3 gap-4 mb-4">
+                        <select
+                          name="yearsInBusiness"
+                          value={formData.yearsInBusiness}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                        >
+                          <option value="">Select years</option>
+                          <option value="Less than 1 year">Less than 1 year</option>
+                          <option value="1–3 Years">1–3 Years</option>
+                          <option value="4–7 Years">4–7 Years</option>
+                          <option value="8–10 Years">8–10 Years</option>
+                          <option value="11–15 Years">11–15 Years</option>
+                          <option value="16–20 Years">16–20 Years</option>
+                          <option value="20+ Years">20+ Years</option>
+                        </select>
+                        <select
+                          name="numberOfEmployees"
+                          value={formData.numberOfEmployees}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                        >
+                          <option value="">Select number of employees</option>
+                          <option value="1–10">1–10</option>
+                          <option value="11–50">11–50</option>
+                          <option value="51–100">51–100</option>
+                          <option value="101–250">101–250</option>
+                          <option value="251–500">251–500</option>
+                          <option value="501–1000">501–1000</option>
+                          <option value="1000+">1000+</option>
+                        </select>
+                        <div>
+                          <select
+                            name="countriesServed"
+                            value={formData.countriesServed}
+                            onChange={handleChange}
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
+                          >
+                            <option value="">Select countries</option>
+                            <option value="India">India</option>
+                            <option value="United States">United States</option>
+                            <option value="Canada">Canada</option>
+                            <option value="United Kingdom">United Kingdom</option>
+                            <option value="Australia">Australia</option>
+                            <option value="Germany">Germany</option>
+                            <option value="Singapore">Singapore</option>
+                            <option value="UAE">UAE</option>
+                            <option value="Saudi Arabia">Saudi Arabia</option>
+                            <option value="Japan">Japan</option>
+                            <option value="Other">Other</option>
+                          </select>
+                          <p className="text-xs text-gray-500 mt-2">
+                            You can select multiple countries.
+                          </p>
+                        </div>
+                      </div>
+                      <div className="mb-4">
+                        <textarea
+                          name="majorClients"
+                          rows={4}
+                          value={formData.majorClients}
+                          onChange={handleChange}
+                          placeholder="Enter details about your major clients"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                        />
                       </div>
                       <div className="mb-4">
                         <textarea
