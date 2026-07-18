@@ -90,6 +90,19 @@ export default function BecomeAPartnerPage() {
     majorClients: "",
     partnershipReason: "",
     companyProfile: null as File | null,
+    companyBrochure: null as File | null,
+    certifications: {
+      iso9001: false,
+      iso27001: false,
+      cmmi: false,
+      microsoftPartner: false,
+      awsPartner: false,
+      googlePartner: false,
+      oraclePartner: false,
+      sapPartner: false,
+      other: false,
+    },
+    additionalNotes: "",
     agreeTerms: false,
     agreePrivacy: false,
   })
@@ -97,6 +110,7 @@ export default function BecomeAPartnerPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const brochureInputRef = useRef<HTMLInputElement>(null)
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -105,10 +119,21 @@ export default function BecomeAPartnerPage() {
   ) => {
     const { name, value, type } = e.target
     if (type === "checkbox") {
-      setFormData((prev) => ({
-        ...prev,
-        [name]: (e.target as HTMLInputElement).checked,
-      }))
+      if (name.startsWith("certification_")) {
+        const certKey = name.replace("certification_", "")
+        setFormData((prev) => ({
+          ...prev,
+          certifications: {
+            ...prev.certifications,
+            [certKey]: (e.target as HTMLInputElement).checked,
+          },
+        }))
+      } else {
+        setFormData((prev) => ({
+          ...prev,
+          [name]: (e.target as HTMLInputElement).checked,
+        }))
+      }
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
@@ -152,6 +177,47 @@ export default function BecomeAPartnerPage() {
     setFormData((prev) => ({
       ...prev,
       companyProfile: file,
+    }))
+  }
+
+  const handleBrochureChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+
+    if (!file) return
+
+    // ✅ Allow only PDF, DOC, DOCX
+    const allowedTypes = [
+      "application/pdf",
+      "application/msword",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ]
+
+    if (!allowedTypes.includes(file.type)) {
+      alert("Only PDF, DOC, and DOCX files are allowed")
+
+      if (brochureInputRef.current) {
+        brochureInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    // ✅ Max file size = 10MB
+    const maxSize = 10 * 1024 * 1024
+
+    if (file.size > maxSize) {
+      alert("Please upload a file up to 10MB")
+
+      if (brochureInputRef.current) {
+        brochureInputRef.current.value = ""
+      }
+
+      return
+    }
+
+    setFormData((prev) => ({
+      ...prev,
+      companyBrochure: file,
     }))
   }
 
@@ -759,12 +825,112 @@ export default function BecomeAPartnerPage() {
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
                         Company Documents & Additional Information
                       </h3>
-                      
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                        {/* Left Column - Company Profile Upload */}
+
+                      {/* Row 1: Certifications | Company Profile */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        {/* Left Column - Certifications */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-4">
+                            Certifications
+                          </label>
+                          <div className="grid grid-cols-3 gap-4">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_iso9001"
+                                checked={formData.certifications.iso9001}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">ISO 9001</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_iso27001"
+                                checked={formData.certifications.iso27001}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">ISO 27001</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_cmmi"
+                                checked={formData.certifications.cmmi}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">CMMI</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_microsoftPartner"
+                                checked={formData.certifications.microsoftPartner}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">Microsoft Partner</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_awsPartner"
+                                checked={formData.certifications.awsPartner}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">AWS Partner</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_googlePartner"
+                                checked={formData.certifications.googlePartner}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">Google Partner</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_oraclePartner"
+                                checked={formData.certifications.oraclePartner}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">Oracle Partner</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_sapPartner"
+                                checked={formData.certifications.sapPartner}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">SAP Partner</span>
+                            </label>
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                name="certification_other"
+                                checked={formData.certifications.other}
+                                onChange={handleChange}
+                                className="w-4 h-4 accent-[#00d4ff]"
+                              />
+                              <span className="text-sm text-gray-700">Other</span>
+                            </label>
+                          </div>
+                        </div>
+
+                        {/* Right Column - Company Profile Upload */}
                         <div>
                           <label className="block text-sm font-medium text-gray-800 mb-2">
-                            Company Profile (Optional)
+                            Company Profile <span className="text-red-500">*</span>
                           </label>
                           <div className="relative">
                             <input
@@ -798,39 +964,77 @@ export default function BecomeAPartnerPage() {
                             </div>
                           </div>
                         </div>
+                      </div>
 
-                        {/* Right Column - Textareas */}
-                        <div className="space-y-6">
-                          {/* Company Description */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-800 mb-2">
-                              Company Description
-                            </label>
-                            <textarea
-                              name="companyDescription"
-                              rows={4}
-                              value={formData.companyDescription}
-                              onChange={handleChange}
-                              placeholder="Briefly describe your company, your expertise and core services."
-                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                      {/* Row 2: Company Brochure | Why do you want to partner with us? */}
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        {/* Left Column - Company Brochure Upload */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Brochure (Optional)
+                          </label>
+                          <div className="relative">
+                            <input
+                              ref={brochureInputRef}
+                              type="file"
+                              name="companyBrochure"
+                              onChange={handleBrochureChange}
+                              accept=".pdf,.doc,.docx"
+                              className="hidden"
                             />
-                          </div>
-
-                          {/* Why do you want to partner with us? */}
-                          <div>
-                            <label className="block text-sm font-medium text-gray-800 mb-2">
-                              Why do you want to partner with us?
-                            </label>
-                            <textarea
-                              name="partnershipReason"
-                              rows={4}
-                              value={formData.partnershipReason}
-                              onChange={handleChange}
-                              placeholder="Tell us why you want to partner with us."
-                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
-                            />
+                            <div
+                              onClick={() => brochureInputRef.current?.click()}
+                              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-[#00d4ff] hover:bg-[#f5f7fa] transition-colors bg-white"
+                            >
+                              <div className="flex justify-center mb-4">
+                                <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                                  <Upload className="w-6 h-6 text-[#00d4ff]" />
+                                </div>
+                              </div>
+                              <p className="text-[#0a1628] font-medium mb-2">
+                                Click to upload or drag and drop
+                              </p>
+                              <p className="text-gray-500 text-sm">
+                                PDF, DOC, DOCX (Max. 10MB)
+                              </p>
+                              {formData.companyBrochure && (
+                                <p className="text-[#00d4ff] text-sm font-medium mt-4">
+                                  ✓ {formData.companyBrochure.name}
+                                </p>
+                              )}
+                            </div>
                           </div>
                         </div>
+
+                        {/* Right Column - Why do you want to partner with us? */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Why do you want to partner with us? <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            name="partnershipReason"
+                            rows={7}
+                            value={formData.partnershipReason}
+                            onChange={handleChange}
+                            placeholder="Enter your message"
+                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                          />
+                        </div>
+                      </div>
+
+                      {/* Row 3: Additional Notes (Full Width) */}
+                      <div>
+                        <label className="block text-sm font-medium text-gray-800 mb-2">
+                          Additional Notes (Optional)
+                        </label>
+                        <textarea
+                          name="additionalNotes"
+                          rows={4}
+                          value={formData.additionalNotes}
+                          onChange={handleChange}
+                          placeholder="Any additional information you would like to share"
+                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                        />
                       </div>
                     </div>
 
