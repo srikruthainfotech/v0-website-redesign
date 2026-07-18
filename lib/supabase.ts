@@ -103,3 +103,37 @@ export type TenantHistory = {
   changed_by: string
   changed_at: string
 }
+
+export type Partnership = {
+  id: number
+  tenant_id: string
+  company_name: string
+  company_email: string
+  website: string | null
+  phone: string | null
+  country: string | null
+  company_size: string | null
+  industry: string | null
+  address: string | null
+  city: string | null
+  first_name: string | null
+  last_name: string | null
+  designation: string | null
+  business_email: string | null
+  mobile_number: string | null
+  linkedin: string | null
+  partnership_type: string | null
+  services_offered: string | null
+  years_in_business: string | null
+  number_of_employees: string | null
+  countries_served: string | null
+  major_clients: string | null
+  certifications: string | null
+  partnership_reason: string | null
+  additional_notes: string | null
+  agree_terms: boolean
+  agree_privacy: boolean
+  company_profile_url: string | null
+  company_brochure_url: string | null
+  created_at: string
+}
