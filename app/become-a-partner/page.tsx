@@ -752,72 +752,84 @@ export default function BecomeAPartnerPage() {
                           className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
                         />
                       </div>
-
-                      {/* Row 4 - Full width textarea */}
-                      <div className="mb-6">
-                        <label className="block text-sm font-medium text-gray-800 mb-2">
-                          Company Description
-                        </label>
-                        <textarea
-                          name="companyDescription"
-                          rows={4}
-                          value={formData.companyDescription}
-                          onChange={handleChange}
-                          placeholder="Briefly describe your company, your expertise and core services."
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
-                        />
-                      </div>
-
-                      {/* Row 5 - Full width textarea */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-800 mb-2">
-                          Why do you want to partner with us?
-                        </label>
-                        <textarea
-                          name="partnershipReason"
-                          rows={4}
-                          value={formData.partnershipReason}
-                          onChange={handleChange}
-                          placeholder="Tell us why you want to partner with us."
-                          className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
-                        />
-                      </div>
                     </div>
 
-                    {/* Company Profile Upload */}
+                    {/* Company Documents & Additional Information */}
                     <div className="mb-8">
                       <h3 className="text-[#0a1628] font-medium text-lg mb-6">
-                        Company Profile (Optional)
+                        Company Documents & Additional Information
                       </h3>
-                      <div className="relative">
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          name="companyProfile"
-                          onChange={handleFileChange}
-                          accept=".pdf,.doc,.docx"
-                          className="hidden"
-                        />
-                        <div
-                          onClick={() => fileInputRef.current?.click()}
-                          className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-[#00d4ff] hover:bg-[#f5f7fa] transition-colors bg-white"
-                        >
-                          <div className="flex justify-center mb-4">
-                            <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
-                              <Upload className="w-6 h-6 text-[#00d4ff]" />
+                      
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        {/* Left Column - Company Profile Upload */}
+                        <div>
+                          <label className="block text-sm font-medium text-gray-800 mb-2">
+                            Company Profile (Optional)
+                          </label>
+                          <div className="relative">
+                            <input
+                              ref={fileInputRef}
+                              type="file"
+                              name="companyProfile"
+                              onChange={handleFileChange}
+                              accept=".pdf,.doc,.docx"
+                              className="hidden"
+                            />
+                            <div
+                              onClick={() => fileInputRef.current?.click()}
+                              className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center cursor-pointer hover:border-[#00d4ff] hover:bg-[#f5f7fa] transition-colors bg-white"
+                            >
+                              <div className="flex justify-center mb-4">
+                                <div className="w-12 h-12 bg-[#00d4ff]/10 rounded-lg flex items-center justify-center">
+                                  <Upload className="w-6 h-6 text-[#00d4ff]" />
+                                </div>
+                              </div>
+                              <p className="text-[#0a1628] font-medium mb-2">
+                                Click to upload or drag and drop
+                              </p>
+                              <p className="text-gray-500 text-sm">
+                                PDF, DOC, DOCX (Max. 10MB)
+                              </p>
+                              {formData.companyProfile && (
+                                <p className="text-[#00d4ff] text-sm font-medium mt-4">
+                                  ✓ {formData.companyProfile.name}
+                                </p>
+                              )}
                             </div>
                           </div>
-                          <p className="text-[#0a1628] font-medium mb-2">
-                            Click to upload or drag and drop
-                          </p>
-                          <p className="text-gray-500 text-sm">
-                            PDF, DOC, DOCX (Max. 10MB)
-                          </p>
-                          {formData.companyProfile && (
-                            <p className="text-[#00d4ff] text-sm font-medium mt-4">
-                              ✓ {formData.companyProfile.name}
-                            </p>
-                          )}
+                        </div>
+
+                        {/* Right Column - Textareas */}
+                        <div className="space-y-6">
+                          {/* Company Description */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-800 mb-2">
+                              Company Description
+                            </label>
+                            <textarea
+                              name="companyDescription"
+                              rows={4}
+                              value={formData.companyDescription}
+                              onChange={handleChange}
+                              placeholder="Briefly describe your company, your expertise and core services."
+                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                            />
+                          </div>
+
+                          {/* Why do you want to partner with us? */}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-800 mb-2">
+                              Why do you want to partner with us?
+                            </label>
+                            <textarea
+                              name="partnershipReason"
+                              rows={4}
+                              value={formData.partnershipReason}
+                              onChange={handleChange}
+                              placeholder="Tell us why you want to partner with us."
+                              className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent resize-none"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
