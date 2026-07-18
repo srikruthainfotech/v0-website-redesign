@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { useRouter } from "next/navigation"
-import { supabase, type ContactUs, type TalentReferral, type JobApplication, type JobOpening, type UserManagement } from "@/lib/supabase"
+import { supabase, type ContactUs, type TalentReferral, type JobApplication, type JobOpening, type UserManagement, type Partnership } from "@/lib/supabase"
 import { Button } from "@/components/ui/button"
 import {
   Table,
@@ -59,6 +59,7 @@ import {
   UserCog,
   Hash,
   ClipboardList,
+  Handshake,
 } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -81,7 +82,7 @@ export default function ContactUsDashboard() {
   const [selectedIds, setSelectedIds] = useState<number[]>([])
   const [isDeleteSelectedDialogOpen, setIsDeleteSelectedDialogOpen] = useState(false)
   const [isDeletingSelected, setIsDeletingSelected] = useState(false)
-  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs" | "jobpostings" | "users">("contact")
+  const [activeTab, setActiveTab] = useState<"contact" | "referrals" | "jobs" | "jobpostings" | "users" | "partners">("contact")
   const [referrals, setReferrals] = useState<TalentReferral[]>([])
   const [referralLoading, setReferralLoading] = useState(false)
   const [contactDateSort, setContactDateSort] = useState<"asc" | "desc">("desc")
@@ -102,6 +103,44 @@ export default function ContactUsDashboard() {
   const [isViewUserDialogOpen, setIsViewUserDialogOpen] = useState(false)
   const [isAddJobPostingDialogOpen, setIsAddJobPostingDialogOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<UserManagement | null>(null)
+
+  // Partner Management States
+  const [partners, setPartners] = useState<Partnership[]>([])
+  const [selectedPartner, setSelectedPartner] = useState<Partnership | null>(null)
+  const [isViewPartnerDialogOpen, setIsViewPartnerDialogOpen] = useState(false)
+  const [isEditPartnerDialogOpen, setIsEditPartnerDialogOpen] = useState(false)
+  const [partnerLoading, setPartnerLoading] = useState(false)
+  const [partnerDateSort, setPartnerDateSort] = useState<"asc" | "desc">("desc")
+  const [partnerFormData, setPartnerFormData] = useState({
+    company_name: "",
+    company_email: "",
+    website: "",
+    phone: "",
+    country: "",
+    company_size: "",
+    industry: "",
+    address: "",
+    city: "",
+    first_name: "",
+    last_name: "",
+    designation: "",
+    business_email: "",
+    mobile_number: "",
+    linkedin: "",
+    partnership_type: "",
+    services_offered: "",
+    years_in_business: "",
+    number_of_employees: "",
+    countries_served: "",
+    major_clients: "",
+    certifications: "",
+    partnership_reason: "",
+    additional_notes: "",
+    agree_terms: false,
+    agree_privacy: false,
+    company_profile_url: "",
+    company_brochure_url: "",
+  })
   const [userFormData, setUserFormData] = useState({
     user_id: "",
     username: "",
@@ -322,6 +361,34 @@ export default function ContactUsDashboard() {
     }
   }, [])
 
+  // Fetch partners from Supabase
+  const fetchPartners = useCallback(async () => {
+    setPartnerLoading(true)
+    try {
+      const currentTenantId =
+        localStorage.getItem("tenantId")
+
+      const { data, error } = await supabase
+        .from("partnership_registration")
+        .select("*")
+        .eq("tenant_id", currentTenantId)
+        .order("created_at", { ascending: false })
+
+      if (error) {
+        console.error("Error fetching partners:", error)
+        setMessage({ type: "error", text: "Failed to fetch partners" })
+        return
+      }
+
+      setPartners(data || [])
+    } catch (err) {
+      console.error("Error:", err)
+      setMessage({ type: "error", text: "An unexpected error occurred" })
+    } finally {
+      setPartnerLoading(false)
+    }
+  }, [])
+
   // Fetch data based on active tab
   useEffect(() => {
     if (!isAuthenticated) return
@@ -336,9 +403,11 @@ export default function ContactUsDashboard() {
       fetchJobPostings()
     } else if (activeTab === "users") {
       fetchUsers()
+    } else if (activeTab === "partners") {
+      fetchPartners()
     }
     setSelectedIds([])
-  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications, fetchJobPostings, fetchUsers])
+  }, [activeTab, isAuthenticated, fetchContacts, fetchReferrals, fetchJobApplications, fetchJobPostings, fetchUsers, fetchPartners])
 
   // Handle logout
   const handleLogout = () => {
@@ -363,7 +432,7 @@ export default function ContactUsDashboard() {
 
   // Handle select all toggle
   const handleSelectAll = () => {
-    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : activeTab === "jobs" ? jobApplications : activeTab === "jobpostings" ? jobPostings : users
+    const currentData = activeTab === "contact" ? contacts : activeTab === "referrals" ? referrals : activeTab === "jobs" ? jobApplications : activeTab === "jobpostings" ? jobPostings : activeTab === "users" ? users : partners
     if (selectedIds.length === currentData.length) {
       setSelectedIds([])
     } else {
@@ -385,8 +454,8 @@ export default function ContactUsDashboard() {
     if (selectedIds.length === 0) return
 
     setIsDeletingSelected(true)
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : "users"
-    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : activeTab === "jobs" ? "application(s)" : activeTab === "jobpostings" ? "posting(s)" : "user(s)"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : activeTab === "users" ? "users" : "partnership_registration"
+    const itemType = activeTab === "contact" ? "contact(s)" : activeTab === "referrals" ? "referral(s)" : activeTab === "jobs" ? "application(s)" : activeTab === "jobpostings" ? "posting(s)" : activeTab === "users" ? "user(s)" : "partner(s)"
 
     try {
       // ✅ DELETE FILES FROM STORAGE (FOR REFERRALS)
@@ -420,6 +489,33 @@ export default function ContactUsDashboard() {
           }
         }
       }
+      // ✅ DELETE FILES FROM STORAGE (FOR PARTNERS)
+      if (activeTab === "partners") {
+        const filesToDelete: string[] = []
+        partners
+          .filter(p => selectedIds.includes(p.id))
+          .forEach(p => {
+            if (p.company_profile_url) {
+              filesToDelete.push(
+                decodeURIComponent(p.company_profile_url.split("/").slice(-1)[0])
+              )
+            }
+            if (p.company_brochure_url) {
+              filesToDelete.push(
+                decodeURIComponent(p.company_brochure_url.split("/").slice(-1)[0])
+              )
+            }
+          })
+        if (filesToDelete.length > 0) {
+          const { error: storageDeleteError } = await supabase.storage
+            .from("partnership-files")
+            .remove(filesToDelete)
+
+          if (storageDeleteError) {
+            console.error("Storage delete error:", storageDeleteError)
+          }
+        }
+      }
       let query = supabase
         .from(tableName)
         .delete()
@@ -430,7 +526,8 @@ export default function ContactUsDashboard() {
         activeTab === "contact" ||
         activeTab === "referrals" ||
         activeTab === "jobs" ||
-        activeTab === "jobpostings"
+        activeTab === "jobpostings" ||
+        activeTab === "partners"
       ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
@@ -458,6 +555,8 @@ export default function ContactUsDashboard() {
         fetchJobPostings()
       } else if (activeTab === "users") {
         fetchUsers()
+      } else if (activeTab === "partners") {
+        fetchPartners()
       }
     } catch (err) {
       console.error("Error:", err)
@@ -473,8 +572,8 @@ export default function ContactUsDashboard() {
 
     setIsSubmitting(true)
 
-    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : "users"
-    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : activeTab === "jobpostings" ? "posting" : "user"
+    const tableName = activeTab === "contact" ? "contact_us" : activeTab === "referrals" ? "talent_referrals" : activeTab === "jobs" ? "job_applications" : activeTab === "jobpostings" ? "job_openings" : activeTab === "users" ? "users" : "partnership_registration"
+    const itemType = activeTab === "contact" ? "contact" : activeTab === "referrals" ? "referral" : activeTab === "jobs" ? "application" : activeTab === "jobpostings" ? "posting" : activeTab === "users" ? "user" : "partner"
 
     try {
       // ✅ STEP 1: DELETE FILE FROM STORAGE (FOR REFERRALS)
@@ -509,6 +608,29 @@ export default function ContactUsDashboard() {
         }
       }
 
+      // ✅ STEP 1C: DELETE FILES FROM STORAGE (FOR PARTNERS)
+      if (activeTab === "partners") {
+        const partner = selectedContact as unknown as Partnership
+        const filesToDelete: string[] = []
+
+        if (partner.company_profile_url) {
+          filesToDelete.push(
+            decodeURIComponent(partner.company_profile_url.split("/").slice(-1)[0])
+          )
+        }
+        if (partner.company_brochure_url) {
+          filesToDelete.push(
+            decodeURIComponent(partner.company_brochure_url.split("/").slice(-1)[0])
+          )
+        }
+
+        if (filesToDelete.length > 0) {
+          await supabase.storage
+            .from("partnership-files")
+            .remove(filesToDelete)
+        }
+      }
+
       // ✅ STEP 2: DELETE FROM DATABASE
       let query = supabase
         .from(tableName)
@@ -520,7 +642,8 @@ export default function ContactUsDashboard() {
         activeTab === "contact" ||
         activeTab === "referrals" ||
         activeTab === "jobs" ||
-        activeTab === "jobpostings"
+        activeTab === "jobpostings" ||
+        activeTab === "partners"
       ) {
         const currentTenantId =
           localStorage.getItem("tenantId")
@@ -548,6 +671,8 @@ export default function ContactUsDashboard() {
         fetchJobPostings()
       } else if (activeTab === "users") {
         fetchUsers()
+      } else if (activeTab === "partners") {
+        fetchPartners()
       }
 
     } catch (err) {
@@ -653,6 +778,32 @@ export default function ContactUsDashboard() {
 
   const toggleUsersDateSort = () => {
     setUsersDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  // Sorted partners based on date
+  const sortedPartners = [...partners].sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime()
+    const dateB = new Date(b.created_at).getTime()
+    return partnerDateSort === "asc" ? dateA - dateB : dateB - dateA
+  })
+
+  const togglePartnerDateSort = () => {
+    setPartnerDateSort(prev => prev === "asc" ? "desc" : "asc")
+  }
+
+  // Helper function to safely render object fields
+  const renderFieldValue = (value: any): string => {
+    if (value === null || value === undefined) return "-"
+    if (typeof value === "string") return value || "-"
+    if (typeof value === "boolean") return value ? "Yes" : "No"
+    if (typeof value === "object") {
+      // For objects, extract keys that have truthy values
+      const keys = Object.entries(value)
+        .filter(([, v]) => v === true || v === 1)
+        .map(([k]) => k)
+      return keys.length > 0 ? keys.join(", ") : "-"
+    }
+    return String(value) || "-"
   }
   const generateEmployeeId = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
@@ -1038,6 +1189,16 @@ export default function ContactUsDashboard() {
                   <UserCog className="w-4 h-4" />
                   <span className="font-medium">User Management</span>
                 </button>
+                <button
+                  onClick={() => setActiveTab("partners")}
+                  className={`w-full flex items-center gap-2.5 pl-9 pr-3 py-2 rounded-md transition-colors text-sm ${activeTab === "partners"
+                    ? "bg-[#00d4ff]/10 text-[#00d4ff]"
+                    : "hover:bg-white/5 text-white"
+                    }`}
+                >
+                  <Handshake className="w-4 h-4" />
+                  <span className="font-medium">Partners</span>
+                </button>
               </div>
             </div>
           </nav>
@@ -1065,7 +1226,7 @@ export default function ContactUsDashboard() {
               </button>
               <div className="flex items-center gap-3">
                 <h2 className="text-lg lg:text-xl font-semibold text-gray-900">
-                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : activeTab === "jobs" ? "Job Openings Dashboard" : activeTab === "jobpostings" ? "Job Postings Dashboard" : "User Management Dashboard"}
+                  {activeTab === "contact" ? "Contact Us Dashboard" : activeTab === "referrals" ? "Talent Referrals Dashboard" : activeTab === "jobs" ? "Job Openings Dashboard" : activeTab === "jobpostings" ? "Job Postings Dashboard" : activeTab === "users" ? "User Management Dashboard" : "Partners Dashboard"}
                 </h2>
               </div>
             </div>
@@ -1122,16 +1283,18 @@ export default function ContactUsDashboard() {
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   ) : activeTab === "users" ? (
                     <UserCog className="w-6 h-6 text-[#00d4ff]" />
+                  ) : activeTab === "partners" ? (
+                    <Handshake className="w-6 h-6 text-[#00d4ff]" />
                   ) : (
                     <Briefcase className="w-6 h-6 text-[#00d4ff]" />
                   )}
                 </div>
                 <div>
                   <p className="text-gray-500 text-sm">
-                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : activeTab === "jobs" ? "Total Applications" : activeTab === "jobpostings" ? "Total Job Posts" : "Total Users"}
+                    {activeTab === "contact" ? "Total Inquiries" : activeTab === "referrals" ? "Total Referrals" : activeTab === "jobs" ? "Total Applications" : activeTab === "jobpostings" ? "Total Job Posts" : activeTab === "users" ? "Total Users" : "Total Partners"}
                   </p>
                   <p className="text-2xl font-bold text-gray-900">
-                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : activeTab === "jobs" ? jobApplications.length : activeTab === "jobpostings" ? jobPostings.length : users.length}
+                    {activeTab === "contact" ? contacts.length : activeTab === "referrals" ? referrals.length : activeTab === "jobs" ? jobApplications.length : activeTab === "jobpostings" ? jobPostings.length : activeTab === "users" ? users.length : partners.length}
                   </p>
                 </div>
               </div>
@@ -1201,11 +1364,11 @@ export default function ContactUsDashboard() {
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : activeTab === "jobs" ? fetchJobApplications : activeTab === "jobpostings" ? fetchJobPostings : fetchUsers}
-                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : usersLoading}
+                  onClick={activeTab === "contact" ? fetchContacts : activeTab === "referrals" ? fetchReferrals : activeTab === "jobs" ? fetchJobApplications : activeTab === "jobpostings" ? fetchJobPostings : activeTab === "users" ? fetchUsers : fetchPartners}
+                  disabled={activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : activeTab === "users" ? usersLoading : partnerLoading}
                   className="gap-2"
                 >
-                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : usersLoading) ? "animate-spin" : ""}`} />
+                  <RefreshCw className={`w-4 h-4 ${(activeTab === "contact" ? isLoading : activeTab === "referrals" ? referralLoading : activeTab === "jobs" ? jobLoading : activeTab === "jobpostings" ? jobPostingLoading : activeTab === "users" ? usersLoading : partnerLoading) ? "animate-spin" : ""}`} />
                   Refresh
                 </Button>
               </div>
@@ -1934,6 +2097,188 @@ export default function ContactUsDashboard() {
                                 variant="ghost"
                                 size="icon"
                                 onClick={() => openDeleteDialog(user as unknown as ContactUs)}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* Partners Table Card */}
+          {activeTab === "partners" && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Partner Registrations</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  View and manage all partner registration submissions
+                </p>
+              </div>
+
+              {partnerLoading ? (
+                <div className="p-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                  <p className="text-gray-500 mt-2">Loading partners...</p>
+                </div>
+              ) : partners.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Handshake className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No partners found</p>
+                </div>
+              ) : (
+                <div className="w-full overflow-x-auto scrollbar-thin">
+                  <Table className="min-w-max">
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={partners.length > 0 && selectedIds.length === partners.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < partners.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Company Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Industry</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Company Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Business Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Contact Person</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Country</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Partnership Type</TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={togglePartnerDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Date
+                            {partnerDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedPartners.map((partner) => (
+                        <TableRow
+                          key={partner.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(partner.id)}
+                              onCheckedChange={() => handleSelectOne(partner.id)}
+                              aria-label={`Select ${partner.company_name}`}
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium text-gray-900">{partner.company_name}</TableCell>
+                          <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
+                          <TableCell>
+                            <a
+                              href={`mailto:${partner.company_email}`}
+                              className="text-[#0066ff] hover:underline"
+                            >
+                              {partner.company_email}
+                            </a>
+                          </TableCell>
+                          <TableCell>
+                            <a
+                              href={`mailto:${partner.business_email}`}
+                              className="text-[#0066ff] hover:underline"
+                            >
+                              {partner.business_email || "-"}
+                            </a>
+                          </TableCell>
+                          <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
+                          <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{partner.phone || "-"}</TableCell>
+                          <TableCell className="text-gray-500">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {partner.country || "-"}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {formatDate(partner.created_at)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setIsViewPartnerDialogOpen(true)
+                                }}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setPartnerFormData({
+                                    company_name: partner.company_name || "",
+                                    company_email: partner.company_email || "",
+                                    website: partner.website || "",
+                                    phone: partner.phone || "",
+                                    country: partner.country || "",
+                                    company_size: partner.company_size || "",
+                                    industry: partner.industry || "",
+                                    address: partner.address || "",
+                                    city: partner.city || "",
+                                    first_name: partner.first_name || "",
+                                    last_name: partner.last_name || "",
+                                    designation: partner.designation || "",
+                                    business_email: partner.business_email || "",
+                                    mobile_number: partner.mobile_number || "",
+                                    linkedin: partner.linkedin || "",
+                                    partnership_type: partner.partnership_type || "",
+                                    services_offered: partner.services_offered || "",
+                                    years_in_business: partner.years_in_business || "",
+                                    number_of_employees: partner.number_of_employees || "",
+                                    countries_served: partner.countries_served || "",
+                                    major_clients: partner.major_clients || "",
+                                    certifications: partner.certifications || "",
+                                    partnership_reason: partner.partnership_reason || "",
+                                    additional_notes: partner.additional_notes || "",
+                                    agree_terms: partner.agree_terms || false,
+                                    agree_privacy: partner.agree_privacy || false,
+                                    company_profile_url: partner.company_profile_url || "",
+                                    company_brochure_url: partner.company_brochure_url || "",
+                                  })
+                                  setIsEditPartnerDialogOpen(true)
+                                }}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="Edit"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setIsDeleteDialogOpen(true)
+                                }}
                                 className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
                                 title="Delete"
                               >
@@ -3094,6 +3439,237 @@ export default function ContactUsDashboard() {
               ) : (
                 "Add Job Posting"
               )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* View Partner Dialog */}
+      <Dialog open={isViewPartnerDialogOpen} onOpenChange={setIsViewPartnerDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Partner Details</DialogTitle>
+          </DialogHeader>
+          {selectedPartner && (
+            <div className="space-y-6">
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Company Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div><span className="text-gray-500">Company Name:</span> <span className="font-medium">{selectedPartner.company_name}</span></div>
+                  <div><span className="text-gray-500">Email:</span> <a href={`mailto:${selectedPartner.company_email}`} className="text-[#0066ff] hover:underline">{selectedPartner.company_email}</a></div>
+                  <div><span className="text-gray-500">Website:</span> <span className="font-medium">{selectedPartner.website || "-"}</span></div>
+                  <div><span className="text-gray-500">Phone:</span> <span className="font-medium">{selectedPartner.phone || "-"}</span></div>
+                  <div><span className="text-gray-500">Country:</span> <span className="font-medium">{selectedPartner.country || "-"}</span></div>
+                  <div><span className="text-gray-500">Company Size:</span> <span className="font-medium">{selectedPartner.company_size || "-"}</span></div>
+                  <div><span className="text-gray-500">Industry:</span> <span className="font-medium">{selectedPartner.industry || "-"}</span></div>
+                  <div><span className="text-gray-500">Address:</span> <span className="font-medium">{selectedPartner.address || "-"}</span></div>
+                  <div><span className="text-gray-500">City:</span> <span className="font-medium">{selectedPartner.city || "-"}</span></div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Primary Contact</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div><span className="text-gray-500">First Name:</span> <span className="font-medium">{selectedPartner.first_name || "-"}</span></div>
+                  <div><span className="text-gray-500">Last Name:</span> <span className="font-medium">{selectedPartner.last_name || "-"}</span></div>
+                  <div><span className="text-gray-500">Designation:</span> <span className="font-medium">{selectedPartner.designation || "-"}</span></div>
+                  <div><span className="text-gray-500">Business Email:</span> <a href={`mailto:${selectedPartner.business_email}`} className="text-[#0066ff] hover:underline">{selectedPartner.business_email || "-"}</a></div>
+                  <div><span className="text-gray-500">Mobile Number:</span> <span className="font-medium">{selectedPartner.mobile_number || "-"}</span></div>
+                  <div><span className="text-gray-500">LinkedIn:</span> <a href={selectedPartner.linkedin || "#"} target="_blank" rel="noopener noreferrer" className="text-[#0066ff] hover:underline">{selectedPartner.linkedin || "-"}</a></div>
+                </div>
+              </div>
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Business Information</h3>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div><span className="text-gray-500">Partnership Type:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_type)}</span></div>
+                  <div><span className="text-gray-500">Services Offered:</span> <span className="font-medium">{renderFieldValue(selectedPartner.services_offered)}</span></div>
+                  <div><span className="text-gray-500">Years in Business:</span> <span className="font-medium">{renderFieldValue(selectedPartner.years_in_business)}</span></div>
+                  <div><span className="text-gray-500">Number of Employees:</span> <span className="font-medium">{renderFieldValue(selectedPartner.number_of_employees)}</span></div>
+                  <div><span className="text-gray-500">Countries Served:</span> <span className="font-medium">{renderFieldValue(selectedPartner.countries_served)}</span></div>
+                  <div><span className="text-gray-500">Major Clients:</span> <span className="font-medium">{renderFieldValue(selectedPartner.major_clients)}</span></div>
+                  <div><span className="text-gray-500">Certifications:</span> <span className="font-medium">{renderFieldValue(selectedPartner.certifications)}</span></div>
+                  <div><span className="text-gray-500">Partnership Reason:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_reason)}</span></div>
+                </div>
+              </div>
+
+              {(selectedPartner.additional_notes) && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-2">Additional Notes</h3>
+                  <p className="text-sm text-gray-700">{selectedPartner.additional_notes}</p>
+                </div>
+              )}
+
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">Agreement</h3>
+                <div className="space-y-2 text-sm">
+                  <div><span className="text-gray-500">Agree Terms:</span> <span className={`font-medium ${selectedPartner.agree_terms ? "text-green-600" : "text-red-600"}`}>{selectedPartner.agree_terms ? "Yes" : "No"}</span></div>
+                  <div><span className="text-gray-500">Agree Privacy:</span> <span className={`font-medium ${selectedPartner.agree_privacy ? "text-green-600" : "text-red-600"}`}>{selectedPartner.agree_privacy ? "Yes" : "No"}</span></div>
+                </div>
+              </div>
+
+              {(selectedPartner.company_profile_url || selectedPartner.company_brochure_url) && (
+                <div>
+                  <h3 className="font-semibold text-gray-900 mb-3">Uploaded Documents</h3>
+                  <div className="space-y-2">
+                    {selectedPartner.company_profile_url && (
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                        <span className="text-sm text-gray-700">Company Profile</span>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => window.open(selectedPartner.company_profile_url!, "_blank")}
+                            className="text-[#0066ff] hover:text-[#0066ff]"
+                          >
+                            <ExternalLink className="w-4 h-4 mr-1" />
+                            Open File
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDownload(selectedPartner.company_profile_url!)}
+                            className="text-[#0066ff] hover:text-[#0066ff]"
+                          >
+                            <Download className="w-4 h-4 mr-1" />
+                            Download
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                    {selectedPartner.company_brochure_url && (
+                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                        <span className="text-sm text-gray-700">Company Brochure</span>
+                        <div className="flex items-center gap-2">
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => window.open(selectedPartner.company_brochure_url!, "_blank")}
+                            className="text-[#0066ff] hover:text-[#0066ff]"
+                          >
+                            <ExternalLink className="w-4 h-4 mr-1" />
+                            Open File
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleDownload(selectedPartner.company_brochure_url!)}
+                            className="text-[#0066ff] hover:text-[#0066ff]"
+                          >
+                            <Download className="w-4 h-4 mr-1" />
+                            Download
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Partner Dialog */}
+      <Dialog open={isEditPartnerDialogOpen} onOpenChange={setIsEditPartnerDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Edit Partner</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="ep_company_name">Company Name</Label>
+                <Input
+                  id="ep_company_name"
+                  value={partnerFormData.company_name}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, company_name: e.target.value })}
+                  placeholder="Enter company name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ep_company_email">Company Email</Label>
+                <Input
+                  id="ep_company_email"
+                  type="email"
+                  value={partnerFormData.company_email}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, company_email: e.target.value })}
+                  placeholder="Enter company email"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="ep_first_name">First Name</Label>
+                <Input
+                  id="ep_first_name"
+                  value={partnerFormData.first_name}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, first_name: e.target.value })}
+                  placeholder="Enter first name"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ep_last_name">Last Name</Label>
+                <Input
+                  id="ep_last_name"
+                  value={partnerFormData.last_name}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, last_name: e.target.value })}
+                  placeholder="Enter last name"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="ep_designation">Designation</Label>
+                <Input
+                  id="ep_designation"
+                  value={partnerFormData.designation}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, designation: e.target.value })}
+                  placeholder="Enter designation"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ep_business_email">Business Email</Label>
+                <Input
+                  id="ep_business_email"
+                  type="email"
+                  value={partnerFormData.business_email}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, business_email: e.target.value })}
+                  placeholder="Enter business email"
+                />
+              </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="ep_industry">Industry</Label>
+                <Input
+                  id="ep_industry"
+                  value={partnerFormData.industry}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, industry: e.target.value })}
+                  placeholder="Enter industry"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="ep_partnership_type">Partnership Type</Label>
+                <Input
+                  id="ep_partnership_type"
+                  value={partnerFormData.partnership_type}
+                  onChange={(e) => setPartnerFormData({ ...partnerFormData, partnership_type: e.target.value })}
+                  placeholder="Enter partnership type"
+                />
+              </div>
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsEditPartnerDialogOpen(false)}>Cancel</Button>
+            <Button 
+              onClick={() => {
+                // TODO: Implement update logic
+                setIsEditPartnerDialogOpen(false)
+              }}
+              className="bg-[#0066ff] hover:bg-[#0052cc]"
+            >
+              Update Partner
             </Button>
           </DialogFooter>
         </DialogContent>
