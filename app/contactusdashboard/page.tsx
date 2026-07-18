@@ -2112,6 +2112,188 @@ export default function ContactUsDashboard() {
               )}
             </div>
           )}
+
+          {/* Partners Table Card */}
+          {activeTab === "partners" && (
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-lg font-semibold text-gray-900">Partner Registrations</h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  View and manage all partner registration submissions
+                </p>
+              </div>
+
+              {partnerLoading ? (
+                <div className="p-12 text-center">
+                  <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
+                  <p className="text-gray-500 mt-2">Loading partners...</p>
+                </div>
+              ) : partners.length === 0 ? (
+                <div className="p-12 text-center">
+                  <Handshake className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No partners found</p>
+                </div>
+              ) : (
+                <div className="w-full overflow-x-auto scrollbar-thin">
+                  <Table className="min-w-max">
+                    <TableHeader>
+                      <TableRow className="bg-gray-50 hover:bg-gray-50">
+                        <TableHead className="w-12">
+                          <Checkbox
+                            checked={partners.length > 0 && selectedIds.length === partners.length}
+                            onCheckedChange={handleSelectAll}
+                            aria-label="Select all"
+                            className={selectedIds.length > 0 && selectedIds.length < partners.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
+                          />
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700">Company Name</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Industry</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Company Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Business Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Contact Person</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Country</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Partnership Type</TableHead>
+                        <TableHead
+                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          onClick={togglePartnerDateSort}
+                        >
+                          <div className="flex items-center gap-1">
+                            Date
+                            {partnerDateSort === "asc" ? (
+                              <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
+                            ) : (
+                              <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
+                            )}
+                          </div>
+                        </TableHead>
+                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {sortedPartners.map((partner) => (
+                        <TableRow
+                          key={partner.id}
+                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
+                            }`}
+                        >
+                          <TableCell>
+                            <Checkbox
+                              checked={selectedIds.includes(partner.id)}
+                              onCheckedChange={() => handleSelectOne(partner.id)}
+                              aria-label={`Select ${partner.company_name}`}
+                            />
+                          </TableCell>
+                          <TableCell className="font-medium text-gray-900">{partner.company_name}</TableCell>
+                          <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
+                          <TableCell>
+                            <a
+                              href={`mailto:${partner.company_email}`}
+                              className="text-[#0066ff] hover:underline"
+                            >
+                              {partner.company_email}
+                            </a>
+                          </TableCell>
+                          <TableCell>
+                            <a
+                              href={`mailto:${partner.business_email}`}
+                              className="text-[#0066ff] hover:underline"
+                            >
+                              {partner.business_email || "-"}
+                            </a>
+                          </TableCell>
+                          <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
+                          <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
+                          <TableCell className="text-gray-700">{partner.phone || "-"}</TableCell>
+                          <TableCell className="text-gray-500">
+                            <div className="flex items-center gap-1">
+                              <MapPin className="w-3 h-3" />
+                              {partner.country || "-"}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
+                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            {formatDate(partner.created_at)}
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setIsViewPartnerDialogOpen(true)
+                                }}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="View details"
+                              >
+                                <Eye className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setPartnerFormData({
+                                    company_name: partner.company_name || "",
+                                    company_email: partner.company_email || "",
+                                    website: partner.website || "",
+                                    phone: partner.phone || "",
+                                    country: partner.country || "",
+                                    company_size: partner.company_size || "",
+                                    industry: partner.industry || "",
+                                    address: partner.address || "",
+                                    city: partner.city || "",
+                                    first_name: partner.first_name || "",
+                                    last_name: partner.last_name || "",
+                                    designation: partner.designation || "",
+                                    business_email: partner.business_email || "",
+                                    mobile_number: partner.mobile_number || "",
+                                    linkedin: partner.linkedin || "",
+                                    partnership_type: partner.partnership_type || "",
+                                    services_offered: partner.services_offered || "",
+                                    years_in_business: partner.years_in_business || "",
+                                    number_of_employees: partner.number_of_employees || "",
+                                    countries_served: partner.countries_served || "",
+                                    major_clients: partner.major_clients || "",
+                                    certifications: partner.certifications || "",
+                                    partnership_reason: partner.partnership_reason || "",
+                                    additional_notes: partner.additional_notes || "",
+                                    agree_terms: partner.agree_terms || false,
+                                    agree_privacy: partner.agree_privacy || false,
+                                    company_profile_url: partner.company_profile_url || "",
+                                    company_brochure_url: partner.company_brochure_url || "",
+                                  })
+                                  setIsEditPartnerDialogOpen(true)
+                                }}
+                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                title="Edit"
+                              >
+                                <Pencil className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                onClick={() => {
+                                  setSelectedPartner(partner)
+                                  setIsDeleteDialogOpen(true)
+                                }}
+                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                title="Delete"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              )}
+            </div>
+          )}
         </main>
       </div>
 
@@ -3261,188 +3443,6 @@ export default function ContactUsDashboard() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-
-      {/* Partners Table Card */}
-      {activeTab === "partners" && (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-          <div className="p-6 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Partner Registrations</h2>
-            <p className="text-sm text-gray-500 mt-1">
-              View and manage all partner registration submissions
-            </p>
-          </div>
-
-          {partnerLoading ? (
-            <div className="p-12 text-center">
-              <Loader2 className="w-8 h-8 text-[#00d4ff] animate-spin mx-auto" />
-              <p className="text-gray-500 mt-2">Loading partners...</p>
-            </div>
-          ) : partners.length === 0 ? (
-            <div className="p-12 text-center">
-              <Handshake className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-500">No partners found</p>
-            </div>
-          ) : (
-            <div className="w-full overflow-x-auto scrollbar-thin">
-              <Table className="min-w-max">
-                <TableHeader>
-                  <TableRow className="bg-gray-50 hover:bg-gray-50">
-                    <TableHead className="w-12">
-                      <Checkbox
-                        checked={partners.length > 0 && selectedIds.length === partners.length}
-                        onCheckedChange={handleSelectAll}
-                        aria-label="Select all"
-                        className={selectedIds.length > 0 && selectedIds.length < partners.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
-                      />
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-700">Company Name</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Industry</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Company Email</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Business Email</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Contact Person</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Designation</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Country</TableHead>
-                    <TableHead className="font-semibold text-gray-700">Partnership Type</TableHead>
-                    <TableHead
-                      className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
-                      onClick={togglePartnerDateSort}
-                    >
-                      <div className="flex items-center gap-1">
-                        Date
-                        {partnerDateSort === "asc" ? (
-                          <ArrowUp className="w-4 h-4 text-[#00d4ff]" />
-                        ) : (
-                          <ArrowDown className="w-4 h-4 text-[#00d4ff]" />
-                        )}
-                      </div>
-                    </TableHead>
-                    <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {sortedPartners.map((partner) => (
-                    <TableRow
-                      key={partner.id}
-                      className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
-                        }`}
-                    >
-                      <TableCell>
-                        <Checkbox
-                          checked={selectedIds.includes(partner.id)}
-                          onCheckedChange={() => handleSelectOne(partner.id)}
-                          aria-label={`Select ${partner.company_name}`}
-                        />
-                      </TableCell>
-                      <TableCell className="font-medium text-gray-900">{partner.company_name}</TableCell>
-                      <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
-                      <TableCell>
-                        <a
-                          href={`mailto:${partner.company_email}`}
-                          className="text-[#0066ff] hover:underline"
-                        >
-                          {partner.company_email}
-                        </a>
-                      </TableCell>
-                      <TableCell>
-                        <a
-                          href={`mailto:${partner.business_email}`}
-                          className="text-[#0066ff] hover:underline"
-                        >
-                          {partner.business_email || "-"}
-                        </a>
-                      </TableCell>
-                      <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
-                      <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
-                      <TableCell className="text-gray-700">{partner.phone || "-"}</TableCell>
-                      <TableCell className="text-gray-500">
-                        <div className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" />
-                          {partner.country || "-"}
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
-                      <TableCell className="text-gray-500 text-sm whitespace-nowrap">
-                        {formatDate(partner.created_at)}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex items-center justify-end gap-1">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setSelectedPartner(partner)
-                              setIsViewPartnerDialogOpen(true)
-                            }}
-                            className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                            title="View details"
-                          >
-                            <Eye className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setSelectedPartner(partner)
-                              setPartnerFormData({
-                                company_name: partner.company_name || "",
-                                company_email: partner.company_email || "",
-                                website: partner.website || "",
-                                phone: partner.phone || "",
-                                country: partner.country || "",
-                                company_size: partner.company_size || "",
-                                industry: partner.industry || "",
-                                address: partner.address || "",
-                                city: partner.city || "",
-                                first_name: partner.first_name || "",
-                                last_name: partner.last_name || "",
-                                designation: partner.designation || "",
-                                business_email: partner.business_email || "",
-                                mobile_number: partner.mobile_number || "",
-                                linkedin: partner.linkedin || "",
-                                partnership_type: partner.partnership_type || "",
-                                services_offered: partner.services_offered || "",
-                                years_in_business: partner.years_in_business || "",
-                                number_of_employees: partner.number_of_employees || "",
-                                countries_served: partner.countries_served || "",
-                                major_clients: partner.major_clients || "",
-                                certifications: partner.certifications || "",
-                                partnership_reason: partner.partnership_reason || "",
-                                additional_notes: partner.additional_notes || "",
-                                agree_terms: partner.agree_terms || false,
-                                agree_privacy: partner.agree_privacy || false,
-                                company_profile_url: partner.company_profile_url || "",
-                                company_brochure_url: partner.company_brochure_url || "",
-                              })
-                              setIsEditPartnerDialogOpen(true)
-                            }}
-                            className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                            title="Edit"
-                          >
-                            <Pencil className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => {
-                              setSelectedPartner(partner)
-                              setIsDeleteDialogOpen(true)
-                            }}
-                            className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
-                            title="Delete"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </div>
-          )}
-        </div>
-      )}
 
       {/* View Partner Dialog */}
       <Dialog open={isViewPartnerDialogOpen} onOpenChange={setIsViewPartnerDialogOpen}>
