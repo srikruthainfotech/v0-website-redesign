@@ -790,6 +790,21 @@ export default function ContactUsDashboard() {
   const togglePartnerDateSort = () => {
     setPartnerDateSort(prev => prev === "asc" ? "desc" : "asc")
   }
+
+  // Helper function to safely render object fields
+  const renderFieldValue = (value: any): string => {
+    if (value === null || value === undefined) return "-"
+    if (typeof value === "string") return value || "-"
+    if (typeof value === "boolean") return value ? "Yes" : "No"
+    if (typeof value === "object") {
+      // For objects, extract keys that have truthy values
+      const keys = Object.entries(value)
+        .filter(([, v]) => v === true || v === 1)
+        .map(([k]) => k)
+      return keys.length > 0 ? keys.join(", ") : "-"
+    }
+    return String(value) || "-"
+  }
   const generateEmployeeId = () => {
     const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -3473,7 +3488,7 @@ export default function ContactUsDashboard() {
                   <div><span className="text-gray-500">Number of Employees:</span> <span className="font-medium">{selectedPartner.number_of_employees || "-"}</span></div>
                   <div><span className="text-gray-500">Countries Served:</span> <span className="font-medium">{selectedPartner.countries_served || "-"}</span></div>
                   <div><span className="text-gray-500">Major Clients:</span> <span className="font-medium">{selectedPartner.major_clients || "-"}</span></div>
-                  <div><span className="text-gray-500">Certifications:</span> <span className="font-medium">{selectedPartner.certifications || "-"}</span></div>
+                  <div><span className="text-gray-500">Certifications:</span> <span className="font-medium">{renderFieldValue(selectedPartner.certifications)}</span></div>
                   <div><span className="text-gray-500">Partnership Reason:</span> <span className="font-medium">{selectedPartner.partnership_reason || "-"}</span></div>
                 </div>
               </div>
