@@ -4,6 +4,7 @@ import { useState, useRef } from "react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { MultiSelectCountries } from "@/components/multi-select-countries"
 import { supabase } from "@/lib/supabase"
 import { getCurrentTenantId } from "@/lib/tenant"
 import {
@@ -85,7 +86,7 @@ export default function BecomeAPartnerPage() {
     servicesOffered: "",
     yearsInBusiness: "",
     numberOfEmployees: "",
-    countriesServed: "",
+    countriesServed: [] as string[],
     majorClients: "",
     partnershipReason: "",
     companyProfile: null as File | null,
@@ -136,6 +137,13 @@ export default function BecomeAPartnerPage() {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }))
     }
+  }
+
+  const handleCountriesChange = (countries: string[]) => {
+    setFormData((prev) => ({
+      ...prev,
+      countriesServed: countries,
+    }))
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -224,6 +232,13 @@ export default function BecomeAPartnerPage() {
     e.preventDefault()
     setIsSubmitting(true)
 
+    // Validate that at least one country is selected
+    if (formData.countriesServed.length === 0) {
+      alert("Please select at least one country")
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       let companyProfileUrl = null
       let companyBrochureUrl = null
@@ -296,7 +311,7 @@ export default function BecomeAPartnerPage() {
           services_offered: formData.servicesOffered,
           years_in_business: formData.yearsInBusiness,
           number_of_employees: formData.numberOfEmployees,
-          countries_served: formData.countriesServed,
+          countries_served: formData.countriesServed.join(", "),
           major_clients: formData.majorClients,
           certifications: formData.certifications,
           company_profile_url: companyProfileUrl,
@@ -335,7 +350,7 @@ export default function BecomeAPartnerPage() {
         servicesOffered: "",
         yearsInBusiness: "",
         numberOfEmployees: "",
-        countriesServed: "",
+        countriesServed: [],
         majorClients: "",
         partnershipReason: "",
         companyProfile: null,
@@ -847,28 +862,11 @@ export default function BecomeAPartnerPage() {
                           <label className="block text-sm font-medium text-gray-800 mb-2">
                             Countries Served <span className="text-red-500">*</span>
                           </label>
-                          <select
-                            name="countriesServed"
-                            value={formData.countriesServed}
-                            onChange={handleChange}
-                            className="w-full px-4 py-3 bg-white border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#00d4ff] focus:border-transparent"
-                          >
-                            <option value="">Select countries</option>
-                            <option value="India">India</option>
-                            <option value="United States">United States</option>
-                            <option value="Canada">Canada</option>
-                            <option value="United Kingdom">United Kingdom</option>
-                            <option value="Australia">Australia</option>
-                            <option value="Germany">Germany</option>
-                            <option value="Singapore">Singapore</option>
-                            <option value="UAE">UAE</option>
-                            <option value="Saudi Arabia">Saudi Arabia</option>
-                            <option value="Japan">Japan</option>
-                            <option value="Other">Other</option>
-                          </select>
-                          <p className="text-xs text-gray-500 mt-2">
-                            You can select multiple countries.
-                          </p>
+                          <MultiSelectCountries
+                            selected={formData.countriesServed}
+                            onChange={handleCountriesChange}
+                            required
+                          />
                         </div>
                       </div>
 
