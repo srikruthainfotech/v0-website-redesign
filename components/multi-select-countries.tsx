@@ -84,9 +84,8 @@ export function MultiSelectCountries({
           {getDisplayText()}
         </span>
         <ChevronDown
-          className={`w-4 h-4 text-gray-600 transition-transform ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`w-4 h-4 text-gray-600 transition-transform ${isOpen ? "rotate-180" : ""
+            }`}
         />
       </button>
 
@@ -104,7 +103,7 @@ export function MultiSelectCountries({
                   type="checkbox"
                   checked={selected.includes(country)}
                   onChange={() => handleToggle(country)}
-                  className="w-4 h-4 accent-[#00d4ff] rounded cursor-pointer"
+                  className="w-4 h-4 text-gray-900 rounded cursor-pointer"
                 />
                 <span className="text-sm text-gray-900">{country}</span>
               </label>
