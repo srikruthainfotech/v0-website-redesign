@@ -118,7 +118,7 @@ export function MultiSelectCountries({
           {selected.map((country) => (
             <div
               key={country}
-              className="inline-flex items-center gap-2 bg-[#00d4ff]/10 text-[#00d4ff] px-3 py-1 rounded-full text-sm"
+              className="inline-flex items-center gap-2 bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm"
             >
               <span>{country}</span>
               <button
