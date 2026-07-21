@@ -2150,11 +2150,15 @@ export default function ContactUsDashboard() {
                         <TableHead className="font-semibold text-gray-700">Industry</TableHead>
                         <TableHead className="font-semibold text-gray-700">Company Email</TableHead>
                         <TableHead className="font-semibold text-gray-700">Business Email</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Website</TableHead>
                         <TableHead className="font-semibold text-gray-700">Contact Person</TableHead>
                         <TableHead className="font-semibold text-gray-700">Designation</TableHead>
                         <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
                         <TableHead className="font-semibold text-gray-700">Country</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Company Size</TableHead>
                         <TableHead className="font-semibold text-gray-700">Partnership Type</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Services Offered</TableHead>
+                        <TableHead className="font-semibold text-gray-700">Years in Business</TableHead>
                         <TableHead
                           className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={togglePartnerDateSort}
@@ -2172,81 +2176,102 @@ export default function ContactUsDashboard() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {sortedPartners.map((partner) => (
-                        <TableRow
-                          key={partner.id}
-                          className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
-                            }`}
-                        >
-                          <TableCell>
-                            <Checkbox
-                              checked={selectedIds.includes(partner.id)}
-                              onCheckedChange={() => handleSelectOne(partner.id)}
-                              aria-label={`Select ${partner.company_name}`}
-                            />
-                          </TableCell>
-                          <TableCell className="font-medium text-gray-900">{partner.company_name}</TableCell>
-                          <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
-                          <TableCell>
-                            <a
-                              href={`mailto:${partner.company_email}`}
-                              className="text-[#0066ff] hover:underline"
-                            >
-                              {partner.company_email}
-                            </a>
-                          </TableCell>
-                          <TableCell>
-                            <a
-                              href={`mailto:${partner.business_email}`}
-                              className="text-[#0066ff] hover:underline"
-                            >
-                              {partner.business_email || "-"}
-                            </a>
-                          </TableCell>
-                          <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
-                          <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
-                          <TableCell className="text-gray-700">{partner.phone || "-"}</TableCell>
-                          <TableCell className="text-gray-500">
-                            <div className="flex items-center gap-1">
-                              <MapPin className="w-3 h-3" />
-                              {partner.country || "-"}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
-                          <TableCell className="text-gray-500 text-sm whitespace-nowrap">
-                            {formatDate(partner.created_at)}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex items-center justify-end gap-1">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => {
-                                  setSelectedPartner(partner)
-                                  setIsViewPartnerDialogOpen(true)
-                                }}
-                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                                title="View details"
+                      {sortedPartners.map((partner) => {
+                        // Get first service from services_offered (handle both string and array formats)
+                        const getFirstService = () => {
+                          if (!partner.services_offered) return "-"
+                          if (typeof partner.services_offered === "string") {
+                            const services = partner.services_offered.split(",").map(s => s.trim())
+                            const first = services[0]
+                            return first.length > 30 ? first.substring(0, 27) + "..." : first
+                          }
+                          if (Array.isArray(partner.services_offered) && partner.services_offered.length > 0) {
+                            const first = partner.services_offered[0]
+                            return first.length > 30 ? first.substring(0, 27) + "..." : first
+                          }
+                          return "-"
+                        }
+                        
+                        return (
+                          <TableRow
+                            key={partner.id}
+                            className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
+                              }`}
+                          >
+                            <TableCell>
+                              <Checkbox
+                                checked={selectedIds.includes(partner.id)}
+                                onCheckedChange={() => handleSelectOne(partner.id)}
+                                aria-label={`Select ${partner.company_name}`}
+                              />
+                            </TableCell>
+                            <TableCell className="font-bold text-gray-900">{partner.company_name}</TableCell>
+                            <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
+                            <TableCell>
+                              <a
+                                href={`mailto:${partner.company_email}`}
+                                className="text-[#0066ff] hover:underline"
                               >
-                                <Eye className="w-4 h-4" />
-                              </Button>
+                                {partner.company_email}
+                              </a>
+                            </TableCell>
+                            <TableCell>
+                              <a
+                                href={`mailto:${partner.business_email}`}
+                                className="text-[#0066ff] hover:underline"
+                              >
+                                {partner.business_email || "-"}
+                              </a>
+                            </TableCell>
+                            <TableCell className="text-gray-700">{partner.website || "-"}</TableCell>
+                            <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
+                            <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
+                            <TableCell className="text-gray-700">{partner.mobile_number || "-"}</TableCell>
+                            <TableCell className="text-gray-500">
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3 h-3" />
+                                {partner.country || "-"}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-gray-700">{partner.company_size || "-"}</TableCell>
+                            <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
+                            <TableCell className="text-gray-700">{getFirstService()}</TableCell>
+                            <TableCell className="text-gray-700">{partner.years_in_business || "-"}</TableCell>
+                            <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                              {formatDate(partner.created_at)}
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end gap-1">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => {
+                                    setSelectedPartner(partner)
+                                    setIsViewPartnerDialogOpen(true)
+                                  }}
+                                  className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                  title="View details"
+                                >
+                                  <Eye className="w-4 h-4" />
+                                </Button>
 
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => {
-                                  setSelectedPartner(partner)
-                                  setIsDeleteDialogOpen(true)
-                                }}
-                                className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
-                                title="Delete"
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </TableRow>
-                      ))}
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  onClick={() => {
+                                    setSelectedPartner(partner)
+                                    setIsDeleteDialogOpen(true)
+                                  }}
+                                  className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        )
+                      })}
                     </TableBody>
                   </Table>
                 </div>
