@@ -3405,7 +3405,7 @@ export default function ContactUsDashboard() {
 
       {/* View Partner Dialog */}
       <Dialog open={isViewPartnerDialogOpen} onOpenChange={setIsViewPartnerDialogOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Partner Details</DialogTitle>
           </DialogHeader>
