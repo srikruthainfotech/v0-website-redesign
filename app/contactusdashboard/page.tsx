@@ -2138,7 +2138,7 @@ export default function ContactUsDashboard() {
                   <Table className="min-w-max">
                     <TableHeader>
                       <TableRow className="bg-gray-50 hover:bg-gray-50">
-                        <TableHead className="w-12">
+                        <TableHead className="w-12 px-4 py-3">
                           <Checkbox
                             checked={partners.length > 0 && selectedIds.length === partners.length}
                             onCheckedChange={handleSelectAll}
@@ -2146,21 +2146,21 @@ export default function ContactUsDashboard() {
                             className={selectedIds.length > 0 && selectedIds.length < partners.length ? "data-[state=checked]:bg-[#00d4ff]/50" : ""}
                           />
                         </TableHead>
-                        <TableHead className="font-semibold text-gray-700">Company Name</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Industry</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Company Email</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Business Email</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Website</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Contact Person</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Designation</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Phone Number</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Country</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Company Size</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Partnership Type</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Services Offered</TableHead>
-                        <TableHead className="font-semibold text-gray-700">Years in Business</TableHead>
+                        <TableHead className="w-40 px-4 py-3 font-semibold text-gray-700">Company Name</TableHead>
+                        <TableHead className="w-32 px-4 py-3 font-semibold text-gray-700">Industry</TableHead>
+                        <TableHead className="w-44 px-4 py-3 font-semibold text-gray-700">Company Email</TableHead>
+                        <TableHead className="w-44 px-4 py-3 font-semibold text-gray-700">Business Email</TableHead>
+                        <TableHead className="w-36 px-4 py-3 font-semibold text-gray-700">Website</TableHead>
+                        <TableHead className="w-36 px-4 py-3 font-semibold text-gray-700">Contact Person</TableHead>
+                        <TableHead className="w-32 px-4 py-3 font-semibold text-gray-700">Designation</TableHead>
+                        <TableHead className="w-32 px-4 py-3 font-semibold text-gray-700">Phone</TableHead>
+                        <TableHead className="w-28 px-4 py-3 font-semibold text-gray-700">Country</TableHead>
+                        <TableHead className="w-28 px-4 py-3 font-semibold text-gray-700">Company Size</TableHead>
+                        <TableHead className="w-32 px-4 py-3 font-semibold text-gray-700">Partnership</TableHead>
+                        <TableHead className="w-40 px-4 py-3 font-semibold text-gray-700">Services</TableHead>
+                        <TableHead className="w-28 px-4 py-3 font-semibold text-gray-700">Years</TableHead>
                         <TableHead
-                          className="font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
+                          className="w-24 px-4 py-3 font-semibold text-gray-700 cursor-pointer hover:bg-gray-100 select-none"
                           onClick={togglePartnerDateSort}
                         >
                           <div className="flex items-center gap-1">
@@ -2172,7 +2172,7 @@ export default function ContactUsDashboard() {
                             )}
                           </div>
                         </TableHead>
-                        <TableHead className="font-semibold text-gray-700 text-right">Actions</TableHead>
+                        <TableHead className="w-20 px-4 py-3 font-semibold text-gray-700 text-right">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -2198,49 +2198,51 @@ export default function ContactUsDashboard() {
                             className={`hover:bg-gray-50 transition-colors ${selectedIds.includes(partner.id) ? "bg-blue-50" : ""
                               }`}
                           >
-                            <TableCell>
+                            <TableCell className="w-12 px-4 py-3">
                               <Checkbox
                                 checked={selectedIds.includes(partner.id)}
                                 onCheckedChange={() => handleSelectOne(partner.id)}
                                 aria-label={`Select ${partner.company_name}`}
                               />
                             </TableCell>
-                            <TableCell className="font-bold text-gray-900">{partner.company_name}</TableCell>
-                            <TableCell className="text-gray-700">{partner.industry || "-"}</TableCell>
-                            <TableCell>
+                            <TableCell className="w-40 px-4 py-3 font-bold text-gray-900 truncate">{partner.company_name}</TableCell>
+                            <TableCell className="w-32 px-4 py-3 text-gray-700 truncate">{partner.industry || "-"}</TableCell>
+                            <TableCell className="w-44 px-4 py-3 truncate">
                               <a
                                 href={`mailto:${partner.company_email}`}
                                 className="text-[#0066ff] hover:underline"
+                                title={partner.company_email}
                               >
                                 {partner.company_email}
                               </a>
                             </TableCell>
-                            <TableCell>
+                            <TableCell className="w-44 px-4 py-3 truncate">
                               <a
                                 href={`mailto:${partner.business_email}`}
                                 className="text-[#0066ff] hover:underline"
+                                title={partner.business_email || "-"}
                               >
                                 {partner.business_email || "-"}
                               </a>
                             </TableCell>
-                            <TableCell className="text-gray-700">{partner.website || "-"}</TableCell>
-                            <TableCell className="text-gray-900">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
-                            <TableCell className="text-gray-700">{partner.designation || "-"}</TableCell>
-                            <TableCell className="text-gray-700">{partner.mobile_number || "-"}</TableCell>
-                            <TableCell className="text-gray-500">
-                              <div className="flex items-center gap-1">
-                                <MapPin className="w-3 h-3" />
-                                {partner.country || "-"}
+                            <TableCell className="w-36 px-4 py-3 text-gray-700 truncate">{partner.website || "-"}</TableCell>
+                            <TableCell className="w-36 px-4 py-3 text-gray-900 truncate">{partner.first_name && partner.last_name ? `${partner.first_name} ${partner.last_name}` : "-"}</TableCell>
+                            <TableCell className="w-32 px-4 py-3 text-gray-700 truncate">{partner.designation || "-"}</TableCell>
+                            <TableCell className="w-32 px-4 py-3 text-gray-700 truncate">{partner.mobile_number || "-"}</TableCell>
+                            <TableCell className="w-28 px-4 py-3 text-gray-500">
+                              <div className="flex items-center gap-1 truncate">
+                                <MapPin className="w-3 h-3 flex-shrink-0" />
+                                <span className="truncate">{partner.country || "-"}</span>
                               </div>
                             </TableCell>
-                            <TableCell className="text-gray-700">{partner.company_size || "-"}</TableCell>
-                            <TableCell className="text-gray-700">{partner.partnership_type || "-"}</TableCell>
-                            <TableCell className="text-gray-700">{getFirstService()}</TableCell>
-                            <TableCell className="text-gray-700">{partner.years_in_business || "-"}</TableCell>
-                            <TableCell className="text-gray-500 text-sm whitespace-nowrap">
+                            <TableCell className="w-28 px-4 py-3 text-gray-700 truncate">{partner.company_size || "-"}</TableCell>
+                            <TableCell className="w-32 px-4 py-3 text-gray-700 truncate">{partner.partnership_type || "-"}</TableCell>
+                            <TableCell className="w-40 px-4 py-3 text-gray-700 truncate" title={getFirstService()}>{getFirstService()}</TableCell>
+                            <TableCell className="w-28 px-4 py-3 text-gray-700 truncate">{partner.years_in_business || "-"}</TableCell>
+                            <TableCell className="w-24 px-4 py-3 text-gray-500 text-sm whitespace-nowrap">
                               {formatDate(partner.created_at)}
                             </TableCell>
-                            <TableCell className="text-right">
+                            <TableCell className="w-20 px-4 py-3 text-right">
                               <div className="flex items-center justify-end gap-1">
                                 <Button
                                   variant="ghost"
@@ -2249,7 +2251,7 @@ export default function ContactUsDashboard() {
                                     setSelectedPartner(partner)
                                     setIsViewPartnerDialogOpen(true)
                                   }}
-                                  className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
+                                  className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50 flex-shrink-0"
                                   title="View details"
                                 >
                                   <Eye className="w-4 h-4" />
@@ -2262,7 +2264,7 @@ export default function ContactUsDashboard() {
                                     setSelectedPartner(partner)
                                     setIsDeleteDialogOpen(true)
                                   }}
-                                  className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50"
+                                  className="h-8 w-8 text-gray-500 hover:text-red-600 hover:bg-red-50 flex-shrink-0"
                                   title="Delete"
                                 >
                                   <Trash2 className="w-4 h-4" />
