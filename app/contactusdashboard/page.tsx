@@ -3410,26 +3410,26 @@ export default function ContactUsDashboard() {
             <DialogTitle>Partner Details</DialogTitle>
           </DialogHeader>
           {selectedPartner && (
-            <div className="py-4 max-h-[60vh] overflow-y-auto">
+            <div className="py-6 max-h-[60vh] overflow-y-auto px-2">
               {/* Company Information Section */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Company Name */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Building2 className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Building2 className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Name</p>
-                    <p className="text-gray-900 mt-1 break-words">{selectedPartner.company_name}</p>
+                    <p className="text-gray-900 mt-2 break-words font-medium">{selectedPartner.company_name}</p>
                   </div>
                 </div>
 
                 {/* Company Email */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Mail className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Email</p>
                     <a
                       href={`mailto:${selectedPartner.company_email}`}
-                      className="text-[#0066ff] hover:underline mt-1 block break-all"
+                      className="text-[#0066ff] hover:underline mt-2 block break-all"
                     >
                       {selectedPartner.company_email}
                     </a>
@@ -3437,106 +3437,106 @@ export default function ContactUsDashboard() {
                 </div>
 
                 {/* Website */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <ExternalLink className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <ExternalLink className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Website</p>
-                    <p className="text-gray-900 mt-1 break-words">{selectedPartner.website || "-"}</p>
+                    <p className="text-gray-900 mt-2 break-words">{selectedPartner.website || "-"}</p>
                   </div>
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Phone className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Phone className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Phone</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.phone || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.phone || "-"}</p>
                   </div>
                 </div>
 
                 {/* Country */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <MapPin className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Country</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.country || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.country || "-"}</p>
                   </div>
                 </div>
 
                 {/* Company Size */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Users className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Size</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.company_size || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.company_size || "-"}</p>
                   </div>
                 </div>
 
                 {/* Industry */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Briefcase className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Industry</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.industry || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.industry || "-"}</p>
                   </div>
                 </div>
 
                 {/* Address */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <MapPin className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Address</p>
-                    <p className="text-gray-900 mt-1 break-words">{selectedPartner.address || "-"}</p>
+                    <p className="text-gray-900 mt-2 break-words">{selectedPartner.address || "-"}</p>
                   </div>
                 </div>
 
                 {/* City */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <MapPin className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">City</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.city || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.city || "-"}</p>
                   </div>
                 </div>
               </div>
 
               {/* Contact Section */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* First Name */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <User className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">First Name</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.first_name || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.first_name || "-"}</p>
                   </div>
                 </div>
 
                 {/* Last Name */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <User className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Last Name</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.last_name || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.last_name || "-"}</p>
                   </div>
                 </div>
 
                 {/* Designation */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Briefcase className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Designation</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.designation || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.designation || "-"}</p>
                   </div>
                 </div>
 
                 {/* Business Email */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Mail className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Business Email</p>
                     <a
                       href={`mailto:${selectedPartner.business_email}`}
-                      className="text-[#0066ff] hover:underline mt-1 block break-all"
+                      className="text-[#0066ff] hover:underline mt-2 block break-all"
                     >
                       {selectedPartner.business_email || "-"}
                     </a>
@@ -3544,17 +3544,17 @@ export default function ContactUsDashboard() {
                 </div>
 
                 {/* Mobile Number */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Phone className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Phone className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Mobile Number</p>
-                    <p className="text-gray-900 mt-1">{selectedPartner.mobile_number || "-"}</p>
+                    <p className="text-gray-900 mt-2">{selectedPartner.mobile_number || "-"}</p>
                   </div>
                 </div>
 
                 {/* LinkedIn */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <ExternalLink className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <ExternalLink className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">LinkedIn</p>
                     {selectedPartner.linkedin ? (
@@ -3562,101 +3562,101 @@ export default function ContactUsDashboard() {
                         href={selectedPartner.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[#0066ff] hover:underline mt-1 block break-all"
+                        className="text-[#0066ff] hover:underline mt-2 block break-all"
                       >
                         {selectedPartner.linkedin}
                       </a>
                     ) : (
-                      <p className="text-gray-900 mt-1">-</p>
+                      <p className="text-gray-900 mt-2">-</p>
                     )}
                   </div>
                 </div>
               </div>
 
               {/* Business Information Section */}
-              <div className="grid grid-cols-2 gap-3 mb-4">
+              <div className="grid grid-cols-2 gap-4 mb-6">
                 {/* Partnership Type */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Handshake className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Handshake className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Partnership Type</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.partnership_type)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.partnership_type)}</p>
                   </div>
                 </div>
 
                 {/* Services Offered */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <FileText className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Services Offered</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.services_offered)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.services_offered)}</p>
                   </div>
                 </div>
 
                 {/* Years in Business */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Calendar className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Years In Business</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.years_in_business)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.years_in_business)}</p>
                   </div>
                 </div>
 
                 {/* Number of Employees */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Users className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Number Of Employees</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.number_of_employees)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.number_of_employees)}</p>
                   </div>
                 </div>
 
                 {/* Countries Served */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <MapPin className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Countries Served</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.countries_served)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.countries_served)}</p>
                   </div>
                 </div>
 
                 {/* Major Clients */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <Users className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Major Clients</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.major_clients)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.major_clients)}</p>
                   </div>
                 </div>
 
                 {/* Certifications */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <FileCheck className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <FileCheck className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Certifications</p>
-                    <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.certifications)}</p>
+                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.certifications)}</p>
                   </div>
                 </div>
               </div>
 
               {/* Full Width Section */}
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {/* Partnership Reason */}
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                  <MessageSquare className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                  <MessageSquare className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                   <div className="flex-1 min-w-0">
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Partnership Reason</p>
-                    <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">{renderFieldValue(selectedPartner.partnership_reason)}</p>
+                    <p className="text-gray-900 mt-2 whitespace-pre-wrap break-words">{renderFieldValue(selectedPartner.partnership_reason)}</p>
                   </div>
                 </div>
 
                 {/* Additional Notes */}
                 {selectedPartner.additional_notes && (
-                  <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                    <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                  <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
+                    <FileText className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Additional Notes</p>
-                      <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">{selectedPartner.additional_notes}</p>
+                      <p className="text-gray-900 mt-2 whitespace-pre-wrap break-words">{selectedPartner.additional_notes}</p>
                     </div>
                   </div>
                 )}
@@ -3665,9 +3665,9 @@ export default function ContactUsDashboard() {
                 {(selectedPartner.company_profile_url || selectedPartner.company_brochure_url) && (
                   <>
                     {selectedPartner.company_profile_url && (
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <div className="flex items-center gap-4">
+                          <FileText className="w-6 h-6 text-gray-400 shrink-0" />
                           <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Profile</p>
                             <p className="text-gray-900 mt-1 text-sm">Uploaded Document</p>
@@ -3696,9 +3696,9 @@ export default function ContactUsDashboard() {
                       </div>
                     )}
                     {selectedPartner.company_brochure_url && (
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div className="flex items-center gap-3">
-                          <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                        <div className="flex items-center gap-4">
+                          <FileText className="w-6 h-6 text-gray-400 shrink-0" />
                           <div>
                             <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Brochure</p>
                             <p className="text-gray-900 mt-1 text-sm">Uploaded Document</p>
