@@ -2230,48 +2230,7 @@ export default function ContactUsDashboard() {
                               >
                                 <Eye className="w-4 h-4" />
                               </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => {
-                                  setSelectedPartner(partner)
-                                  setPartnerFormData({
-                                    company_name: partner.company_name || "",
-                                    company_email: partner.company_email || "",
-                                    website: partner.website || "",
-                                    phone: partner.phone || "",
-                                    country: partner.country || "",
-                                    company_size: partner.company_size || "",
-                                    industry: partner.industry || "",
-                                    address: partner.address || "",
-                                    city: partner.city || "",
-                                    first_name: partner.first_name || "",
-                                    last_name: partner.last_name || "",
-                                    designation: partner.designation || "",
-                                    business_email: partner.business_email || "",
-                                    mobile_number: partner.mobile_number || "",
-                                    linkedin: partner.linkedin || "",
-                                    partnership_type: partner.partnership_type || "",
-                                    services_offered: partner.services_offered || "",
-                                    years_in_business: partner.years_in_business || "",
-                                    number_of_employees: partner.number_of_employees || "",
-                                    countries_served: partner.countries_served || "",
-                                    major_clients: partner.major_clients || "",
-                                    certifications: partner.certifications || "",
-                                    partnership_reason: partner.partnership_reason || "",
-                                    additional_notes: partner.additional_notes || "",
-                                    agree_terms: partner.agree_terms || false,
-                                    agree_privacy: partner.agree_privacy || false,
-                                    company_profile_url: partner.company_profile_url || "",
-                                    company_brochure_url: partner.company_brochure_url || "",
-                                  })
-                                  setIsEditPartnerDialogOpen(true)
-                                }}
-                                className="h-8 w-8 text-gray-500 hover:text-[#0066ff] hover:bg-blue-50"
-                                title="Edit"
-                              >
-                                <Pencil className="w-4 h-4" />
-                              </Button>
+
                               <Button
                                 variant="ghost"
                                 size="icon"
