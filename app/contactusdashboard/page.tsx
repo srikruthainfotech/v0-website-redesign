@@ -3410,122 +3410,323 @@ export default function ContactUsDashboard() {
             <DialogTitle>Partner Details</DialogTitle>
           </DialogHeader>
           {selectedPartner && (
-            <div className="space-y-6">
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Company Information</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-gray-500">Company Name:</span> <span className="font-medium">{selectedPartner.company_name}</span></div>
-                  <div><span className="text-gray-500">Email:</span> <a href={`mailto:${selectedPartner.company_email}`} className="text-[#0066ff] hover:underline">{selectedPartner.company_email}</a></div>
-                  <div><span className="text-gray-500">Website:</span> <span className="font-medium">{selectedPartner.website || "-"}</span></div>
-                  <div><span className="text-gray-500">Phone:</span> <span className="font-medium">{selectedPartner.phone || "-"}</span></div>
-                  <div><span className="text-gray-500">Country:</span> <span className="font-medium">{selectedPartner.country || "-"}</span></div>
-                  <div><span className="text-gray-500">Company Size:</span> <span className="font-medium">{selectedPartner.company_size || "-"}</span></div>
-                  <div><span className="text-gray-500">Industry:</span> <span className="font-medium">{selectedPartner.industry || "-"}</span></div>
-                  <div><span className="text-gray-500">Address:</span> <span className="font-medium">{selectedPartner.address || "-"}</span></div>
-                  <div><span className="text-gray-500">City:</span> <span className="font-medium">{selectedPartner.city || "-"}</span></div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Primary Contact</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-gray-500">First Name:</span> <span className="font-medium">{selectedPartner.first_name || "-"}</span></div>
-                  <div><span className="text-gray-500">Last Name:</span> <span className="font-medium">{selectedPartner.last_name || "-"}</span></div>
-                  <div><span className="text-gray-500">Designation:</span> <span className="font-medium">{selectedPartner.designation || "-"}</span></div>
-                  <div><span className="text-gray-500">Business Email:</span> <a href={`mailto:${selectedPartner.business_email}`} className="text-[#0066ff] hover:underline">{selectedPartner.business_email || "-"}</a></div>
-                  <div><span className="text-gray-500">Mobile Number:</span> <span className="font-medium">{selectedPartner.mobile_number || "-"}</span></div>
-                  <div><span className="text-gray-500">LinkedIn:</span> <a href={selectedPartner.linkedin || "#"} target="_blank" rel="noopener noreferrer" className="text-[#0066ff] hover:underline">{selectedPartner.linkedin || "-"}</a></div>
-                </div>
-              </div>
-
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Business Information</h3>
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div><span className="text-gray-500">Partnership Type:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_type)}</span></div>
-                  <div><span className="text-gray-500">Services Offered:</span> <span className="font-medium">{renderFieldValue(selectedPartner.services_offered)}</span></div>
-                  <div><span className="text-gray-500">Years in Business:</span> <span className="font-medium">{renderFieldValue(selectedPartner.years_in_business)}</span></div>
-                  <div><span className="text-gray-500">Number of Employees:</span> <span className="font-medium">{renderFieldValue(selectedPartner.number_of_employees)}</span></div>
-                  <div><span className="text-gray-500">Countries Served:</span> <span className="font-medium">{renderFieldValue(selectedPartner.countries_served)}</span></div>
-                  <div><span className="text-gray-500">Major Clients:</span> <span className="font-medium">{renderFieldValue(selectedPartner.major_clients)}</span></div>
-                  <div><span className="text-gray-500">Certifications:</span> <span className="font-medium">{renderFieldValue(selectedPartner.certifications)}</span></div>
-                  <div><span className="text-gray-500">Partnership Reason:</span> <span className="font-medium">{renderFieldValue(selectedPartner.partnership_reason)}</span></div>
-                </div>
-              </div>
-
-              {(selectedPartner.additional_notes) && (
+            <div className="space-y-4 py-4 max-h-[60vh] overflow-y-auto">
+              {/* Company Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Building2 className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-2">Additional Notes</h3>
-                  <p className="text-sm text-gray-700">{selectedPartner.additional_notes}</p>
-                </div>
-              )}
-
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-3">Agreement</h3>
-                <div className="space-y-2 text-sm">
-                  <div><span className="text-gray-500">Agree Terms:</span> <span className={`font-medium ${selectedPartner.agree_terms ? "text-green-600" : "text-red-600"}`}>{selectedPartner.agree_terms ? "Yes" : "No"}</span></div>
-                  <div><span className="text-gray-500">Agree Privacy:</span> <span className={`font-medium ${selectedPartner.agree_privacy ? "text-green-600" : "text-red-600"}`}>{selectedPartner.agree_privacy ? "Yes" : "No"}</span></div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Name</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.company_name}</p>
                 </div>
               </div>
 
-              {(selectedPartner.company_profile_url || selectedPartner.company_brochure_url) && (
+              {/* Company Email */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
                 <div>
-                  <h3 className="font-semibold text-gray-900 mb-3">Uploaded Documents</h3>
-                  <div className="space-y-2">
-                    {selectedPartner.company_profile_url && (
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                        <span className="text-sm text-gray-700">Company Profile</span>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => window.open(selectedPartner.company_profile_url!, "_blank")}
-                            className="text-[#0066ff] hover:text-[#0066ff]"
-                          >
-                            <ExternalLink className="w-4 h-4 mr-1" />
-                            Open File
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDownload(selectedPartner.company_profile_url!)}
-                            className="text-[#0066ff] hover:text-[#0066ff]"
-                          >
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                    {selectedPartner.company_brochure_url && (
-                      <div className="flex items-center justify-between p-3 bg-gray-50 rounded">
-                        <span className="text-sm text-gray-700">Company Brochure</span>
-                        <div className="flex items-center gap-2">
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => window.open(selectedPartner.company_brochure_url!, "_blank")}
-                            className="text-[#0066ff] hover:text-[#0066ff]"
-                          >
-                            <ExternalLink className="w-4 h-4 mr-1" />
-                            Open File
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDownload(selectedPartner.company_brochure_url!)}
-                            className="text-[#0066ff] hover:text-[#0066ff]"
-                          >
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
-                        </div>
-                      </div>
-                    )}
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Email</p>
+                  <a
+                    href={`mailto:${selectedPartner.company_email}`}
+                    className="text-[#0066ff] hover:underline mt-1 block"
+                  >
+                    {selectedPartner.company_email}
+                  </a>
+                </div>
+              </div>
+
+              {/* Website */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <ExternalLink className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Website</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.website || "-"}</p>
+                </div>
+              </div>
+
+              {/* Phone */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Phone className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Phone</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.phone || "-"}</p>
+                </div>
+              </div>
+
+              {/* Country */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Country</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.country || "-"}</p>
+                </div>
+              </div>
+
+              {/* Company Size */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Size</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.company_size || "-"}</p>
+                </div>
+              </div>
+
+              {/* Industry */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Industry</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.industry || "-"}</p>
+                </div>
+              </div>
+
+              {/* Address */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Address</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.address || "-"}</p>
+                </div>
+              </div>
+
+              {/* City */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">City</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.city || "-"}</p>
+                </div>
+              </div>
+
+              {/* First Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">First Name</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.first_name || "-"}</p>
+                </div>
+              </div>
+
+              {/* Last Name */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <User className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Last Name</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.last_name || "-"}</p>
+                </div>
+              </div>
+
+              {/* Designation */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Briefcase className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Designation</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.designation || "-"}</p>
+                </div>
+              </div>
+
+              {/* Business Email */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Mail className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Business Email</p>
+                  <a
+                    href={`mailto:${selectedPartner.business_email}`}
+                    className="text-[#0066ff] hover:underline mt-1 block"
+                  >
+                    {selectedPartner.business_email || "-"}
+                  </a>
+                </div>
+              </div>
+
+              {/* Mobile Number */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Phone className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Mobile Number</p>
+                  <p className="text-gray-900 mt-1">{selectedPartner.mobile_number || "-"}</p>
+                </div>
+              </div>
+
+              {/* LinkedIn */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <ExternalLink className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">LinkedIn</p>
+                  {selectedPartner.linkedin ? (
+                    <a
+                      href={selectedPartner.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#0066ff] hover:underline mt-1 block"
+                    >
+                      {selectedPartner.linkedin}
+                    </a>
+                  ) : (
+                    <p className="text-gray-900 mt-1">-</p>
+                  )}
+                </div>
+              </div>
+
+              {/* Partnership Type */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Handshake className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Partnership Type</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.partnership_type)}</p>
+                </div>
+              </div>
+
+              {/* Services Offered */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Services Offered</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.services_offered)}</p>
+                </div>
+              </div>
+
+              {/* Years in Business */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Calendar className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Years In Business</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.years_in_business)}</p>
+                </div>
+              </div>
+
+              {/* Number of Employees */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Number Of Employees</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.number_of_employees)}</p>
+                </div>
+              </div>
+
+              {/* Countries Served */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MapPin className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Countries Served</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.countries_served)}</p>
+                </div>
+              </div>
+
+              {/* Major Clients */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <Users className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Major Clients</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.major_clients)}</p>
+                </div>
+              </div>
+
+              {/* Certifications */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <FileCheck className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div>
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Certifications</p>
+                  <p className="text-gray-900 mt-1">{renderFieldValue(selectedPartner.certifications)}</p>
+                </div>
+              </div>
+
+              {/* Partnership Reason */}
+              <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <MessageSquare className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Partnership Reason</p>
+                  <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">{renderFieldValue(selectedPartner.partnership_reason)}</p>
+                </div>
+              </div>
+
+              {/* Additional Notes */}
+              {selectedPartner.additional_notes && (
+                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                  <FileText className="w-5 h-5 text-gray-400 mt-0.5 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Additional Notes</p>
+                    <p className="text-gray-900 mt-1 whitespace-pre-wrap break-words">{selectedPartner.additional_notes}</p>
                   </div>
                 </div>
               )}
+
+              {/* Uploaded Documents */}
+              {(selectedPartner.company_profile_url || selectedPartner.company_brochure_url) && (
+                <>
+                  {selectedPartner.company_profile_url && (
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Profile</p>
+                          <p className="text-gray-900 mt-1 text-sm">Uploaded Document</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(selectedPartner.company_profile_url!, "_blank")}
+                          className="text-[#0066ff] hover:text-[#0066ff]"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          Open File
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDownload(selectedPartner.company_profile_url!)}
+                          className="text-[#0066ff] hover:text-[#0066ff]"
+                        >
+                          <Download className="w-4 h-4 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                  {selectedPartner.company_brochure_url && (
+                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <div className="flex items-center gap-3">
+                        <FileText className="w-5 h-5 text-gray-400 shrink-0" />
+                        <div>
+                          <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Company Brochure</p>
+                          <p className="text-gray-900 mt-1 text-sm">Uploaded Document</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(selectedPartner.company_brochure_url!, "_blank")}
+                          className="text-[#0066ff] hover:text-[#0066ff]"
+                        >
+                          <ExternalLink className="w-4 h-4 mr-1" />
+                          Open File
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDownload(selectedPartner.company_brochure_url!)}
+                          className="text-[#0066ff] hover:text-[#0066ff]"
+                        >
+                          <Download className="w-4 h-4 mr-1" />
+                          Download
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
             </div>
           )}
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setIsViewPartnerDialogOpen(false)}
+            >
+              Close
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
