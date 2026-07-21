@@ -3620,15 +3620,6 @@ export default function ContactUsDashboard() {
                   </div>
                 </div>
 
-                {/* Major Clients */}
-                <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
-                  <Users className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Major Clients</p>
-                    <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.major_clients)}</p>
-                  </div>
-                </div>
-
                 {/* Certifications */}
                 <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100">
                   <FileCheck className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
@@ -3636,6 +3627,15 @@ export default function ContactUsDashboard() {
                     <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Certifications</p>
                     <p className="text-gray-900 mt-2">{renderFieldValue(selectedPartner.certifications)}</p>
                   </div>
+                </div>
+              </div>
+
+              {/* Major Clients Full Width */}
+              <div className="flex items-start gap-4 p-4 bg-gray-50 rounded-lg border border-gray-100 mb-6">
+                <Users className="w-6 h-6 text-gray-400 mt-1 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs text-gray-500 uppercase tracking-wider font-medium">Major Clients</p>
+                  <p className="text-gray-900 mt-2 whitespace-pre-wrap break-words">{renderFieldValue(selectedPartner.major_clients)}</p>
                 </div>
               </div>
 
