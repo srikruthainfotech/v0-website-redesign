@@ -14,7 +14,6 @@ import {
   Globe,
   Mail,
   Phone,
-  Send,
   ChevronDown,
   Upload,
 } from "lucide-react"
@@ -108,7 +107,6 @@ export default function BecomeAPartnerPage() {
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitted, setSubmitted] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const brochureInputRef = useRef<HTMLInputElement>(null)
 
@@ -329,7 +327,9 @@ export default function BecomeAPartnerPage() {
         return
       }
 
-      setSubmitted(true)
+      alert("✅ Partnership request submitted successfully!")
+
+      // RESET FORM
       setFormData({
         companyName: "",
         companyWebsite: "",
@@ -460,25 +460,7 @@ export default function BecomeAPartnerPage() {
         {/* Main Form Section */}
         <section className="bg-white py-16 md:py-20 px-4 md:px-8">
           <div className="max-w-7xl mx-auto">
-            {submitted ? (
-              <div className="bg-[#0a1628] rounded-xl p-10 text-center shadow-lg max-w-2xl mx-auto">
-                <div className="w-20 h-20 bg-[#00d4ff]/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <Send className="w-10 h-10 text-[#00d4ff]" />
-                </div>
-                <h2 className="text-white text-2xl font-bold mb-2">Thank You!</h2>
-                <p className="text-gray-300 mb-8">
-                  Your partnership request has been submitted successfully. Our
-                  partnership team will review your request and contact you soon.
-                </p>
-                <button
-                  onClick={() => setSubmitted(false)}
-                  className="bg-[#0066ff] hover:bg-[#0052cc] text-white font-medium py-2.5 px-8 rounded-md transition-colors"
-                >
-                  Submit Another Request
-                </button>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Form - Left side */}
                 <div className="lg:col-span-2">
                   <div className="mb-8">
@@ -1202,7 +1184,6 @@ export default function BecomeAPartnerPage() {
                   </div>
                 </div>
               </div>
-            )}
           </div>
         </section>
       </main>
