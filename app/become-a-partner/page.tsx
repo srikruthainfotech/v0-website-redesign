@@ -888,7 +888,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_iso9001"
                                 checked={formData.certifications.iso9001}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">ISO 9001</span>
                             </label>
@@ -898,7 +898,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_iso27001"
                                 checked={formData.certifications.iso27001}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">ISO 27001</span>
                             </label>
@@ -908,7 +908,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_cmmi"
                                 checked={formData.certifications.cmmi}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">CMMI</span>
                             </label>
@@ -918,7 +918,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_microsoftPartner"
                                 checked={formData.certifications.microsoftPartner}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">Microsoft Partner</span>
                             </label>
@@ -928,7 +928,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_awsPartner"
                                 checked={formData.certifications.awsPartner}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">AWS Partner</span>
                             </label>
@@ -938,7 +938,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_googlePartner"
                                 checked={formData.certifications.googlePartner}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">Google Partner</span>
                             </label>
@@ -948,7 +948,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_oraclePartner"
                                 checked={formData.certifications.oraclePartner}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">Oracle Partner</span>
                             </label>
@@ -958,7 +958,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_sapPartner"
                                 checked={formData.certifications.sapPartner}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">SAP Partner</span>
                             </label>
@@ -968,7 +968,7 @@ export default function BecomeAPartnerPage() {
                                 name="certification_other"
                                 checked={formData.certifications.other}
                                 onChange={handleChange}
-                                className="w-4 h-4 accent-[#00d4ff]"
+                                className="w-4 h-4 accent-[#0066ff]"
                               />
                               <span className="text-sm text-gray-700">Other</span>
                             </label>
@@ -1094,7 +1094,7 @@ export default function BecomeAPartnerPage() {
                           name="agreeTerms"
                           checked={formData.agreeTerms}
                           onChange={handleChange}
-                          className="mt-1 w-4 h-4 accent-[#00d4ff]"
+                          className="mt-1 w-4 h-4 accent-[#0066ff]"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to <Link href="/terms-of-use" className="hover:text-[#00d4ff] transition-colors">
@@ -1108,7 +1108,7 @@ export default function BecomeAPartnerPage() {
                           name="agreePrivacy"
                           checked={formData.agreePrivacy}
                           onChange={handleChange}
-                          className="mt-1 w-4 h-4 accent-[#00d4ff]"
+                          className="mt-1 w-4 h-4 accent-[#0066ff]"
                         />
                         <span className="text-sm text-gray-600">
                           I agree to <Link href="/privacy-policy" className="hover:text-[#00d4ff] transition-colors">

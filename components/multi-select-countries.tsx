@@ -103,7 +103,7 @@ export function MultiSelectCountries({
                   type="checkbox"
                   checked={selected.includes(country)}
                   onChange={() => handleToggle(country)}
-                  className="w-4 h-4 text-gray-900 rounded cursor-pointer"
+                  className="w-4 h-4 accent-[#0066ff] rounded cursor-pointer"
                 />
                 <span className="text-sm text-gray-900">{country}</span>
               </label>
